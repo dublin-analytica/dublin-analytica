@@ -59,3 +59,9 @@ build/
 
 ### VS Code ###
 .vscode/
+node_modules
+
+# React
+**/node_modules/
+**/bundle*.js*
+src/main/resources/static/built/
