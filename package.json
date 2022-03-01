@@ -13,6 +13,7 @@
   },
   "scripts": {
     "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
+    "test": "",
     "prepare": "husky install"
   },
   "devDependencies": {

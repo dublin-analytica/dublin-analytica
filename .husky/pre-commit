@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm test && npx eslint .
+npm test && npx eslint --fix ./src/main/js/**/*.jsx
