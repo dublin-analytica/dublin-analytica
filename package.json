@@ -13,7 +13,9 @@
   },
   "scripts": {
     "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
-    "test": "",
+    "clean": "./mvnw clean",
+    "pretest": "npm run clean",
+    "test": "./mvnw test",
     "prepare": "husky install"
   },
   "devDependencies": {
