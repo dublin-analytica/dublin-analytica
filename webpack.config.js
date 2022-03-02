@@ -3,9 +3,10 @@ const path = require('path');
 
 module.exports = {
   entry: './src/main/js/index.jsx',
-  devtool: 'sourcemaps',
   cache: true,
-  mode: 'development',
+  mode: 'production',
+  devtool: 'sourcemaps',
+
   output: {
     path: __dirname,
     filename: './src/main/resources/static/built/bundle.js',
