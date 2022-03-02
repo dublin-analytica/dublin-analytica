@@ -6,16 +6,17 @@
   "author": "Evan Brierton <35705911+evanbrierton@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "husky": "^7.0.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "rest": "^1.3.1"
   },
   "scripts": {
-    "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
+    "watch": "npx webpack --watch -d --output ./target/classes/static/built/bundle.js",
     "clean": "./mvnw clean",
     "pretest": "npm run clean",
     "test": "./mvnw test",
+    "prebuild": "npm run clean",
+    "build": "./mvnw package",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.2",
     "eslint": "^8.10.0",
+    "husky": "^7.0.4",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",

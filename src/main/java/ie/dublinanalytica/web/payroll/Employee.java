@@ -6,18 +6,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+/**
+ * Employee.
+ */
 @Entity
 public class Employee {
 
+  /**
+   * id.
+   */
   private @Id @GeneratedValue Long id;
+  /**
+   * firstName.
+   */
   private String firstName;
+  /**
+   * lastName.
+   */
   private String lastName;
+  /**
+   * description.
+   */
   private String description;
 
   protected Employee() {
   }
 
-  public Employee(String firstName, String lastName, String description) {
+  /**
+   * Employee.
+   *
+   * @param firstName first name
+   * @param lastName last name
+   * @param description description
+   */
+  public Employee(final String firstName, final String lastName, final String description) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.description = description;
@@ -25,15 +47,17 @@ public class Employee {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     Employee employee = (Employee) o;
-    return Objects.equals(id, employee.id) &&
-        Objects.equals(firstName, employee.firstName) &&
-        Objects.equals(lastName, employee.lastName) &&
-        Objects.equals(description, employee.description);
+    return Objects.equals(id, employee.id)
+        && Objects.equals(firstName, employee.firstName)
+        && Objects.equals(lastName, employee.lastName)
+        && Objects.equals(description, employee.description);
   }
 
   @Override
@@ -75,11 +99,11 @@ public class Employee {
 
   @Override
   public String toString() {
-    return "Employee{" +
-        "id=" + id +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", description='" + description + '\'' +
-        '}';
+    return "Employee{"
+        + "id=" + id
+        + ", firstName='" + firstName + '\''
+        + ", lastName='" + lastName + '\''
+        + ", description='" + description + '\''
+        + '}';
   }
 }

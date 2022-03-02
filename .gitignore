@@ -57,11 +57,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
-node_modules
-
 # React
+node_modules
 **/node_modules/
 **/bundle*.js*
 src/main/resources/static/built/
