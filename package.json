@@ -17,6 +17,7 @@
     "test": "./mvnw test",
     "prebuild": "yarn run clean",
     "build": "./mvnw package",
+    "start": "./mvnw spring-boot:run & yarn run watch && fg",
     "prepare": "husky install"
   },
   "devDependencies": {

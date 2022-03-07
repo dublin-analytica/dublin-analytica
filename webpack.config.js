@@ -9,7 +9,9 @@ module.exports = {
 
   output: {
     path: __dirname,
-    filename: './src/main/resources/static/built/bundle.js',
+    filename: 'src/main/resources/static/built/bundle.js',
+    hotUpdateChunkFilename: '.hot/hot-update.js',
+    hotUpdateMainFilename: '.hot/hot-update.json',
   },
 
   module: {
