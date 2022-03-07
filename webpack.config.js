@@ -2,14 +2,20 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './src/main/js/index.jsx',
+  entry: './src/main/ts/index.tsx',
   cache: true,
   mode: 'production',
   devtool: 'source-map',
 
+  watchOptions: {
+    ignored: /node_modules/,
+    aggregateTimeout: 300,
+    poll: 1000,
+  },
+
   output: {
-    path: __dirname,
-    filename: 'src/main/resources/static/built/bundle.js',
+    path: path.resolve(__dirname, 'src/main/resources/static/built'),
+    filename: 'bundle.js',
     hotUpdateChunkFilename: '.hot/hot-update.js',
     hotUpdateMainFilename: '.hot/hot-update.json',
   },
@@ -28,11 +34,16 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ],
   },
 
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js'],
   },
 
   plugins: [

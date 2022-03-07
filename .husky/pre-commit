@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx eslint ./src/main/js/**/*.jsx && ./mvnw checkstyle:check && npm test
+npx eslint ./src/main/ts/**/*.tsx && ./mvnw checkstyle:check && npm test
