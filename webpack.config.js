@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main/js/index.jsx',
   cache: true,
   mode: 'production',
-  devtool: 'sourcemaps',
+  devtool: 'source-map',
 
   output: {
     path: __dirname,
