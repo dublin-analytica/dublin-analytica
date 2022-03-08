@@ -127,8 +127,6 @@ public class AuthUtils {
           .build();
       return verifier.verify(token);
     } catch (JWTVerificationException e) {
-      System.out.println(token);
-      System.out.println(e.getMessage());
       throw new UserService.UserAuthenticationException("Invalid JWT Token");
     }
   }
