@@ -1,6 +1,9 @@
+import { BrowserRouter } from 'react-router-dom';
+import Main from './containers/Main';
+
 const App = () => (
   <div className="App">
-    <h1>Hello, World</h1>
+    <BrowserRouter><Main /></BrowserRouter>
   </div>
 );
 
