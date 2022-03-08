@@ -77,6 +77,19 @@ public class UserService {
   }
 
   /**
+   * Verifies that a user has a given auth token.
+   *
+   * @param user The user
+   * @param token The auth token to check
+   * @throws UserAuthenticationException if the auth token does not belong to the user
+   */
+  public void verifyAuthToken(User user, String token) {
+    if (!user.verifyAuthToken(token)) {
+      throw new UserAuthenticationException("Invalid auth token");
+    }
+  }
+
+  /**
    * Finds a user by their UUID.
    *
    * @param id The UUID of the user to find
@@ -117,6 +130,18 @@ public class UserService {
     private static final long serialVersionUID = 1L;
 
     public UserNotFoundException(String message) {
+      super(message);
+    }
+  }
+
+  /**
+   * RuntimeException to specify that a User could not be authenticated.
+   */
+  public static class UserAuthenticationException extends RuntimeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public UserAuthenticationException(String message) {
       super(message);
     }
   }

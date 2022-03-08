@@ -90,6 +90,10 @@ public class User extends BaseUser {
     this.authTokens.add(authToken);
   }
 
+  public boolean verifyAuthToken(String authToken) {
+    return this.authTokens.contains(authToken);
+  }
+
   public void removeAuthToken(String authToken) {
     this.authTokens.remove(authToken);
   }

@@ -85,7 +85,9 @@ public class UserAPIController {
       DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
       BaseUser baseUser = BaseUser.fromJwtToken(jwt);
       User user = userService.findById(baseUser.getId());
+      userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
       user.removeAuthToken(jwt.getClaim("authToken").asString());
+
     } catch (IllegalArgumentException
         | JWTVerificationException
         | UserService.UserNotFoundException e) {
