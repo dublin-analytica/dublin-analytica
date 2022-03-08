@@ -2,6 +2,7 @@ package ie.dublinanalytica.web.user;
 
 import java.io.Serial;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,8 +76,21 @@ public class UserService {
     repository.save(user);
   }
 
-  public Optional<User> findById(long id) {
-    return repository.findById(id);
+  /**
+   * Finds a user by their UUID.
+   *
+   * @param id The UUID of the user to find
+   * @return The User object
+   * @throws UserNotFoundException if the user with that ID is not found
+   */
+  public User findById(UUID id) {
+    Optional<User> user = this.repository.findById(id);
+
+    if (user.isEmpty()) {
+      throw new UserNotFoundException("User with id " + id + " not found");
+    }
+
+    return user.get();
   }
 
   public User findByEmail(String email) {
@@ -91,6 +105,18 @@ public class UserService {
     private static final long serialVersionUID = 1L;
 
     public UserAlreadyExistsException(String message) {
+      super(message);
+    }
+  }
+
+  /**
+   * RuntimeException to specify that a User does not exist.
+   */
+  public static class UserNotFoundException extends RuntimeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public UserNotFoundException(String message) {
       super(message);
     }
   }

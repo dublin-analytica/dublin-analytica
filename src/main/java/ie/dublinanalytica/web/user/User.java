@@ -1,6 +1,6 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.util.Authentication;
+import ie.dublinanalytica.web.util.AuthUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,22 +10,13 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 /**
  * Represents a User (customer) of the website.
  */
 @Entity
 @JsonIgnoreProperties(value = {"authHash", "salt", "authTokens"})
-public class User {
-
-  @Id
-  @GeneratedValue
-  private long id;
-
-  private String name;
-  private String email;
+public class User extends BaseUser {
 
   @ElementCollection
   private Set<String> authTokens;
@@ -53,8 +44,7 @@ public class User {
    * @param salt The salt used for hashing the password
    */
   public User(String name, String email, byte[] authHash, byte[] salt) {
-    this.name = name;
-    this.email = email;
+    super(name, email);
     this.authHash = authHash;
     this.salt = salt;
     this.authTokens = new HashSet<>();
@@ -69,36 +59,11 @@ public class User {
    *                 create the authHash using a random salt.
    */
   public User(String name, String email, char[] password) {
-    this.name = name;
-    this.email = email;
-    this.salt = Authentication.generateSalt();
-    this.authHash = Authentication.hash(password, this.salt);
+    super(name, email);
+    this.salt = AuthUtils.generateSalt();
+    this.authHash = AuthUtils.hash(password, this.salt);
     Arrays.fill(password, '\0');
     this.authTokens = new HashSet<>();
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
   public byte[] getAuthHash() {
@@ -118,7 +83,7 @@ public class User {
   }
 
   public boolean verifyPassword(char[] password) {
-    return Authentication.verifyPassword(password, this.salt, this.authHash);
+    return AuthUtils.verifyPassword(password, this.salt, this.authHash);
   }
 
   public void addAuthToken(String authToken) {

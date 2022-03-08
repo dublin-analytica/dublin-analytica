@@ -19,7 +19,7 @@ import javax.crypto.spec.PBEKeySpec;
 /**
  * Utility class for authentication related tasks.
  */
-public class Authentication {
+public class AuthUtils {
   private static final Random RANDOM = new SecureRandom();
   private static final Base64.Encoder ENCODER = Base64.getUrlEncoder();
   private static final String JWT_ISSUER = "dublinanalytica";
@@ -122,5 +122,19 @@ public class Authentication {
         .withIssuer(JWT_ISSUER)
         .build();
     return verifier.verify(token);
+  }
+
+  /**
+   * Returns the decoded JWT Token from Authorization header.
+   *
+   * @param authHeader The header string
+   * @return Decoded JWT Token
+   */
+  public static DecodedJWT getTokenFromHeader(String authHeader) {
+    if (!authHeader.startsWith("Bearer ")) {
+      throw new IllegalArgumentException("Invalid JWT Token");
+    }
+
+    return AuthUtils.decodeJwtToke(authHeader.substring(7));
   }
 }

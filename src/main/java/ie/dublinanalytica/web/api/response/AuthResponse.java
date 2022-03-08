@@ -4,18 +4,18 @@ package ie.dublinanalytica.web.api.response;
  * Response returned when a user is authenticated.
  */
 public class AuthResponse extends Response {
-  private String jwtToken;
+  private String jwt;
 
   public AuthResponse(String token) {
     super(null);
-    this.jwtToken = token;
+    this.jwt = token;
   }
 
-  public String getJwtToken() {
-    return jwtToken;
+  public String getJwt() {
+    return jwt;
   }
 
-  public void setJwtToken(String jwtToken) {
-    this.jwtToken = jwtToken;
+  public void setJwt(String jwt) {
+    this.jwt = jwt;
   }
 }

@@ -63,3 +63,8 @@ node_modules
 **/bundle*.js*
 src/main/resources/static/built/
 .hot
+
+# MacOS
+
+.DS_Store
+**/*.icloud

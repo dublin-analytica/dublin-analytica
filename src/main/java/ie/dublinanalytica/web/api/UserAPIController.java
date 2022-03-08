@@ -4,18 +4,17 @@ import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.api.response.ErrorResponse;
 import ie.dublinanalytica.web.api.response.Response;
 import ie.dublinanalytica.web.user.AuthDTO;
+import ie.dublinanalytica.web.user.BaseUser;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
-import ie.dublinanalytica.web.util.Authentication;
+import ie.dublinanalytica.web.util.AuthUtils;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -53,28 +52,47 @@ public class UserAPIController {
    */
   @PostMapping("/login")
   public ResponseEntity<Response> login(@RequestBody AuthDTO data) {
-    System.out.printf("/api/users/login : %s, %s\n",
-        data.getEmail(), Arrays.toString(data.getPassword()));
     User user = userService.findByEmail(data.getEmail());
 
     if (user != null && user.verifyPassword(data.getPassword())) {
-      String authToken = Authentication.generateAuthToken();
+      String authToken = AuthUtils.generateAuthToken();
       userService.addAuthToken(user, authToken);
 
       Map<String, Object> payload = new HashMap<>() {{
-          put("id", user.getId());
+          put("id", user.getId().toString());
           put("name", user.getName());
           put("email", user.getEmail());
           put("authToken", authToken);
         }};
 
-      String token = Authentication.createJwtToken(payload);
-
-      return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+      return new ResponseEntity<>(
+          new AuthResponse(AuthUtils.createJwtToken(payload)), HttpStatus.OK);
     }
 
     return new ResponseEntity<>(
         new ErrorResponse("Invalid email or password"), HttpStatus.UNAUTHORIZED);
+  }
+
+  /**
+   * Performs logout for a user by revoking their auth token.
+   *
+   * @param authHeader The Authorization header
+   * @return 200 OK on success, error message on failure
+   */
+  @PostMapping("/logout")
+  public ResponseEntity<Object> login(@RequestHeader("Authorization") String authHeader) {
+    try {
+      DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
+      BaseUser baseUser = BaseUser.fromJwtToken(jwt);
+      User user = userService.findById(baseUser.getId());
+      user.removeAuthToken(jwt.getClaim("authToken").asString());
+    } catch (IllegalArgumentException
+        | JWTVerificationException
+        | UserService.UserNotFoundException e) {
+      return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
+    }
+
+    return new ResponseEntity<>("{}", HttpStatus.OK);
   }
 
   /**
@@ -86,8 +104,6 @@ public class UserAPIController {
    */
   @PostMapping("/register")
   public ResponseEntity<Response> register(@RequestBody @Valid RegistrationDTO data) {
-    System.out.printf("/api/users/register : %s, %s, %s\n",
-        data.getName(), data.getEmail(), Arrays.toString(data.getPassword()));
     try {
       userService.registerUser(data);
     } catch (UserService.UserAlreadyExistsException e) {
@@ -95,7 +111,7 @@ public class UserAPIController {
           new ErrorResponse("User already exists"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   /**
@@ -107,30 +123,16 @@ public class UserAPIController {
    * @return The user's information if the token is valid, an error message otherwise
    */
   @GetMapping("/me")
-  public ResponseEntity<Response> me(@RequestHeader("Authorization") String authHeader) {
-    String jwtToken = authHeader.substring(7);
-
-    System.out.printf("/api/users/me : %s\n", jwtToken);
-
-    // Verify Token
-    DecodedJWT jwt;
+  public ResponseEntity<Object> me(@RequestHeader("Authorization") String authHeader) {
     try {
-      jwt = Authentication.decodeJwtToke(jwtToken);
-    } catch (JWTVerificationException e) {
-      return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.UNAUTHORIZED);
+      DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
+      BaseUser baseUser = BaseUser.fromJwtToken(jwt);
+      User user = userService.findById(baseUser.getId());
+      return new ResponseEntity<>(user, HttpStatus.OK);
+    } catch (IllegalArgumentException
+      | JWTVerificationException
+      | UserService.UserNotFoundException e) {
+      return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
     }
-
-    Optional<User> userOptional = userService.findById(jwt.getClaim("id").asLong());
-
-    if (userOptional.isEmpty()) {
-      return new ResponseEntity<>(
-          new ErrorResponse("Invalid JWT Token"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    User user = userOptional.get();
-
-    System.out.printf("User: %s\n", user);
-
-    return new ResponseEntity<>(new Response(user), HttpStatus.OK);
   }
 }
