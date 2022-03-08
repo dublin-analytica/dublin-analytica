@@ -11,11 +11,11 @@ public class AuthResponse extends Response {
     this.jwt = token;
   }
 
-  public String getJwt() {
+  public String getJWT() {
     return jwt;
   }
 
-  public void setJwt(String jwt) {
+  public void setJWT(String jwt) {
     this.jwt = jwt;
   }
 }

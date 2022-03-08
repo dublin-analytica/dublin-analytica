@@ -59,7 +59,7 @@ public class BaseUser {
    * @param jwt the DecodedJWT containing the user's name, password and id
    * @return The BaseUser created from the DecodedJWT
    */
-  public static BaseUser fromJwtToken(DecodedJWT jwt) {
+  public static BaseUser fromJWT(DecodedJWT jwt) {
     BaseUser user = new BaseUser(jwt.getClaim("name").asString(), jwt.getClaim("email").asString());
     user.setId(UUID.fromString(jwt.getClaim("id").asString()));
 

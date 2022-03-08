@@ -10,7 +10,6 @@ import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
 import ie.dublinanalytica.web.util.AuthUtils;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.HashMap;
@@ -47,14 +46,20 @@ public class UserAPIController {
    * Performs login for a user. Returns a JWT token if successful.
    *
    * @param data Auth information
-   *
    * @return A JSON object containing the information about the user and an auth token
    */
   @PostMapping("/login")
   public ResponseEntity<Response> login(@RequestBody AuthDTO data) {
+    if (!userService.userExists(data.getEmail())) {
+      new ResponseEntity<>(
+          new ErrorResponse(
+          UserService.UserNotFoundException.class.getSimpleName(),
+          UserService.UserNotFoundException.defaultMessage), HttpStatus.UNAUTHORIZED);
+    }
+
     User user = userService.findByEmail(data.getEmail());
 
-    if (user != null && user.verifyPassword(data.getPassword())) {
+    if (user.verifyPassword(data.getPassword())) {
       String authToken = AuthUtils.generateAuthToken();
       userService.addAuthToken(user, authToken);
 
@@ -66,11 +71,13 @@ public class UserAPIController {
         }};
 
       return new ResponseEntity<>(
-          new AuthResponse(AuthUtils.createJwtToken(payload)), HttpStatus.OK);
+          new AuthResponse(AuthUtils.createJWT(payload)), HttpStatus.OK);
     }
 
     return new ResponseEntity<>(
-        new ErrorResponse("Invalid email or password"), HttpStatus.UNAUTHORIZED);
+        new ErrorResponse(
+        UserService.UserAuthenticationException.class.getSimpleName(),
+        UserService.UserAuthenticationException.defaultMessage), HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -83,15 +90,14 @@ public class UserAPIController {
   public ResponseEntity<Object> login(@RequestHeader("Authorization") String authHeader) {
     try {
       DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
-      BaseUser baseUser = BaseUser.fromJwtToken(jwt);
+      BaseUser baseUser = BaseUser.fromJWT(jwt);
       User user = userService.findById(baseUser.getId());
       userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
       user.removeAuthToken(jwt.getClaim("authToken").asString());
 
-    } catch (IllegalArgumentException
-        | JWTVerificationException
-        | UserService.UserNotFoundException e) {
-      return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
+    } catch (UserService.BaseUserException e) {
+      return new ResponseEntity<>(
+          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -101,19 +107,18 @@ public class UserAPIController {
    * Registers a new user.
    *
    * @param data Registration information
-   *
    * @return Nothing on success, an error message on failure
    */
   @PostMapping("/register")
-  public ResponseEntity<Response> register(@RequestBody @Valid RegistrationDTO data) {
+  public ResponseEntity<Object> register(@RequestBody @Valid RegistrationDTO data) {
     try {
       userService.registerUser(data);
-    } catch (UserService.UserAlreadyExistsException e) {
+    } catch (UserService.BaseUserException e) {
       return new ResponseEntity<>(
-          new ErrorResponse("User already exists"), HttpStatus.INTERNAL_SERVER_ERROR);
+          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    return new ResponseEntity<>("{}", HttpStatus.CREATED);
   }
 
   /**
@@ -121,20 +126,18 @@ public class UserAPIController {
    * Reads the JWT Token from the Authorization header.
    *
    * @param authHeader Authorization header.
-   *
    * @return The user's information if the token is valid, an error message otherwise
    */
   @GetMapping("/me")
   public ResponseEntity<Object> me(@RequestHeader("Authorization") String authHeader) {
     try {
       DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
-      BaseUser baseUser = BaseUser.fromJwtToken(jwt);
+      BaseUser baseUser = BaseUser.fromJWT(jwt);
       User user = userService.findById(baseUser.getId());
       return new ResponseEntity<>(user, HttpStatus.OK);
-    } catch (IllegalArgumentException
-      | JWTVerificationException
-      | UserService.UserNotFoundException e) {
-      return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
+    } catch (UserService.BaseUserException e) {
+      return new ResponseEntity<>(
+          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
   }
 }

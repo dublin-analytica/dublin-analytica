@@ -1,7 +1,10 @@
 package ie.dublinanalytica.web.util;
 
+import ie.dublinanalytica.web.user.UserService;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
@@ -103,7 +106,7 @@ public class AuthUtils {
    * @param payload The payload
    * @return The encoded JWT Token
    */
-  public static String createJwtToken(Map<String, Object> payload) {
+  public static String createJWT(Map<String, Object> payload) {
     return JWT.create()
         .withIssuer(JWT_ISSUER)
         .withPayload(payload)
@@ -116,12 +119,18 @@ public class AuthUtils {
    * @param token the token to check
    * @return The decoded JWT Token
    */
-  public static DecodedJWT decodeJwtToke(String token) {
-    Algorithm algorithm = Algorithm.HMAC256(getSecret());
-    JWTVerifier verifier = JWT.require(algorithm)
-        .withIssuer(JWT_ISSUER)
-        .build();
-    return verifier.verify(token);
+  public static DecodedJWT decodeJwtToken(String token) {
+    try {
+      Algorithm algorithm = Algorithm.HMAC256(getSecret());
+      JWTVerifier verifier = JWT.require(algorithm)
+          .withIssuer(JWT_ISSUER)
+          .build();
+      return verifier.verify(token);
+    } catch (JWTVerificationException e) {
+      System.out.println(token);
+      System.out.println(e.getMessage());
+      throw new UserService.UserAuthenticationException("Invalid JWT Token");
+    }
   }
 
   /**
@@ -132,9 +141,9 @@ public class AuthUtils {
    */
   public static DecodedJWT getTokenFromHeader(String authHeader) {
     if (!authHeader.startsWith("Bearer ")) {
-      throw new IllegalArgumentException("Invalid JWT Token");
+      throw new UserService.UserAuthenticationException("Invalid Authorization Header");
     }
 
-    return AuthUtils.decodeJwtToke(authHeader.substring(7));
+    return AuthUtils.decodeJwtToken(authHeader.substring(7));
   }
 }

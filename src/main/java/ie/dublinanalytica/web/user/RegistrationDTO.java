@@ -1,7 +1,5 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.util.ValidEmail;
-
 import java.util.Arrays;
 
 import javax.validation.constraints.NotEmpty;
@@ -18,7 +16,6 @@ public class RegistrationDTO {
 
   @NotNull
   @NotEmpty
-  @ValidEmail
   private String email;
 
   @NotNull
@@ -51,10 +48,9 @@ public class RegistrationDTO {
 
   @Override
   public String toString() {
-    return "RegistrationData [name="
-      + name + ", email="
-      + email + ", password="
-      + Arrays.toString(password) + "]";
+    return String.format(
+      "RegistrationDTO{name: '%s', email: '%s', password: '%s'}",
+      name, email, Arrays.toString(password));
   }
 
   public void clear() {

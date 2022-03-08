@@ -37,8 +37,8 @@ public class UserService {
    */
   public void registerUser(RegistrationDTO data) {
     if (userExists(data.getEmail())) {
-      throw new UserAlreadyExistsException("User with email "
-        + data.getEmail() + " already exists");
+      throw new UserAlreadyExistsException(
+        String.format("User with email '%s' already exist", data.getEmail()));
     }
 
     repository.save(new User(data));
@@ -85,7 +85,7 @@ public class UserService {
    */
   public void verifyAuthToken(User user, String token) {
     if (!user.verifyAuthToken(token)) {
-      throw new UserAuthenticationException("Invalid auth token");
+      throw new UserAuthenticationException();
     }
   }
 
@@ -111,9 +111,22 @@ public class UserService {
   }
 
   /**
+   * Wrapper for all User exceptions.
+   */
+  public abstract static class BaseUserException extends RuntimeException {
+    public BaseUserException(String message) {
+      super(message);
+    }
+
+    public String getName() {
+      return this.getClass().getSimpleName();
+    }
+  }
+
+  /**
    * RuntimeException to specify that a User already exists.
    */
-  public static class UserAlreadyExistsException extends RuntimeException {
+  public static class UserAlreadyExistsException extends BaseUserException {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -125,24 +138,54 @@ public class UserService {
   /**
    * RuntimeException to specify that a User does not exist.
    */
-  public static class UserNotFoundException extends RuntimeException {
+  public static class UserNotFoundException extends BaseUserException {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public static final String defaultMessage = "User not found";
+
     public UserNotFoundException(String message) {
       super(message);
+    }
+
+    public UserNotFoundException() {
+      super(defaultMessage);
     }
   }
 
   /**
    * RuntimeException to specify that a User could not be authenticated.
    */
-  public static class UserAuthenticationException extends RuntimeException {
+  public static class UserAuthenticationException extends BaseUserException {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public static final String defaultMessage = "Auth token is invalid";
+
     public UserAuthenticationException(String message) {
       super(message);
+    }
+
+    public UserAuthenticationException() {
+      super(defaultMessage);
+    }
+  }
+
+  /**
+   * JWT Exception errors.
+   */
+  public static class JWTException extends BaseUserException {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public static final String defaultMessage = "JWT error";
+
+    public JWTException(String message) {
+      super(message);
+    }
+
+    public JWTException() {
+      super(defaultMessage);
     }
   }
 }
