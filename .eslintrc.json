@@ -10,13 +10,15 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "tsconfigRootDir": ".",
+    "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint"],
   "settings": {
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      "webpack": {
+        "configFile": "./webpack.config.js"
       }
     }
   },
@@ -46,6 +48,7 @@
         "extensions": [".tsx"]
       }
     ],
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
