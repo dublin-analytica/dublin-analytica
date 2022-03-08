@@ -1,4 +1,4 @@
-package ie.dublinanalytica.web.payroll;
+package ie.dublinanalytica.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
