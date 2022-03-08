@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom';
-import Router from './containers/Router';
+import Main from './containers/Main';
 
 const App = () => (
   <div className="App">
-    <BrowserRouter><Router /></BrowserRouter>
+    <BrowserRouter><Main /></BrowserRouter>
   </div>
 );
 
