@@ -34,6 +34,8 @@
         }
       }
     ],
+    "dot-notation": "off",
+    "no-unused-vars": "off",
     "react/function-component-definition": [
       "error",
       {

@@ -1,7 +1,7 @@
 import { useRoutes } from 'react-router-dom';
 import {
   Dashboard, Dataset, Landing, Login, Marketplace, Signup,
-} from '../views';
+} from '@views';
 
 const Router = () => {
   const routes = useRoutes([

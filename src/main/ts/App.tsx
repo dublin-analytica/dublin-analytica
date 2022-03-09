@@ -1,13 +1,13 @@
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from './context/UserProvider';
+import { AuthProvider } from './context/AuthProvider';
 import Main from './containers/Main';
 
 const App = () => (
   <div className="App">
     <BrowserRouter>
-      <UserProvider>
+      <AuthProvider>
         <Main />
-      </UserProvider>
+      </AuthProvider>
     </BrowserRouter>
   </div>
 );
