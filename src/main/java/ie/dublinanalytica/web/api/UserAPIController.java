@@ -1,21 +1,11 @@
 package ie.dublinanalytica.web.api;
 
-import ie.dublinanalytica.web.api.response.AuthResponse;
-import ie.dublinanalytica.web.api.response.ErrorResponse;
-import ie.dublinanalytica.web.api.response.Response;
-import ie.dublinanalytica.web.user.AuthDTO;
-import ie.dublinanalytica.web.user.BaseUser;
-import ie.dublinanalytica.web.user.RegistrationDTO;
-import ie.dublinanalytica.web.user.User;
-import ie.dublinanalytica.web.user.UserService;
-import ie.dublinanalytica.web.util.AuthUtils;
-
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.Valid;
+
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +17,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ie.dublinanalytica.web.api.response.AuthResponse;
+import ie.dublinanalytica.web.api.response.ErrorResponse;
+import ie.dublinanalytica.web.api.response.Response;
+import ie.dublinanalytica.web.user.AuthDTO;
+import ie.dublinanalytica.web.user.BaseUser;
+import ie.dublinanalytica.web.user.RegistrationDTO;
+import ie.dublinanalytica.web.user.User;
+import ie.dublinanalytica.web.user.UserService;
+import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * API Controller for /api/user endpoints.

@@ -1,15 +1,15 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.util.AuthUtils;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * Represents a User (customer) of the website.

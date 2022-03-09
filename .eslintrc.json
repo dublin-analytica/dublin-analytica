@@ -10,9 +10,7 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "tsconfigRootDir": ".",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
   "settings": {
@@ -21,6 +19,9 @@
         "configFile": "./webpack.config.js"
       }
     }
+  },
+  "globals": {
+    "HeadersInit": true
   },
   "rules": {
     "import/extensions": [
@@ -34,6 +35,8 @@
         }
       }
     ],
+    "dot-notation": "off",
+    "no-unused-vars": "off",
     "react/function-component-definition": [
       "error",
       {

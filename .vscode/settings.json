@@ -3,12 +3,21 @@
     "src/main/java"
   ],
   "java.configuration.updateBuildConfiguration": "automatic",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "eslint.validate": [
-      "javascript"
-    ],
-    "java.checkstyle.configuration": "checkstyle.xml",
-    "java.checkstyle.version": "10.0"
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "java.checkstyle.configuration": "checkstyle.xml",
+  "java.checkstyle.version": "10.0",
+  "java.completion.importOrder": [
+    "java",
+    "javax",
+    "com",
+    "io",
+    "org",
+    "*",
+    "ie"
+  ]
 }
