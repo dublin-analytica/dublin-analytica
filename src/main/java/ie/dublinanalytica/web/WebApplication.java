@@ -17,8 +17,10 @@ public class WebApplication {
   public static void main(String[] args) {
     if (AuthUtils.getSecret() == null) {
       throw new RuntimeException(
-        "Secret environment variable not set. Please add it to your .env file");
+        "Secret environment variable not set. Please add it to the .development.env file");
     }
+
+    System.out.println(AuthUtils.getSecret());
 
     SpringApplication.run(WebApplication.class, args);
   }

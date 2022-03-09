@@ -28,7 +28,7 @@ public class AuthUtils {
   private static final Random RANDOM = new SecureRandom();
   private static final Base64.Encoder ENCODER = Base64.getUrlEncoder();
   private static final String JWT_ISSUER = "dublinanalytica";
-  private static final Dotenv DOTENV = Dotenv.load();
+  private static final Dotenv DOTENV = Dotenv.configure().filename(".development.env").load();
 
   /**
    * Generates a random salt to use for hashing passwords.
