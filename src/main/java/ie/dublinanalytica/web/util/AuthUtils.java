@@ -1,15 +1,5 @@
 package ie.dublinanalytica.web.util;
 
-import ie.dublinanalytica.web.user.UserService;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
-
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -20,6 +10,16 @@ import java.util.Random;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
+import ie.dublinanalytica.web.user.UserService;
 
 /**
  * Utility class for authentication related tasks.

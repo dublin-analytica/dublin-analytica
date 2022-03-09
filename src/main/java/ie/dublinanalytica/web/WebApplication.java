@@ -1,9 +1,9 @@
 package ie.dublinanalytica.web;
 
-import ie.dublinanalytica.web.util.AuthUtils;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * WebApplication.

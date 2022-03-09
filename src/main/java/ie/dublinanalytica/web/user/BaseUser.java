@@ -1,12 +1,12 @@
 package ie.dublinanalytica.web.user;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
  * Class for storing basic user information.
