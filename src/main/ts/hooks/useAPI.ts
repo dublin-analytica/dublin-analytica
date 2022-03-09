@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-
 import { useAuth } from '@context/AuthProvider';
+
+import type DTO from 'types/DTO';
 
 const useAPI = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const useAPI = () => {
   };
 
   const request = (method: string) => (
-    async (url: string, body?: any) => {
+    async (url: string, body?: DTO) => {
       const token = getToken();
 
       const headers: HeadersInit = { method };
@@ -30,7 +31,7 @@ const useAPI = () => {
       return fetch(`/api/${url}`, {
         method,
         headers,
-        body: body && JSON.stringify(body),
+        body: body ? JSON.stringify(body) : null,
       }).then(handleResponse);
     }
   );

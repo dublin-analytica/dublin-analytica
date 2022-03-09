@@ -15,8 +15,9 @@
     "java",
     "javax",
     "com",
-    "org",
     "io",
+    "org",
+    "*",
     "ie"
   ]
 }

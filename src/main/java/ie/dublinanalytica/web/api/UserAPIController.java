@@ -59,11 +59,14 @@ public class UserAPIController {
     User user = userService.findByEmail(data.getEmail());
 
     if (user.verifyPassword(data.getPassword())) {
-      String token = AuthUtils.generateAuthToken();
-      userService.addAuthToken(user, token);
+      String authToken = AuthUtils.generateAuthToken();
+      userService.addAuthToken(user, authToken);
 
       Map<String, Object> payload = new HashMap<>() {{
-          put("token", token);
+          put("id", user.getId().toString());
+          put("name", user.getName());
+          put("email", user.getEmail());
+          put("authToken", authToken);
         }};
 
       return new ResponseEntity<>(
