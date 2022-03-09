@@ -16,6 +16,11 @@ public class AuthDTO {
   @NotEmpty
   private char[] password;
 
+  public AuthDTO(String email, char[] password) {
+    this.email = email;
+    this.password = password;
+  }
+
   public String getEmail() {
     return email;
   }

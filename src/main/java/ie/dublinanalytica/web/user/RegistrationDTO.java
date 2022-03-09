@@ -22,6 +22,19 @@ public class RegistrationDTO {
   @NotEmpty
   private char[] password;
 
+  /**
+   * Create RegistrationDTO for testing.
+   *
+   * @param name The name
+   * @param email The email
+   * @param password The password
+   */
+  public RegistrationDTO(String name, String email, char[] password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
   public String getName() {
     return name;
   }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.api.response.ErrorResponse;
 import ie.dublinanalytica.web.api.response.Response;
@@ -50,7 +51,7 @@ public class UserAPIController {
   @PostMapping("/login")
   public ResponseEntity<Response> login(@RequestBody AuthDTO data) {
     if (!userService.userExists(data.getEmail())) {
-      new ResponseEntity<>(
+      return new ResponseEntity<>(
           new ErrorResponse(
           UserService.UserNotFoundException.class.getSimpleName(),
           UserService.UserNotFoundException.defaultMessage), HttpStatus.UNAUTHORIZED);
@@ -94,6 +95,11 @@ public class UserAPIController {
       userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
       userService.removeAuthToken(user, jwt.getClaim("authToken").asString());
 
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<>(
+          new ErrorResponse(
+            UserService.UserAuthenticationException.class.getSimpleName(),
+            e.getMessage()), HttpStatus.BAD_REQUEST);
     } catch (UserService.BaseUserException e) {
       return new ResponseEntity<>(
           new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.UNAUTHORIZED);

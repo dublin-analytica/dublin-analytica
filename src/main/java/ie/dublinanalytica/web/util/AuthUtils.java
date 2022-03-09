@@ -19,6 +19,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+
 import ie.dublinanalytica.web.user.UserService;
 
 /**
@@ -142,7 +143,7 @@ public class AuthUtils {
    */
   public static DecodedJWT getTokenFromHeader(String authHeader) {
     if (!authHeader.startsWith("Bearer ")) {
-      throw new UserService.UserAuthenticationException("Invalid Authorization Header");
+      throw new IllegalArgumentException("Invalid Authorization Header");
     }
 
     return AuthUtils.decodeJwtToken(authHeader.substring(7));

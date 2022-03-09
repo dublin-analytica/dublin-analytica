@@ -84,8 +84,8 @@ public class UserService {
    * @throws UserAuthenticationException if the auth token does not belong to the user
    */
   public void verifyAuthToken(User user, String token) {
-    if (!user.verifyAuthToken(token)) {
-      throw new UserAuthenticationException();
+    if (!user.hasAuthToken(token)) {
+      throw new UserAuthenticationException("Invalid auth token");
     }
   }
 
@@ -187,5 +187,9 @@ public class UserService {
     public JWTException() {
       super(defaultMessage);
     }
+  }
+
+  public void save(User user) {
+    repository.save(user);
   }
 }

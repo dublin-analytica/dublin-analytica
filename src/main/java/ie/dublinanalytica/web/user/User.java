@@ -90,7 +90,7 @@ public class User extends BaseUser {
     this.authTokens.add(authToken);
   }
 
-  public boolean verifyAuthToken(String authToken) {
+  public boolean hasAuthToken(String authToken) {
     return this.authTokens.contains(authToken);
   }
 
