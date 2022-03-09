@@ -65,6 +65,8 @@ src/main/resources/static/built/
 .hot
 
 # MacOS
-
 .DS_Store
 **/*.icloud
+
+# Environment
+.env
