@@ -92,7 +92,7 @@ public class UserAPIController {
       BaseUser baseUser = BaseUser.fromJWT(jwt);
       User user = userService.findById(baseUser.getId());
       userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
-      user.removeAuthToken(jwt.getClaim("authToken").asString());
+      userService.removeAuthToken(user, jwt.getClaim("authToken").asString());
 
     } catch (UserService.BaseUserException e) {
       return new ResponseEntity<>(
@@ -133,6 +133,9 @@ public class UserAPIController {
       DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
       BaseUser baseUser = BaseUser.fromJWT(jwt);
       User user = userService.findById(baseUser.getId());
+
+      userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
+
       return new ResponseEntity<>(user, HttpStatus.OK);
     } catch (UserService.BaseUserException e) {
       return new ResponseEntity<>(
