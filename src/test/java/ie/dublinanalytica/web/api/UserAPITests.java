@@ -1,4 +1,4 @@
-package ie.dublinanalytica.web;
+package ie.dublinanalytica.web.api;
 
 
 import java.util.UUID;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class WebApplicationTests {
+public class UserAPITests {
 
   private final static String ERROR_PATTERN = "^\\{\"name\":\".*\",\"message\":\".*\"}$";
   private final static String NAME = "Alice Bob";
