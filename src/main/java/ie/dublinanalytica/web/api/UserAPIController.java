@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.api.response.EmptyResponse;
-import ie.dublinanalytica.web.api.response.ErrorResponse;
 import ie.dublinanalytica.web.api.response.Response;
 import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
@@ -43,16 +43,15 @@ public class UserAPIController {
    *
    * @param data Auth information
    * @return A JSON object containing the information about the user and an auth token
+   * @throws UserNotFoundException if the user trying to log in couldn't be found
+   * @throws WrongPasswordException if the password is incorrect
    */
   @PostMapping("/login")
-  public Response login(@RequestBody AuthDTO data) {
-    try {
-      User user = userService.findByEmail(data.getEmail());
-      String authToken = userService.createNewAuthToken(user, data.getPassword());
-      return new AuthResponse(user, authToken);
-    } catch (UserNotFoundException | WrongPasswordException e) {
-      return new ErrorResponse(e);
-    }
+  public Response login(@RequestBody AuthDTO data)
+      throws UserNotFoundException, WrongPasswordException {
+    User user = userService.findByEmail(data.getEmail());
+    String authToken = userService.createNewAuthToken(user, data.getPassword());
+    return new AuthResponse(user, authToken);
   }
 
   /**
@@ -60,18 +59,15 @@ public class UserAPIController {
    *
    * @param authHeader The Authorization header
    * @return 200 OK on success, error message on failure
+   * @throws UserAuthenticationException if no authorization header is provided or is invalid
+   * @throws UserNotFoundException if the user trying to log out wasn't found
    */
   @PostMapping("/logout")
-  public Response login(@RequestHeader("Authorization") String authHeader) {
-
-    try {
-      JWTPayload payload = JWTPayload.fromHeader(authHeader);
-      User user = userService.findById(payload.getId());
-      userService.removeAuthToken(user, payload.getAuthToken());
-    } catch (UserAuthenticationException | UserNotFoundException e) {
-      return new ErrorResponse(e);
-    }
-
+  public Response login(@RequestHeader("Authorization") String authHeader)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    userService.removeAuthToken(user, payload.getAuthToken());
     return new EmptyResponse(HttpStatus.OK);
   }
 
@@ -80,15 +76,12 @@ public class UserAPIController {
    *
    * @param data Registration information
    * @return Nothing on success, an error message on failure
+   * @throws UserAlreadyExistsException if the user already exists
    */
   @PostMapping("/register")
-  public Response register(@RequestBody @Valid RegistrationDTO data) {
-    try {
-      userService.registerUser(data);
-    } catch (UserAlreadyExistsException e) {
-      return new ErrorResponse(e);
-    }
-
+  public Response register(@RequestBody @Valid RegistrationDTO data)
+      throws UserAlreadyExistsException {
+    userService.registerUser(data);
     return new EmptyResponse(HttpStatus.CREATED);
   }
 
@@ -98,16 +91,15 @@ public class UserAPIController {
    *
    * @param authHeader Authorization header.
    * @return The user's information if the token is valid, an error message otherwise
+   * @throws UserAuthenticationException if no authorization header is provided or is invalid
+   * @throws UserNotFoundException if the user wasn't found
    */
   @GetMapping("/me")
-  public Response me(@RequestHeader("Authorization") String authHeader) {
-    try {
-      JWTPayload payload = JWTPayload.fromHeader(authHeader);
-      User user = userService.findById(payload.getId());
-      userService.verifyAuthToken(user, payload.getAuthToken());
-      return new Response(user);
-    } catch (UserAuthenticationException | UserNotFoundException e) {
-      return new ErrorResponse(e);
-    }
+  public Response me(@RequestHeader("Authorization") String authHeader)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    userService.verifyAuthToken(user, payload.getAuthToken());
+    return new Response(user);
   }
 }
