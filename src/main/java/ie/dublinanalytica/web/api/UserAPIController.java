@@ -1,15 +1,9 @@
 package ie.dublinanalytica.web.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
-
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
+import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.ErrorResponse;
 import ie.dublinanalytica.web.api.response.Response;
+import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
+import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
+import ie.dublinanalytica.web.exceptions.UserNotFoundException;
+import ie.dublinanalytica.web.exceptions.WrongPasswordException;
 import ie.dublinanalytica.web.user.AuthDTO;
-import ie.dublinanalytica.web.user.BaseUser;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
-import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * API Controller for /api/user endpoints.
@@ -48,35 +45,14 @@ public class UserAPIController {
    * @return A JSON object containing the information about the user and an auth token
    */
   @PostMapping("/login")
-  public ResponseEntity<Response> login(@RequestBody AuthDTO data) {
-    if (!userService.userExists(data.getEmail())) {
-      new ResponseEntity<>(
-          new ErrorResponse(
-          UserService.UserNotFoundException.class.getSimpleName(),
-          UserService.UserNotFoundException.defaultMessage), HttpStatus.UNAUTHORIZED);
+  public Response login(@RequestBody AuthDTO data) {
+    try {
+      User user = userService.findByEmail(data.getEmail());
+      String authToken = userService.createNewAuthToken(user, data.getPassword());
+      return new AuthResponse(user, authToken);
+    } catch (UserNotFoundException | WrongPasswordException e) {
+      return new ErrorResponse(e);
     }
-
-    User user = userService.findByEmail(data.getEmail());
-
-    if (user.verifyPassword(data.getPassword())) {
-      String authToken = AuthUtils.generateAuthToken();
-      userService.addAuthToken(user, authToken);
-
-      Map<String, Object> payload = new HashMap<>() {{
-          put("id", user.getId().toString());
-          put("name", user.getName());
-          put("email", user.getEmail());
-          put("authToken", authToken);
-        }};
-
-      return new ResponseEntity<>(
-          new AuthResponse(AuthUtils.createJWT(payload)), HttpStatus.OK);
-    }
-
-    return new ResponseEntity<>(
-        new ErrorResponse(
-        UserService.UserAuthenticationException.class.getSimpleName(),
-        UserService.UserAuthenticationException.defaultMessage), HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -86,20 +62,17 @@ public class UserAPIController {
    * @return 200 OK on success, error message on failure
    */
   @PostMapping("/logout")
-  public ResponseEntity<Object> login(@RequestHeader("Authorization") String authHeader) {
-    try {
-      DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
-      BaseUser baseUser = BaseUser.fromJWT(jwt);
-      User user = userService.findById(baseUser.getId());
-      userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
-      userService.removeAuthToken(user, jwt.getClaim("authToken").asString());
+  public Response login(@RequestHeader("Authorization") String authHeader) {
 
-    } catch (UserService.BaseUserException e) {
-      return new ResponseEntity<>(
-          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.UNAUTHORIZED);
+    try {
+      JWTPayload payload = JWTPayload.fromHeader(authHeader);
+      User user = userService.findById(payload.getId());
+      userService.removeAuthToken(user, payload.getAuthToken());
+    } catch (UserAuthenticationException | UserNotFoundException e) {
+      return new ErrorResponse(e);
     }
 
-    return new ResponseEntity<>("{}", HttpStatus.OK);
+    return new EmptyResponse(HttpStatus.OK);
   }
 
   /**
@@ -109,15 +82,14 @@ public class UserAPIController {
    * @return Nothing on success, an error message on failure
    */
   @PostMapping("/register")
-  public ResponseEntity<Object> register(@RequestBody @Valid RegistrationDTO data) {
+  public Response register(@RequestBody @Valid RegistrationDTO data) {
     try {
       userService.registerUser(data);
-    } catch (UserService.BaseUserException e) {
-      return new ResponseEntity<>(
-          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (UserAlreadyExistsException e) {
+      return new ErrorResponse(e);
     }
 
-    return new ResponseEntity<>("{}", HttpStatus.CREATED);
+    return new EmptyResponse(HttpStatus.CREATED);
   }
 
   /**
@@ -128,18 +100,14 @@ public class UserAPIController {
    * @return The user's information if the token is valid, an error message otherwise
    */
   @GetMapping("/me")
-  public ResponseEntity<Object> me(@RequestHeader("Authorization") String authHeader) {
+  public Response me(@RequestHeader("Authorization") String authHeader) {
     try {
-      DecodedJWT jwt = AuthUtils.getTokenFromHeader(authHeader);
-      BaseUser baseUser = BaseUser.fromJWT(jwt);
-      User user = userService.findById(baseUser.getId());
-
-      userService.verifyAuthToken(user, jwt.getClaim("authToken").asString());
-
-      return new ResponseEntity<>(user, HttpStatus.OK);
-    } catch (UserService.BaseUserException e) {
-      return new ResponseEntity<>(
-          new ErrorResponse(e.getName(), e.getMessage()), HttpStatus.UNAUTHORIZED);
+      JWTPayload payload = JWTPayload.fromHeader(authHeader);
+      User user = userService.findById(payload.getId());
+      userService.verifyAuthToken(user, payload.getAuthToken());
+      return new Response(user);
+    } catch (UserAuthenticationException | UserNotFoundException e) {
+      return new ErrorResponse(e);
     }
   }
 }

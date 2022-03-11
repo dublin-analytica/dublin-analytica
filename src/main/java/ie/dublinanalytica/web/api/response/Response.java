@@ -1,25 +1,18 @@
 package ie.dublinanalytica.web.api.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
- * A basic API response.
+ * A basic response object wrapper around ResponseEntity for cleaner code.
+ * ResponseEntity will convert the body to JSON automatically.
  */
-public class Response {
-
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Object data;
-
-  public Response(Object data) {
-    this.data = data;
+public class Response extends ResponseEntity<Object> {
+  public Response(Object body, HttpStatus status) {
+    super(body, status);
   }
 
-  public Object getData() {
-    return data;
+  public Response(Object body) {
+    this(body, HttpStatus.OK);
   }
-
-  public void setData(Object data) {
-    this.data = data;
-  }
-
 }
