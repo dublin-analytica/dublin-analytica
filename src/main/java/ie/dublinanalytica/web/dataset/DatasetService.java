@@ -1,5 +1,8 @@
 package ie.dublinanalytica.web.dataset;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +52,7 @@ public class DatasetService {
    *
    * @param name The datasets name
    * @return The Dataset object
-   * @throws UserNotFoundException If the dataset with the given name doesn't
+   * @throws DatasetNotFoundException If the dataset with the given name doesn't
    *                               exist
    */
   public Dataset findByName(String name) throws DatasetNotFoundException {
@@ -58,5 +61,21 @@ public class DatasetService {
       throw new DatasetNotFoundException();
     }
     return this.repository.findByName(name);
+  }
+
+  /**
+   * Finds a dataset by their id.
+   *
+   * @param id The datasets id
+   * @return The Dataset object
+   * @throws DatasetNotFoundException If the dataset with the given id doesn't
+   *                               exist
+   */
+  public Dataset findById(UUID id) throws DatasetNotFoundException {
+    Optional<Dataset> dataset = this.repository.findById(id);
+    if (dataset.isEmpty()) {
+      throw new DatasetNotFoundException();
+    }
+    return dataset.get();
   }
 }
