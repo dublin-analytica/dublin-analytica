@@ -60,7 +60,7 @@ public class DatasetService {
     if (dataset == null) {
       throw new DatasetNotFoundException();
     }
-    return this.repository.findByName(name);
+    return dataset;
   }
 
   /**

@@ -6,11 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Class for storing a dataset.
  */
 @Entity
-// @JsonIgnoreProperties(value = {"url"})
+@JsonIgnoreProperties(value = {"url"})
 public class Dataset {
   @Id
   @GeneratedValue
