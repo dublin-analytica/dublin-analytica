@@ -54,11 +54,10 @@ public class DatasetAPIController {
    *
    * @param id Database id
    * @return Database
-   * @throws DatasetAlreadyExistsException if the dataset already exists
-   * @throws DatasetNotExistsException if the dataset does not exist
+   * @throws DatasetNotFoundException if the dataset does not exist
    */
   @GetMapping("/get/{id}")
-  public Response getDataset(@PathVariable String id) throws 
+  public Response getDataset(@PathVariable String id) throws
       DatasetNotFoundException {
     UUID uuid = UUID.fromString(id);
 
