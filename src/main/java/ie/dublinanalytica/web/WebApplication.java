@@ -20,8 +20,6 @@ public class WebApplication {
         "Secret environment variable not set. Please add it to the .development.env file");
     }
 
-    System.out.println(AuthUtils.getSecret());
-
     SpringApplication.run(WebApplication.class, args);
   }
 

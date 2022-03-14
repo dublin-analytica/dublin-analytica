@@ -19,9 +19,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-
 import org.springframework.http.HttpStatus;
-
 
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 
