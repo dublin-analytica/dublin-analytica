@@ -47,7 +47,7 @@ public class UserAPITests {
   private MockMvc mockMvc;
 
   /**
-   * Conversts an object to JSON using jackson.
+   * Converts an object to JSON using jackson.
    *
    * @param o the object to convert
    * @return the JSON string
