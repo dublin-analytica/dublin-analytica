@@ -261,4 +261,15 @@ public class UserService {
     }
     return this.userRepository.findByEmail(email);
   }
+
+  /**
+   * Checks that the provided user is an admin, throwing an exception if not.
+   *
+   * @param user The user to check
+   */
+  public void verifyAdmin(User user) throws UserAuthenticationException {
+    if (!user.isAdmin()) {
+      throw new UserAuthenticationException("User is not an admin");
+    }
+  }
 }

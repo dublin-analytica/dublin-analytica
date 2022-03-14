@@ -27,6 +27,8 @@ public class User extends BaseUser {
   private byte[] authHash;
   private byte[] salt;
 
+  private boolean isAdmin;
+
   public User() {
   }
 
@@ -48,10 +50,24 @@ public class User extends BaseUser {
    * @param salt The salt used for hashing the password
    */
   public User(String name, String email, byte[] authHash, byte[] salt) {
+    this(name, email, authHash, salt, false);
+  }
+
+  /**
+   * Creates a User.
+   *
+   * @param name The name of the user.
+   * @param email The email of the user
+   * @param authHash A hash of the password and salt using 'PBKDF2WithHmacSHA512'
+   * @param salt The salt used for hashing the password
+   * @param isAdmin Whether the user is an admin or not
+   */
+  public User(String name, String email, byte[] authHash, byte[] salt, boolean isAdmin) {
     super(name, email);
     this.authHash = authHash;
     this.salt = salt;
     this.authTokens = new HashSet<>();
+    this.isAdmin = isAdmin;
   }
 
   /**
@@ -68,7 +84,17 @@ public class User extends BaseUser {
     this.authHash = AuthUtils.hash(password, this.salt);
     Arrays.fill(password, '\0');
     this.authTokens = new HashSet<>();
+    this.isAdmin = false;
   }
+
+  public boolean isAdmin() {
+    return isAdmin;
+  }
+
+  public void setAdmin(boolean isAdmin) {
+    this.isAdmin = isAdmin;
+  }
+
 
   public byte[] getAuthHash() {
     return authHash;
