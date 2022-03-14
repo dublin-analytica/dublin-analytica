@@ -1,5 +1,5 @@
-const Logo = () => (
-  <svg width="105.60000000000001" height="101.83" xmlns="http://www.w3.org/2000/svg" className="caLogoBrain oddSectionItem">
+const Logo = ({ ...props }) => (
+  <svg {...props} width="105.60000000000001" height="101.83" xmlns="http://www.w3.org/2000/svg" className="caLogoBrain oddSectionItem">
     <g>
       <title>Logo</title>
       <g id="svg_1">
