@@ -19,8 +19,9 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import org.springframework.http.HttpStatus;
 
-import ie.dublinanalytica.web.user.UserService;
+import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 
 /**
  * Utility class for authentication related tasks.
@@ -122,8 +123,9 @@ public class AuthUtils {
    *
    * @param token the token to check
    * @return The decoded JWT Token
+   * @throws UserAuthenticationException if the token is invalid or not signed by us
    */
-  public static DecodedJWT decodeJwtToken(String token) {
+  public static DecodedJWT decodeJwtToken(String token) throws UserAuthenticationException {
     try {
       Algorithm algorithm = Algorithm.HMAC256(getSecret());
       JWTVerifier verifier = JWT.require(algorithm)
@@ -131,7 +133,7 @@ public class AuthUtils {
           .build();
       return verifier.verify(token);
     } catch (JWTVerificationException e) {
-      throw new UserService.UserAuthenticationException("Invalid JWT Token");
+      throw new UserAuthenticationException("Invalid JWT Token");
     }
   }
 
@@ -140,10 +142,15 @@ public class AuthUtils {
    *
    * @param authHeader The header string
    * @return Decoded JWT Token
+   * @throws UserAuthenticationException if not token is provided
+   *                                     or token is invalid
+   *                                     or not signed by us
    */
-  public static DecodedJWT getTokenFromHeader(String authHeader) {
+  public static DecodedJWT decodeJWTFromHeader(String authHeader)
+      throws UserAuthenticationException {
     if (!authHeader.startsWith("Bearer ")) {
-      throw new IllegalArgumentException("Invalid Authorization Header");
+      throw new UserAuthenticationException("Expected Bearer Authorization header",
+        HttpStatus.BAD_REQUEST);
     }
 
     return AuthUtils.decodeJwtToken(authHeader.substring(7));

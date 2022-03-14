@@ -1,23 +1,30 @@
 package ie.dublinanalytica.web.api.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.http.HttpStatus;
+
+
+import ie.dublinanalytica.web.api.JWTPayload;
+import ie.dublinanalytica.web.user.User;
 
 /**
  * Response returned when a user is authenticated.
  */
 public class AuthResponse extends Response {
-  private String jwt;
 
-  public AuthResponse(@JsonProperty("jwt") String token) {
-    super(null);
-    this.jwt = token;
+  public AuthResponse(User user, String token) {
+    super(new AuthObject(user, token), HttpStatus.OK);
   }
 
-  public String getJWT() {
-    return jwt;
-  }
+  /**
+   * The json object returned.
+   */
+  public record AuthObject(String token) {
+    public AuthObject(JWTPayload payload) {
+      this(payload.encode());
+    }
 
-  public void setJWT(String jwt) {
-    this.jwt = jwt;
+    public AuthObject(User user, String token) {
+      this(new JWTPayload(user, token));
+    }
   }
 }

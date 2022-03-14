@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserAPITests {
 
   private final static String ERROR_PATTERN = "^\\{\"name\":\".*\",\"message\":\".*\"}$";
+  private final static String AUTH_PATTERN = "^\\{\"token\":\".*\"}$";
   private final static String NAME = "Alice Bob";
   private final static String EMAIL = "alice@bob.com";
   private final static char[] PASSWORD = "alice&bob".toCharArray();
@@ -65,13 +66,13 @@ public class UserAPITests {
 
   @Test
   @Order(2)
-  public void registerShouldReturnInternalServerErrorIfEmailIsInUse() throws Exception {
+  public void registerShouldReturnBadRequestIfEmailIsInUse() throws Exception {
     this.mockMvc.perform(
         post("/api/users/register")
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
       .andDo(print())
-      .andExpect(status().isInternalServerError());
+      .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -82,7 +83,7 @@ public class UserAPITests {
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
       .andDo(print())
-      .andExpect(status().isInternalServerError())
+      .andExpect(status().isBadRequest())
       .andExpect(content().string(
         matchesRegex(ERROR_PATTERN)
       ));
@@ -131,13 +132,13 @@ public class UserAPITests {
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
       .andDo(print())
       .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex("^\\{\"jwt\":\".*\"}$")))
+      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
       .andReturn();
 
-    AuthResponse response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.class);
+    AuthResponse.AuthObject response =
+      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
-    assertNotNull(response.getJWT(), "JWT should not be null");
+//    assertNotNull(response.getJWT(), "JWT should not be null");
   }
 
   @Test
@@ -149,15 +150,11 @@ public class UserAPITests {
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
       .andDo(print())
       .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex("^\\{\"jwt\":\".*\"}$")))
+      .andExpect(content().string(matchesRegex("^\\{\"token\":\".*\"}$")))
       .andReturn();
 
-    AuthResponse response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.class);
-
-    String token = response.getJWT();
-
-    DecodedJWT jwt = AuthUtils.decodeJwtToken(token);
+    AuthResponse.AuthObject response =
+      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
   }
 
   @Test
@@ -169,13 +166,13 @@ public class UserAPITests {
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
       .andDo(print())
       .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex("^\\{\"jwt\":\".*\"}$")))
+      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
       .andReturn();
 
-    AuthResponse response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.class);
+    AuthResponse.AuthObject response =
+      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
-    String token = response.getJWT();
+    String token = response.token();
 
     DecodedJWT jwt = AuthUtils.decodeJwtToken(token);
 
@@ -204,13 +201,13 @@ public class UserAPITests {
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
       .andDo(print())
       .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex("^\\{\"jwt\":\".*\"}$")))
+      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
       .andReturn();
 
-    AuthResponse response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.class);
+    AuthResponse.AuthObject response =
+      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
-    String token = response.getJWT();
+    String token = response.token();
 
     this.mockMvc.perform(
         post("/api/users/logout").header("Authorization", "Bearer " + token))

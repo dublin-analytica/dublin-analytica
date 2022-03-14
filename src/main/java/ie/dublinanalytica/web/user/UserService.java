@@ -1,11 +1,17 @@
 package ie.dublinanalytica.web.user;
 
-import java.io.Serial;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
+import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
+import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
+import ie.dublinanalytica.web.exceptions.UserNotFoundException;
+import ie.dublinanalytica.web.exceptions.WrongPasswordException;
+import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * A service class to handle User related operations.
@@ -26,7 +32,7 @@ public class UserService {
    * @param email The email to check
    * @return true if a User with the given email exists, false otherwise
    */
-  public boolean userExists(String email) {
+  private boolean userExists(String email) {
     return this.repository.findByEmail(email) != null;
   }
 
@@ -34,25 +40,14 @@ public class UserService {
    * Creates a new User.
    *
    * @param data The DTO containing the User data required for registration
+   * @throws UserAlreadyExistsException if a user with the given email already exists
    */
-  public void registerUser(RegistrationDTO data) {
+  public void registerUser(RegistrationDTO data) throws UserAlreadyExistsException {
     if (userExists(data.getEmail())) {
-      throw new UserAlreadyExistsException(
-        String.format("User with email '%s' already exist", data.getEmail()));
+      throw new UserAlreadyExistsException();
     }
 
     repository.save(new User(data));
-  }
-
-  /**
-   * Adds an authentication token to a User.
-   *
-   * @param user The user to add the token to
-   * @param token The token to add
-   */
-  public void addAuthToken(User user, String token) {
-    user.addAuthToken(token);
-    repository.save(user);
   }
 
   /**
@@ -60,8 +55,10 @@ public class UserService {
    *
    * @param user The user
    * @param token The auth token to remove
+   * @throws UserAuthenticationException if the auth token does not belong to the user
    */
-  public void removeAuthToken(User user, String token) {
+  public void removeAuthToken(User user, String token) throws UserAuthenticationException {
+    verifyAuthToken(user, token);
     user.removeAuthToken(token);
     repository.save(user);
   }
@@ -70,10 +67,41 @@ public class UserService {
    * Removes all auth tokens from a user.
    *
    * @param user the user from which to do so
+   * @throws UserAuthenticationException if the provided token doesn't belong to the user
    */
-  public void removeAllAuthTokens(User user) {
+  public void removeAllAuthTokens(User user, String token) throws UserAuthenticationException {
+    verifyAuthToken(user, token);
     user.removeAllAuthTokens();
     repository.save(user);
+  }
+
+  /**
+   * Verifies a user's password.
+   *
+   * @param user The user
+   * @param password The password
+   * @throws WrongPasswordException If the password doesn't match the stored hash
+   */
+  private void verifyPassword(User user, char[] password) throws WrongPasswordException {
+    if (!user.verifyPassword(password)) {
+      throw new WrongPasswordException();
+    }
+  }
+
+  /**
+   * Creates a new auth token for a user.
+   *
+   * @param user The user
+   * @param password Their password
+   * @return The new auth token
+   * @throws WrongPasswordException If their password doesn't match the stored hash
+   */
+  public String createNewAuthToken(User user, char[] password) throws WrongPasswordException {
+    verifyPassword(user, password);
+    String token = AuthUtils.generateAuthToken();
+    user.addAuthToken(token);
+    repository.save(user);
+    return token;
   }
 
   /**
@@ -83,9 +111,9 @@ public class UserService {
    * @param token The auth token to check
    * @throws UserAuthenticationException if the auth token does not belong to the user
    */
-  public void verifyAuthToken(User user, String token) {
-    if (!user.hasAuthToken(token)) {
-      throw new UserAuthenticationException("Invalid auth token");
+  public void verifyAuthToken(User user, String token) throws UserAuthenticationException {
+    if (!user.verifyAuthToken(token)) {
+      throw new UserAuthenticationException();
     }
   }
 
@@ -96,100 +124,28 @@ public class UserService {
    * @return The User object
    * @throws UserNotFoundException if the user with that ID is not found
    */
-  public User findById(UUID id) {
+  public User findById(UUID id) throws UserNotFoundException {
     Optional<User> user = this.repository.findById(id);
 
     if (user.isEmpty()) {
-      throw new UserNotFoundException("User with id " + id + " not found");
+      throw new UserNotFoundException();
     }
 
     return user.get();
   }
 
-  public User findByEmail(String email) {
+  /**
+   * Finds a user by their email.
+   *
+   * @param email The user's email
+   * @return The User object
+   * @throws UserNotFoundException If the user with the given email doesn't exist
+   */
+  public User findByEmail(String email) throws UserNotFoundException {
+    User user = this.repository.findByEmail(email);
+    if (user == null) {
+      throw new UserNotFoundException();
+    }
     return this.repository.findByEmail(email);
-  }
-
-  /**
-   * Wrapper for all User exceptions.
-   */
-  public abstract static class BaseUserException extends RuntimeException {
-    public BaseUserException(String message) {
-      super(message);
-    }
-
-    public String getName() {
-      return this.getClass().getSimpleName();
-    }
-  }
-
-  /**
-   * RuntimeException to specify that a User already exists.
-   */
-  public static class UserAlreadyExistsException extends BaseUserException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public UserAlreadyExistsException(String message) {
-      super(message);
-    }
-  }
-
-  /**
-   * RuntimeException to specify that a User does not exist.
-   */
-  public static class UserNotFoundException extends BaseUserException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public static final String defaultMessage = "User not found";
-
-    public UserNotFoundException(String message) {
-      super(message);
-    }
-
-    public UserNotFoundException() {
-      super(defaultMessage);
-    }
-  }
-
-  /**
-   * RuntimeException to specify that a User could not be authenticated.
-   */
-  public static class UserAuthenticationException extends BaseUserException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public static final String defaultMessage = "Auth token is invalid";
-
-    public UserAuthenticationException(String message) {
-      super(message);
-    }
-
-    public UserAuthenticationException() {
-      super(defaultMessage);
-    }
-  }
-
-  /**
-   * JWT Exception errors.
-   */
-  public static class JWTException extends BaseUserException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public static final String defaultMessage = "JWT error";
-
-    public JWTException(String message) {
-      super(message);
-    }
-
-    public JWTException() {
-      super(defaultMessage);
-    }
-  }
-
-  public void save(User user) {
-    repository.save(user);
   }
 }

@@ -1,37 +1,40 @@
 package ie.dublinanalytica.web.api.response;
 
+import org.springframework.http.HttpStatus;
+
+import ie.dublinanalytica.web.exceptions.BaseException;
+
 /**
- * An error response of the API.
+ * An error response containing the error name, message and status code.
  */
 public class ErrorResponse extends Response {
-  private String name;
-  private String message;
+
+  public ErrorResponse(String name, String message, HttpStatus status) {
+    super(new ErrorObject(name, message), status);
+  }
+
+  public ErrorResponse(BaseException e, HttpStatus status) {
+    super(new ErrorObject(e), status);
+  }
+
+  public ErrorResponse(BaseException e) {
+    super(new ErrorObject(e), e.getStatus());
+  }
 
   /**
-   * Creates an error response with the given name and message.
-   *
-   * @param name The name
-   * @param message The message
+   * The json object returned.
    */
-  public ErrorResponse(String name, String message) {
-    super(null);
-    this.name = name;
-    this.message = message;
-  }
+  public record ErrorObject(String name, String message) {
+    public ErrorObject(BaseException e) {
+      this(e.getClass().getSimpleName(), e.getMessage());
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+      return name;
+    }
 
-  public String setName(String name) {
-    return this.name = name;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
+    public String getMessage() {
+      return message;
+    }
   }
 }
