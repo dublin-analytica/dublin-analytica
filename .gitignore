@@ -70,3 +70,7 @@ src/main/resources/static/built/
 
 # Environment
 .env
+
+# Logging
+
+logs/
