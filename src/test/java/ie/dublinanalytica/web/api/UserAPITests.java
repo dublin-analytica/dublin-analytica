@@ -1,6 +1,5 @@
 package ie.dublinanalytica.web.api;
 
-
 import java.util.UUID;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -30,21 +29,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+/**
+ * Tests for the /api/users endpoints.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserAPITests {
 
-  private final static String ERROR_PATTERN = "^\\{\"name\":\".*\",\"message\":\".*\"}$";
-  private final static String AUTH_PATTERN = "^\\{\"token\":\".*\"}$";
-  private final static String NAME = "Alice Bob";
-  private final static String EMAIL = "alice@bob.com";
-  private final static char[] PASSWORD = "alice&bob".toCharArray();
+  private final String ERROR_PATTERN = "^\\{\"name\":\".*\",\"message\":\".*\"}$";
+  private final String AUTH_PATTERN = "^\\{\"token\":\".*\"}$";
+  private final String NAME = "Alice Bob";
+  private final String EMAIL = "alice@bob.com";
+  private final char[] PASSWORD = "alice&bob".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;
 
+  /**
+   * Conversts an object to JSON using jackson.
+   *
+   * @param o the object to convert
+   * @return the JSON string
+   */
   public static String toJSON(Object o) {
     try {
       return (new ObjectMapper()).writeValueAsString(o);
@@ -57,10 +64,10 @@ public class UserAPITests {
   @Order(1)
   public void registerShouldReturnCreatedIfSuccessful() throws Exception {
     this.mockMvc.perform(
-        post("/api/users/register")
-          .contentType("application/json")
-          .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
-      .andDo(print())
+      post("/api/users/register")
+        .contentType("application/json")
+        .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD)))
+    ).andDo(print())
       .andExpect(status().isCreated());
   }
 
@@ -70,8 +77,8 @@ public class UserAPITests {
     this.mockMvc.perform(
         post("/api/users/register")
           .contentType("application/json")
-          .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
-      .andDo(print())
+          .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD)))
+    ).andDo(print())
       .andExpect(status().isBadRequest());
   }
 
@@ -82,22 +89,22 @@ public class UserAPITests {
         post("/api/users/register")
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(content().string(
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string(
         matchesRegex(ERROR_PATTERN)
       ));
   }
 
   @Test
   @Order(3)
-  public void loginShouldReturnOkIFSuccessful() throws Exception {
+  public void loginShouldReturnOkIfSuccessful() throws Exception {
     this.mockMvc.perform(
         post("/api/users/login")
           .contentType("application/json")
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
       .andDo(print())
-      .andExpect(status().isOk());
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -106,21 +113,14 @@ public class UserAPITests {
     this.mockMvc.perform(
         post("/api/users/login")
           .contentType("application/json")
-          .content(toJSON(new RegistrationDTO(NAME, EMAIL, ("wrong" + new String(PASSWORD)).toCharArray()))))
+          .content(
+            toJSON(
+              new RegistrationDTO(NAME, EMAIL, ("wrong" + new String(PASSWORD)).toCharArray()))
+            )
+          )
       .andDo(print())
       .andExpect(status().isUnauthorized())
-      .andExpect(content().string(matchesRegex(ERROR_PATTERN)));
-  }
-
-  @Test
-  @Order(4)
-  public void loginShouldReturnOkIfSuccessful() throws Exception {
-    this.mockMvc.perform(
-        post("/api/users/login")
-          .contentType("application/json")
-          .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isOk());
+        .andExpect(content().string(matchesRegex(ERROR_PATTERN)));
   }
 
   @Test
@@ -130,31 +130,13 @@ public class UserAPITests {
         post("/api/users/login")
           .contentType("application/json")
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
-      .andReturn();
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
+        .andReturn();
 
-    AuthResponse.AuthObject response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
-
-//    assertNotNull(response.getJWT(), "JWT should not be null");
-  }
-
-  @Test
-  @Order(4)
-  public void loginShouldReturnValidTokenIfSuccessful() throws Exception {
-    MvcResult result = this.mockMvc.perform(
-        post("/api/users/login")
-          .contentType("application/json")
-          .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex("^\\{\"token\":\".*\"}$")))
-      .andReturn();
-
-    AuthResponse.AuthObject response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+    (new ObjectMapper())
+      .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
   }
 
   @Test
@@ -164,13 +146,13 @@ public class UserAPITests {
         post("/api/users/login")
           .contentType("application/json")
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
-      .andReturn();
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
+        .andReturn();
 
-    AuthResponse.AuthObject response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+    AuthResponse.AuthObject response = (new ObjectMapper())
+        .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     String token = response.token();
 
@@ -180,7 +162,7 @@ public class UserAPITests {
     assertNotNull(idString, "JWT ID claim should not be null");
 
     try {
-      UUID uuid = UUID.fromString(idString);
+      UUID.fromString(idString);
     } catch (IllegalArgumentException e) {
       fail("JWT ID claim should be a valid UUID");
     }
@@ -199,20 +181,20 @@ public class UserAPITests {
         post("/api/users/login")
           .contentType("application/json")
           .content(toJSON(new AuthDTO(EMAIL, PASSWORD))))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
-      .andReturn();
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(matchesRegex(AUTH_PATTERN)))
+        .andReturn();
 
-    AuthResponse.AuthObject response =
-      (new ObjectMapper()).readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+    AuthResponse.AuthObject response = (new ObjectMapper())
+        .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     String token = response.token();
 
     this.mockMvc.perform(
         post("/api/users/logout").header("Authorization", "Bearer " + token))
       .andDo(print())
-      .andExpect(status().isOk());
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -221,7 +203,7 @@ public class UserAPITests {
     this.mockMvc.perform(
         post("/api/users/logout").header("Authorization", "Bearer INVALID TOKEN"))
       .andDo(print())
-      .andExpect(status().isUnauthorized());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -230,13 +212,14 @@ public class UserAPITests {
     this.mockMvc.perform(
         post("/api/users/logout"))
       .andDo(print())
-      .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest());
 
     this.mockMvc.perform(
         post("/api/users/logout").header("Authorization", "NotBearer TOKEN"))
       .andDo(print())
-      .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest());
   }
 
-  // TODO: Add tests to verify that auth tokens can actually be used. Not done for /users/me in case it gets removed
+  /* TODO: Add tests to verify that auth tokens can actually be used.
+  Not done for /users/me in case it gets removed */
 }

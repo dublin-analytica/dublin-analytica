@@ -179,6 +179,7 @@
     </module>
     <module name="MemberName">
       <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
+      <property name="applyToPrivate" value="false"/>
       <message key="name.invalidPattern"
              value="Member name ''{0}'' must match pattern ''{1}''."/>
     </module>
@@ -252,8 +253,8 @@
       <property name="arrayInitIndent" value="2"/>
     </module>
     <module name="AbbreviationAsWordInName">
-      <property name="allowedAbbreviations" value="API,DTO,JWT"/>
-      <property name="ignoreFinal" value="false"/>
+      <property name="allowedAbbreviations" value="API,DTO,JWT,JSON"/>
+      <property name="ignoreFinal" value="true"/>
       <property name="allowedAbbreviationLength" value="0"/>
       <property name="tokens"
                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,

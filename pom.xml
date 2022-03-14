@@ -18,7 +18,7 @@
   <properties>
     <java.version>17</java.version>
     <checkstyle.plugin.version>3.1.1</checkstyle.plugin.version>
-     <checkstyle.version>10.0</checkstyle.version>
+    <checkstyle.version>10.0</checkstyle.version>
   </properties>
 
   <dependencies>
@@ -152,6 +152,7 @@
         <version>${checkstyle.plugin.version}</version>
         <configuration>
           <configLocation>checkstyle.xml</configLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <failOnViolation>false</failOnViolation>
         </configuration>
       </plugin>
