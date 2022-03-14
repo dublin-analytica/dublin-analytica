@@ -13,8 +13,8 @@ const S = {
     return variant === 'transparent' ? dark : light;
   }};
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
     padding: 0rem 16px;
     transition: background-color 0.2s ease-in-out;
   `,
