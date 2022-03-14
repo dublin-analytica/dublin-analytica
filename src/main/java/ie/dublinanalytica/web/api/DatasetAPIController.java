@@ -63,7 +63,6 @@ public class DatasetAPIController {
     UUID uuid = UUID.fromString(id);
 
     Dataset dataset = datasetService.findById(uuid);
-    System.out.println(dataset.toString());
     return new Response(dataset);
   }
 
