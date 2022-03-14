@@ -63,6 +63,16 @@ public class DatasetAPIController {
     UUID uuid = UUID.fromString(id);
 
     Dataset dataset = datasetService.findById(uuid);
+    System.out.println(dataset.toString());
     return new Response(dataset);
+  }
+
+  /**
+   * Returns all existing datasets.
+   * 
+   */
+  @GetMapping("/get")
+  public Response getAllDataset() {
+    return new Response(datasetService.findAllDatasets());
   }
 }

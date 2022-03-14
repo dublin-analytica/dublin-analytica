@@ -81,7 +81,7 @@ public class Dataset {
     this.datapoints = datapoint;
   }
 
-  public double isSize() {
+  public double getSize() {
     return size;
   }
 
@@ -95,5 +95,12 @@ public class Dataset {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', url: '%s'}",
+        id, name, description, datapoints, size, url);
   }
 }
