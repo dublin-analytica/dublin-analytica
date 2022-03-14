@@ -1,5 +1,6 @@
 package ie.dublinanalytica.web.user;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -7,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import ie.dublinanalytica.web.dataset.Dataset;
+import ie.dublinanalytica.web.dataset.DatasetService;
+import ie.dublinanalytica.web.exceptions.BadRequest;
+import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
@@ -21,11 +26,17 @@ import ie.dublinanalytica.web.util.AuthUtils;
 @Service
 public class UserService {
 
-  private UserRepository repository;
+  private UserRepository userRepository;
+  private DatasetService datasetService;
 
   @Autowired
   public void setUserRepository(UserRepository repository) {
-    this.repository = repository;
+    this.userRepository = repository;
+  }
+
+  @Autowired
+  public void setDatasetService(DatasetService service) {
+    this.datasetService = service;
   }
 
   /**
@@ -35,7 +46,7 @@ public class UserService {
    * @return true if a User with the given email exists, false otherwise
    */
   private boolean userExists(String email) {
-    return this.repository.findByEmail(email) != null;
+    return this.userRepository.findByEmail(email) != null;
   }
 
   /**
@@ -49,12 +60,12 @@ public class UserService {
       throw new UserAlreadyExistsException();
     }
 
-    repository.save(new User(data));
+    userRepository.save(new User(data));
   }
 
-  public ShoppingCart getCart(User user, String token) throws UserAuthenticationException {
+  public Map<UUID, Integer> getCart(User user, String token) throws UserAuthenticationException {
     verifyAuthToken(user, token);
-    return user.getCart();
+    return user.getCart().getItems();
   }
 
   /**
@@ -65,10 +76,70 @@ public class UserService {
    * @param item The item to add
    * @throws UserAuthenticationException if the user isn't authenticated
    */
-  public void addToCart(User user, String token, ItemDTO item) throws UserAuthenticationException {
+  public void addToCart(User user, String token, ItemDTO item)
+      throws UserAuthenticationException, DatasetNotFoundException, BadRequest {
     verifyAuthToken(user, token);
-    user.addToCart(item);
-    repository.save(user);
+
+    UUID datasetId = item.getDatasetId();
+    Dataset dataset = datasetService.findById(datasetId);
+
+    int count = item.getDatapointCount();
+
+    Map<UUID, Integer> items = user.getCart().getItems();
+
+    int current = items.getOrDefault(datasetId, 0);
+    int updated = current + count;
+
+    if (updated > dataset.getSize()) {
+      throw new BadRequest("Dataset does not have enough datapoints");
+    }
+
+    user.getCart().put(datasetId, updated);
+
+    userRepository.save(user);
+  }
+
+  /**
+   * Sets a cart item for a dataset to a given count.
+   *
+   * @param user The User
+   * @param authToken Their JWT token
+   * @param item The item information
+   * @throws DatasetNotFoundException If the dataset doesn't exist
+   * @throws BadRequest If the dataset doesn't have enough datapoints, or the requested count is 0
+   * @throws UserAuthenticationException If the user isn't authenticated
+   */
+  public void updateCart(User user, String authToken, ItemDTO item)
+      throws DatasetNotFoundException, BadRequest, UserAuthenticationException {
+    verifyAuthToken(user, authToken);
+
+    UUID datasetId = item.getDatasetId();
+    Dataset dataset = datasetService.findById(datasetId);
+
+    if (item.getDatapointCount() < 0) {
+      throw new BadRequest("Can't have less than 0 datapoints");
+    }
+
+    if (item.getDatapointCount() > dataset.getSize()) {
+      throw new BadRequest("Dataset does not have enough datapoints");
+    }
+
+    ShoppingCart cart = user.getCart();
+    cart.put(datasetId, item.getDatapointCount());
+    userRepository.save(user);
+  }
+
+  /**
+   * Clears a users cart.
+   *
+   * @param user The user
+   * @param authToken Their JWT token
+   * @throws UserAuthenticationException If the user isn't authenticated
+   */
+  public void clearCart(User user, String authToken) throws UserAuthenticationException {
+    verifyAuthToken(user, authToken);
+    user.getCart().clear();
+    userRepository.save(user);
   }
 
   /**
@@ -81,7 +152,7 @@ public class UserService {
   public void removeAuthToken(User user, String token) throws UserAuthenticationException {
     verifyAuthToken(user, token);
     user.removeAuthToken(token);
-    repository.save(user);
+    userRepository.save(user);
   }
 
   /**
@@ -93,7 +164,7 @@ public class UserService {
   public void removeAllAuthTokens(User user, String token) throws UserAuthenticationException {
     verifyAuthToken(user, token);
     user.removeAllAuthTokens();
-    repository.save(user);
+    userRepository.save(user);
   }
 
   /**
@@ -121,7 +192,7 @@ public class UserService {
     verifyPassword(user, password);
     String token = AuthUtils.generateAuthToken();
     user.addAuthToken(token);
-    repository.save(user);
+    userRepository.save(user);
     return token;
   }
 
@@ -146,7 +217,7 @@ public class UserService {
    * @throws UserNotFoundException if the user with that ID is not found
    */
   public User findById(UUID id) throws UserNotFoundException {
-    Optional<User> user = this.repository.findById(id);
+    Optional<User> user = this.userRepository.findById(id);
 
     if (user.isEmpty()) {
       throw new UserNotFoundException();
@@ -163,10 +234,10 @@ public class UserService {
    * @throws UserNotFoundException If the user with the given email doesn't exist
    */
   public User findByEmail(String email) throws UserNotFoundException {
-    User user = this.repository.findByEmail(email);
+    User user = this.userRepository.findByEmail(email);
     if (user == null) {
       throw new UserNotFoundException();
     }
-    return this.repository.findByEmail(email);
+    return this.userRepository.findByEmail(email);
   }
 }

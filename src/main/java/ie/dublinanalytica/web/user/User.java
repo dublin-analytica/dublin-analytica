@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
-import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
 
@@ -111,7 +110,4 @@ public class User extends BaseUser {
     return this.cart;
   }
 
-  public void addToCart(ItemDTO item) {
-    this.cart.addItem(item);
-  }
 }
