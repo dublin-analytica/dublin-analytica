@@ -21,7 +21,9 @@
     }
   },
   "globals": {
-    "HeadersInit": true
+    "HeadersInit": "readonly",
+    "JSX": "readonly",
+    "React": "readonly"
   },
   "rules": {
     "import/extensions": [
@@ -52,6 +54,9 @@
       }
     ],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "require-default-props": "off",
+    "react/require-default-props": "off"
   }
 }
