@@ -64,4 +64,13 @@ public class DatasetAPIController {
     Dataset dataset = datasetService.findById(uuid);
     return new Response(dataset);
   }
+
+  /**
+   * Returns all existing datasets.
+   * 
+   */
+  @GetMapping("/get")
+  public Response getAllDataset() {
+    return new Response(datasetService.findAllDatasets());
+  }
 }

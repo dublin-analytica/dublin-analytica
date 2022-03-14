@@ -78,4 +78,13 @@ public class DatasetService {
     }
     return dataset.get();
   }
+
+  /**
+   * Finds all datasets in crud repository.
+   *
+   * @return The Dataset object
+   */
+  public Iterable<Dataset> findAllDatasets() {
+    return this.repository.findAll();
+  }
 }
