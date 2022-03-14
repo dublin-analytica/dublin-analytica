@@ -9,7 +9,7 @@ const S = {
     border-radius: 16px;
     height: 48px;
     color: ${({ variant, theme }) => {
-    const { dark, light } = theme.colors.text;
+    const { dark, light } = theme.text.colors;
     return variant === 'transparent' ? dark : light;
   }};
     cursor: pointer;
