@@ -11,6 +11,8 @@ import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.exceptions.WrongPasswordException;
+import ie.dublinanalytica.web.shoppingcart.ItemDTO;
+import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
@@ -48,6 +50,25 @@ public class UserService {
     }
 
     repository.save(new User(data));
+  }
+
+  public ShoppingCart getCart(User user, String token) throws UserAuthenticationException {
+    verifyAuthToken(user, token);
+    return user.getCart();
+  }
+
+  /**
+   * Adds an item to a user's cart.
+   *
+   * @param user The user
+   * @param token Their JWT token
+   * @param item The item to add
+   * @throws UserAuthenticationException if the user isn't authenticated
+   */
+  public void addToCart(User user, String token, ItemDTO item) throws UserAuthenticationException {
+    verifyAuthToken(user, token);
+    user.addToCart(item);
+    repository.save(user);
   }
 
   /**

@@ -1,42 +1,35 @@
 package ie.dublinanalytica.web.shoppingcart;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 
 /**
  * Class for storing shopping cart.
  */
-@Entity
+@Embeddable
 public class ShoppingCart {
-  
-  @Id
-  private UUID id;
 
-  private HashMap<UUID, HashSet<Integer>> shoppingcart;
+  @ElementCollection
+  private Set<ItemDTO> items;
 
-  public ShoppingCart(UUID id) {
-    shoppingcart = new HashMap<>();
-    this.id = id;
+  public ShoppingCart() {
   }
 
-  public UUID getId() {
-    return id;
+  public void addItem(ItemDTO item) {
+    items.add(item);
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public Set<ItemDTO> getItems() {
+    return items;
   }
 
-  public HashMap<UUID, HashSet<Integer>> getShoppingcart() {
-    return shoppingcart;
+  public void setItems(Set<ItemDTO> items) {
+    this.items = items;
   }
 
-  public void setShoppingcart(HashMap<UUID, HashSet<Integer>> shoppingcart) {
-    this.shoppingcart = shoppingcart;
+  public void clear() {
+    items.clear();
   }
-
 }
