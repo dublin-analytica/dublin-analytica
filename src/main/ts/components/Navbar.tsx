@@ -34,7 +34,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         <Container direction="row" justify="flex-end">
           <Button variant="transparent" onClick={() => navigate('/marketplace')}>Marketplace</Button>
           <Button variant="transparent" onClick={() => navigate('/login')}>Sign In</Button>
-          <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+          <Button onClick={() => navigate('/register')}>Sign Up</Button>
         </Container>
       </Container>
     </S.Navbar>

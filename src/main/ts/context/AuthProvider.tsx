@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import jwtDecode from 'jwt-decode';
 
 type AuthProviderProps = { children: React.ReactNode };
@@ -32,13 +32,27 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
   };
 
-  const setToken = (token: string) => {
-    localStorage.setItem('token', token);
-    setUser(jwtDecode(token));
+  const setUserFromToken = (token: string) => {
+    try {
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      setUser(decoded as User);
+      console.log(`user: ${JSON.stringify(user)}`);
+    } catch (error) {
+      console.log(error);
+      removeToken();
+    }
   };
 
-  const token = getToken();
-  if (token) setUser(jwtDecode(token));
+  const setToken = (token: string) => {
+    localStorage.setItem('token', token);
+    setUserFromToken(token);
+  };
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) setUserFromToken(token);
+  }, []);
 
   const context = useMemo(() => ({
     user, getToken, setToken, removeToken,
