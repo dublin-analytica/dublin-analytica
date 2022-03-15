@@ -1,12 +1,11 @@
 package ie.dublinanalytica.web.user;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +19,7 @@ import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.exceptions.WrongPasswordException;
 import ie.dublinanalytica.web.orders.Order;
+import ie.dublinanalytica.web.orders.OrderService;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
@@ -32,6 +32,7 @@ public class UserService {
 
   private UserRepository userRepository;
   private DatasetService datasetService;
+  private OrderService orderService;
 
   @Autowired
   public void setUserRepository(UserRepository repository) {
@@ -41,6 +42,11 @@ public class UserService {
   @Autowired
   public void setDatasetService(DatasetService service) {
     this.datasetService = service;
+  }
+
+  @Autowired
+  public void setOrderService(@Lazy OrderService orderService) {
+    this.orderService = orderService;
   }
 
   /**
@@ -75,70 +81,13 @@ public class UserService {
   /**
    * Gets a users order.
    *
-   * @param user the customer user
    * @param orderId the order id
    * @throws OrderNotFoundException if order not found
    */
-  public Order getOrder(User user, UUID orderId) throws OrderNotFoundException {
-    Map<UUID, Order> orders = user.getOrders();
-    if (!orders.containsKey(orderId)) {
-      throw new OrderNotFoundException();
-    } else {
-      return orders.get(orderId);
-    }
+  public Order getOrder(UUID orderId) throws OrderNotFoundException {
+    return orderService.findById(orderId);
   }
 
-  /**
-   * Gets all of the users orders.
-   *
-   * @param user the customer user
-   */
-  public Collection<Order> getAllOrders(User user) {
-    for (Map.Entry<UUID, Order> entry : user.getOrders().entrySet()) {
-      System.out.println(entry.getKey() + "  =   " + entry.getValue());
-      for (Map.Entry<UUID, Integer> e : entry.getValue().getItems().entrySet()) {
-        System.out.println(e.getKey() + "  =   " + e.getValue());
-      }
-    }
-    return user.getOrders().values();
-  }
-
-  /**
-   * Places an order.
-   *
-   * @param user the customer user
-   */
-  public void placeOrder(User user, String token) throws UserAuthenticationException {
-    verifyAuthToken(user, token);
-
-    Order newOrder = new Order(user.getCart());
-    user.getOrders().put(newOrder.getId(), newOrder);
-
-    System.out.println("===========================");
-
-    for (Map.Entry<UUID, Order> entry : user.getOrders().entrySet()) {
-      System.out.println(entry.getKey() + "  =   " + entry.getValue());
-      for (Map.Entry<UUID, Integer> e : entry.getValue().getItems().entrySet()) {
-        System.out.println(e.getKey() + "  =   " + e.getValue());
-      }
-    }
-    System.out.println("===========================");
-
-
-    userRepository.save(user);
-
-    user = userRepository.findByEmail(user.getEmail());
-
-    for (Map.Entry<UUID, Order> entry : user.getOrders().entrySet()) {
-      System.out.println(entry.getKey() + "  =   " + entry.getValue());
-      for (Map.Entry<UUID, Integer> e : entry.getValue().getItems().entrySet()) {
-        System.out.println(e.getKey() + "  =   " + e.getValue());
-      }
-    }
-    System.out.println("===========================");
-
-
-  }
 
   /**
    * Adds an item to a user's cart.

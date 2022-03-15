@@ -19,6 +19,7 @@ import ie.dublinanalytica.web.exceptions.BadRequest;
 import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
+import ie.dublinanalytica.web.orders.OrderService;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
@@ -31,10 +32,16 @@ import ie.dublinanalytica.web.user.UserService;
 public class ShoppingCartAPIController {
 
   private UserService userService;
+  private OrderService orderService;
 
   @Autowired
   public void setUserService(UserService userService) {
     this.userService = userService;
+  }
+
+  @Autowired
+  public void setOrderService(OrderService orderService) {
+    this.orderService = orderService;
   }
 
   /**
@@ -103,12 +110,12 @@ public class ShoppingCartAPIController {
    * @throws UserAuthenticationException if no authorization header is provided or is invalid
    * @throws UserNotFoundException if the user not found
    */
-  @PostMapping("/checkout") 
-  public Response confirmCheckout(@RequestHeader("Authorization") String authHeader) 
-      throws UserAuthenticationException, UserNotFoundException {
+  @PostMapping("/checkout")
+  public Response confirmCheckout(@RequestHeader("Authorization") String authHeader)
+      throws UserAuthenticationException, UserNotFoundException, BadRequest {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
-    userService.placeOrder(user, payload.getAuthToken());
+    orderService.placeOrder(user, payload.getAuthToken());
     return new EmptyResponse(HttpStatus.CREATED);
   }
 }
