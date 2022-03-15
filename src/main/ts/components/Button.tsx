@@ -18,9 +18,14 @@ const S = {
     padding: ${({ theme, variant }) => `0 ${variant === 'transparent' ? 0 : theme.spacing.medium}`};
     transition: all 0.2s ease-in-out;
 
-    &:hover {
+  &:hover {
     color: ${({ variant, theme }) => (variant === 'transparent' ? theme.colors.primary : theme.text.colors.light)};
-}
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
   `,
 };
 

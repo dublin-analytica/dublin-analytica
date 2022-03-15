@@ -28,8 +28,8 @@ const Navbar = ({ scrolled }: NavbarProps) => {
     <S.Navbar scrolled={scrolled}>
       <Container unpadded direction="row" color={colors.white} justify="space-between">
         <Container direction="row">
-          <Logo fill={text.colors.dark} width={120} height={120} />
-          <Title color={text.colors.dark} size="2rem" />
+          <Logo onClick={() => navigate('/')} fill={text.colors.dark} width={120} height={120} />
+          <Title onClick={() => navigate('/')} color={text.colors.dark} size="2rem" />
         </Container>
         <Container direction="row" justify="flex-end">
           <Button variant="transparent" onClick={() => navigate('/marketplace')}>Marketplace</Button>
