@@ -7,6 +7,14 @@ body {
   padding: 0;
 }
 
-body {
-  margin: 1rem;
+main {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main > * {
+  margin: 0.5rem;
+  width: 100%;
 }

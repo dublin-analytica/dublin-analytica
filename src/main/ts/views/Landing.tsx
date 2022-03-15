@@ -8,9 +8,8 @@ const Landing = () => {
 
   return (
     <div>
-      <Container color={colors.primary}>
-        <h1>Landing</h1>
-        <Logo fill={text.colors.light} width={250} height={250} />
+      <Container nav color={colors.primary}>
+        <Logo fill={text.colors.light} />
         <Button>
           Marketplace
         </Button>
