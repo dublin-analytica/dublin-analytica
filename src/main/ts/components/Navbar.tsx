@@ -9,22 +9,24 @@ import type { Theme } from '@styles/theme';
 import Logo from './Logo';
 import Title from './Title';
 
+type NavbarProps = { scrolled: boolean };
+
 const S = {
-  Navbar: styled.nav`
-    /* position: fixed; */
+  Navbar: styled.nav<NavbarProps>`
+    position: ${({ scrolled }) => (scrolled ? 'fixed' : 'absolute')};
+    top: ${({ scrolled }) => (scrolled ? '-20px' : '64px')};
     width: 70%;
-    margin-top: ${({ theme }) => theme.spacing.large};
     /* top: 0; */
   `,
 };
 
-const Navbar = () => {
+const Navbar = ({ scrolled }: NavbarProps) => {
   const navigate = useNavigate();
   const { text, colors } = useTheme() as Theme;
 
   return (
-    <S.Navbar>
-      <Container unpadded direction="row" color={colors.light} justify="space-between">
+    <S.Navbar scrolled={scrolled}>
+      <Container unpadded direction="row" color={colors.white} justify="space-between">
         <Container direction="row">
           <Logo fill={text.colors.dark} width={120} height={120} />
           <Title color={text.colors.dark} size="2rem" />

@@ -6,6 +6,7 @@ export type Color = 'primary'
   | 'warning'
   | 'info'
   | 'success'
+  | 'white'
   | 'dark'
   | 'light';
 
@@ -36,6 +37,7 @@ const theme: Theme = {
     info: '#2196f3',
     success: '#4caf50',
 
+    white: '#ffffff',
     light: '#fafafa',
     dark: '#212121',
   },
