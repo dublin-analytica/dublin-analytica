@@ -35,9 +35,9 @@ public class DatasetService {
   /**
    * Creates a new dataset.
    *
-   * @param data The DTO containing the User data required for registration
-   * @throws DatasetAlreadyExistsException if a user with the given email already
-   *                                       exists
+   * @param data The DTO containing the dataset information
+   * @throws DatasetAlreadyExistsException if a dataset already exists
+   * 
    */
   public void createDataset(DatasetDTO data) throws DatasetAlreadyExistsException {
     if (datasetExists(data.getName())) {

@@ -71,6 +71,7 @@ public class UserAPIController {
     return new EmptyResponse(HttpStatus.OK);
   }
 
+
   /**
    * Registers a new user.
    *

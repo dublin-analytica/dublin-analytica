@@ -9,14 +9,18 @@ import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
+import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
 
 /**
  * Represents a User (customer) of the website.
  */
 @Entity
-@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens"})
+@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart"})
 public class User extends BaseUser {
+
+  private ShoppingCart cart;
 
   @ElementCollection
   private Set<String> authTokens;
@@ -101,4 +105,9 @@ public class User extends BaseUser {
   public void removeAllAuthTokens() {
     this.authTokens.clear();
   }
+
+  public ShoppingCart getCart() {
+    return this.cart;
+  }
+
 }
