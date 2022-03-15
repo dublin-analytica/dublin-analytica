@@ -15,7 +15,7 @@ export type TextColor = 'dark' | 'light';
 
 export type Spacing = 'small' | 'medium' | 'large';
 
-export type FontSize = 'small' | 'default'
+export type FontSize = 'small' | 'default' | 'large';
 
 export type FontWeight = 'default' | 'bold';
 
@@ -59,6 +59,7 @@ const theme: Theme = {
     size: {
       small: '12px',
       default: '16px',
+      large: '32px',
     },
     weight: {
       default: 400,

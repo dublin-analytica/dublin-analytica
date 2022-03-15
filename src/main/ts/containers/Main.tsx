@@ -7,7 +7,7 @@ const Main = () => {
   const location = useLocation();
 
   const shouldRenderNavbar = () => {
-    const noRenderPaths = ['/login', '/signup'];
+    const noRenderPaths = ['/login', '/register'];
     const { pathname } = location;
 
     return !noRenderPaths.includes(pathname);

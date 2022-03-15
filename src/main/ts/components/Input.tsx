@@ -29,11 +29,10 @@ const S = {
     font-size: ${({ theme }) => theme.typography.size.default};
     border: 2px solid
       ${({
-    valid, error, active, theme,
+    valid, error, theme,
   }) => {
-    if (valid) return theme.colors.success;
     if (error) return theme.colors.error;
-    if (active) return theme.colors.primary;
+    if (valid) return theme.colors.primary;
     return theme.colors.gray;
   }};
 
@@ -76,6 +75,7 @@ const Input = ({
   type = 'text',
   value,
   placeholder,
+  name,
 }: InputProps) => {
   const theme = useTheme() as Theme;
 
@@ -87,9 +87,9 @@ const Input = ({
 
   return (
     <S.InputContainer>
-      <S.Label htmlFor={label}>{label}</S.Label>
+      <S.Label htmlFor={name}>{label}</S.Label>
       <S.Input
-        name={label}
+        name={name}
         type={activeType}
         valid={valid}
         active={active}
