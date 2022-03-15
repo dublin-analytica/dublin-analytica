@@ -95,4 +95,20 @@ public class ShoppingCartAPIController {
     userService.updateCart(user, payload.getAuthToken(), item);
     return new EmptyResponse(HttpStatus.CREATED);
   }
+
+  /**
+   * User checkout.
+   *
+   * @param authHeader The authorization header
+   * @throws UserAuthenticationException if no authorization header is provided or is invalid
+   * @throws UserNotFoundException if the user not found
+   */
+  @PostMapping("/checkout") 
+  public Response confirmCheckout(@RequestHeader("Authorization") String authHeader) 
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    userService.placeOrder(user, payload.getAuthToken());
+    return new EmptyResponse(HttpStatus.CREATED);
+  }
 }

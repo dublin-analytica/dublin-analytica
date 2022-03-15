@@ -18,6 +18,10 @@ public class ShoppingCart {
   public ShoppingCart() {
   }
 
+  public ShoppingCart(Map<UUID, Integer> items) {
+    this.items = items;
+  }
+
   /**
    * Set the count of the number of datapoints for a given dataset id.
    * Will remove the dataset if count is 0

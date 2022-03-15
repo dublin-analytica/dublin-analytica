@@ -1,15 +1,19 @@
 package ie.dublinanalytica.web.user;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import ie.dublinanalytica.web.orders.Order;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
 
@@ -17,10 +21,12 @@ import ie.dublinanalytica.web.util.AuthUtils;
  * Represents a User (customer) of the website.
  */
 @Entity
-@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart"})
+@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart", "orders"})
 public class User extends BaseUser {
 
   private ShoppingCart cart;
+  @ElementCollection
+  private Map<UUID, Order> orders;
 
   @ElementCollection
   private Set<String> authTokens;
@@ -110,4 +116,7 @@ public class User extends BaseUser {
     return this.cart;
   }
 
+  public Map<UUID, Order> getOrders() {
+    return this.orders;
+  }
 }
