@@ -8,13 +8,14 @@ export type Color = 'primary'
   | 'success'
   | 'white'
   | 'dark'
-  | 'light';
+  | 'light'
+  | 'gray';
 
 export type TextColor = 'dark' | 'light';
 
 export type Spacing = 'small' | 'medium' | 'large';
 
-export type FontSize = 'default'
+export type FontSize = 'small' | 'default'
 
 export type FontWeight = 'default' | 'bold';
 
@@ -38,6 +39,7 @@ const theme: Theme = {
     success: '#4caf50',
 
     white: '#ffffff',
+    gray: '#e5e7eb',
     light: '#fafafa',
     dark: '#212121',
   },
@@ -55,6 +57,7 @@ const theme: Theme = {
 
   typography: {
     size: {
+      small: '12px',
       default: '16px',
     },
     weight: {
