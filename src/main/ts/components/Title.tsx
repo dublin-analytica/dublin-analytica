@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-type TitleProps = { color: string, size: number };
+type TitleProps = { color: string, size: string };
 
 const S = {
   Title: styled.div<TitleProps>`
@@ -9,12 +9,12 @@ const S = {
     align-items: left;
 
     & h1 {
-      font-size: ${({ size }) => `${size}rem`};
+      font-size: ${({ size }) => size};
       font-weight: 600;
       color: ${({ color, theme }) => color ?? theme.text.colors.dark};
       margin: 0;
       padding: 0;
-      line-height: ${({ size }) => `calc(${size} / 4)`};
+      line-height: ${({ size }) => size};
     }
   `,
 };

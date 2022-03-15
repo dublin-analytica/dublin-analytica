@@ -12,7 +12,7 @@ import Title from './Title';
 const S = {
   Navbar: styled.nav`
     /* position: fixed; */
-    width: 60%;
+    width: 70%;
     margin-top: ${({ theme }) => theme.spacing.large};
     /* top: 0; */
   `,
@@ -27,7 +27,7 @@ const Navbar = () => {
       <Container unpadded direction="row" color={colors.light} justify="space-between">
         <Container direction="row">
           <Logo fill={text.colors.dark} width={120} height={120} />
-          <Title color={text.colors.dark} size={2} />
+          <Title color={text.colors.dark} size="2rem" />
         </Container>
         <Container direction="row" justify="flex-end">
           <Button variant="transparent" onClick={() => navigate('/marketplace')}>Marketplace</Button>
