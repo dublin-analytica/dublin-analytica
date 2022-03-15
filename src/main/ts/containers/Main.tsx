@@ -1,8 +1,5 @@
 import { Navbar } from '@components';
-import theme from '@styles/theme';
 import { useEffect, useState } from 'react';
-
-import Container from './Container';
 import Router from './Router';
 
 const Main = () => {
@@ -10,9 +7,7 @@ const Main = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      console.log(scrollTop);
-      if (scrollTop > 76) setScrolled(true);
+      if (window.scrollY > 76) setScrolled(true);
       else setScrolled(false);
     };
 
