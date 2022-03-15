@@ -1,5 +1,5 @@
 const Logo = ({ ...props }) => (
-  <svg {...props} width="105.60000000000001" height="101.83" xmlns="http://www.w3.org/2000/svg" className="caLogoBrain oddSectionItem">
+  <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" className="caLogoBrain oddSectionItem" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" {...props}>
     <g>
       <title>Logo</title>
       <g id="svg_1">

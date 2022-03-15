@@ -10,7 +10,40 @@ const Landing = () => {
     <div>
       <Container color={colors.primary}>
         <h1>Landing</h1>
-        <Logo fill={text.colors.light} width={250} height={250} />
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <h1>Landing</h1>
+        <Logo fill={text.colors.light} width={100000} height={100000} />
         <Button>
           Marketplace
         </Button>

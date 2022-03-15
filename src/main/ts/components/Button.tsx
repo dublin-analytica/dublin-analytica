@@ -6,17 +6,21 @@ const S = {
   Button: styled.button<ButtonProps>`
     background-color: ${({ variant = 'primary', theme }) => theme.colors[variant]};
     border: none;
-    border-radius: 16px;
+    border-radius: ${({ theme }) => theme.spacing.medium};
     height: 48px;
     color: ${({ variant, theme }) => {
     const { dark, light } = theme.text.colors;
     return variant === 'transparent' ? dark : light;
   }};
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 0rem 16px;
-    transition: background-color 0.2s ease-in-out;
+    font-size: ${({ theme }) => theme.typography.size.default};
+    font-weight: ${({ theme }) => theme.typography.weight.bold};
+    padding: ${({ theme, variant }) => `0 ${variant === 'transparent' ? 0 : theme.spacing.medium}`};
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+    color: ${({ variant, theme }) => (variant === 'transparent' ? theme.colors.primary : theme.text.colors.light)};
+}
   `,
 };
 
