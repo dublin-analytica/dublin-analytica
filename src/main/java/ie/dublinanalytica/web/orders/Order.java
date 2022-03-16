@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
@@ -20,8 +19,14 @@ import ie.dublinanalytica.web.user.User;
  * Class for storing orders.
  */
 @Entity
-@Table(name = "orders")
 public class Order {
+
+  /**
+   * Enum to represent the status of the order.
+   */
+  public enum OrderStatus {
+    PLACED, PROCESSING, SHIPPED, DELIVERED
+  }
 
   private LocalDateTime timestamp;
 
@@ -34,6 +39,8 @@ public class Order {
 
   @ManyToOne
   private User user;
+
+  private OrderStatus status;
 
   public Order() {
 
@@ -62,5 +69,13 @@ public class Order {
 
   public Map<UUID, Integer> getItems() {
     return items;
+  }
+
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
   }
 }
