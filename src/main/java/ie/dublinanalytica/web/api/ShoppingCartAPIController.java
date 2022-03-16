@@ -69,7 +69,7 @@ public class ShoppingCartAPIController {
    */
   @GetMapping("/")
   public Response getShoppingCart(@RequestHeader("Authorization") String authHeader)
-    throws UserAuthenticationException, UserNotFoundException, DatasetNotFoundException {
+      throws UserAuthenticationException, UserNotFoundException, DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
 

@@ -55,7 +55,7 @@ public class OrderAPIController {
    * @throws UserNotFoundException       if the user not found
    * @throws OrderNotFoundException      if the order not found
    */
-  @GetMapping("/{orderid}")
+  @GetMapping("/{orderid:.{36}}")
   public Response getOrder(@PathVariable("orderid") String orderid)
       throws OrderNotFoundException {
     return new Response(userService.getOrder(UUID.fromString(orderid)));
@@ -120,5 +120,26 @@ public class OrderAPIController {
     }
 
     throw new UserAuthenticationException("Not authorized");
+  }
+
+  /**
+   * Gets all orders.
+   *
+   * @param authHeader The Authorization header
+   * @throws UserAuthenticationException If the user isn't an admin
+   * @throws UserNotFoundException If the user isn't found
+   */
+  @GetMapping("/")
+  public Response getAllOrders(@RequestHeader("Authorization") String authHeader)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User authUser = userService.findById(payload.getId());
+
+    if (!authUser.isAdmin()) {
+      throw new UserAuthenticationException("User is not an admin");
+    }
+
+    return new Response(orderService.findAll());
+
   }
 }

@@ -80,4 +80,8 @@ public class OrderService {
   public void save(Order order) {
     orderRepository.save(order);
   }
+
+  public Iterable<Order> findAll() {
+    return orderRepository.findAll();
+  }
 }
