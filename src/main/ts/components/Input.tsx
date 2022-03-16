@@ -1,7 +1,4 @@
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
-import { Theme } from '@styles/theme';
-import { useState } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 type InputProps = JSX.IntrinsicElements['input'] & {
   valid?: boolean;
@@ -13,17 +10,14 @@ type InputProps = JSX.IntrinsicElements['input'] & {
 const S = {
   InputContainer: styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100px;
+    height: 82px;
   `,
 
   Input: styled.input<InputProps>`
     width: 80%;
-    height: 50px;
+    height: 32px;
     border-radius: 5px;
-    padding: 0 20px;
+    padding: 0 5px;
     font-size: ${({ theme }) => theme.typography.size.default};
     color: ${({ theme }) => theme.text.colors.dark};
     font-size: ${({ theme }) => theme.typography.size.default};
@@ -42,27 +36,19 @@ const S = {
   `,
 
   Label: styled.label`
-    display: block;
-    margin-bottom: ${({ theme }) => theme.spacing.small};
+    width: 80%;
+    display: inline-block;
     color: ${({ theme }) => theme.text.colors.dark};
-    align-self: start;
-    margin-left: 7%;
+    text-align: left;
     font-size: ${({ theme }) => theme.typography.size.small};
     font-weight: ${({ theme }) => theme.typography.weight.bold};
-    margin-bottom: 0;
+    margin: 0;
+    margin-right: 5px;
   `,
 
   EyeButton: styled.i`
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
     cursor: pointer;
-    margin-left: ${({ theme }) => theme.spacing.small};
-    top: -38px;
-    margin-left: auto;
-    margin-right: 3rem;
-    position: relative;
+    margin-left: -30px;
   `,
 };
 
@@ -71,43 +57,25 @@ const Input = ({
   active = false,
   error = false,
   label = '',
+  type,
   onChange,
-  type = 'text',
   value,
   placeholder,
   name,
-}: InputProps) => {
-  const theme = useTheme() as Theme;
-
-  const [activeType, setActiveType] = useState(type);
-
-  const handleClick = () => {
-    setActiveType((current) => (current === 'password' ? 'text' : 'password'));
-  };
-
-  return (
-    <S.InputContainer>
-      <S.Label htmlFor={name}>{label}</S.Label>
-      <S.Input
-        name={name}
-        type={activeType}
-        valid={valid}
-        active={active}
-        error={error}
-        onChange={onChange}
-        value={value}
-        placeholder={placeholder}
-      />
-      {type === 'password'
-      && (
-      <S.EyeButton onClick={handleClick}>
-        {activeType === 'password'
-          ? <EyeIcon width={25} height={25} fill={theme.colors.primary} />
-          : <EyeOffIcon width={25} height={25} fill={theme.colors.primary} />}
-      </S.EyeButton>
-      )}
-    </S.InputContainer>
-  );
-};
+}: InputProps) => (
+  <S.InputContainer>
+    <S.Label htmlFor={name}>{label}</S.Label>
+    <S.Input
+      name={name}
+      type={type}
+      valid={valid}
+      active={active}
+      error={error}
+      onChange={onChange}
+      value={value}
+      placeholder={placeholder}
+    />
+  </S.InputContainer>
+);
 
 export default Input;

@@ -28,12 +28,12 @@ export type Theme = {
 
 const theme: Theme = {
   colors: {
-    primary: '#53CA9D',
+    primary: '#53ca9d',
     secondary: '#ff9800',
     transparent: 'transparent',
 
     accent: '#9c27b0',
-    error: '#f44336',
+    error: '#ed4337',
     warning: '#ffeb3b',
     info: '#2196f3',
     success: '#4caf50',
