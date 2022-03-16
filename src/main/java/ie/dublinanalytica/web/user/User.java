@@ -17,7 +17,7 @@ import ie.dublinanalytica.web.util.AuthUtils;
  * Represents a User (customer) of the website.
  */
 @Entity
-@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart"})
+@JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart", "orders"})
 public class User extends BaseUser {
 
   private ShoppingCart cart;
@@ -109,5 +109,4 @@ public class User extends BaseUser {
   public ShoppingCart getCart() {
     return this.cart;
   }
-
 }

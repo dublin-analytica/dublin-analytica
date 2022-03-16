@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 
@@ -12,10 +13,13 @@ import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetService;
 import ie.dublinanalytica.web.exceptions.BadRequest;
 import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
+import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAlreadyExistsException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.exceptions.WrongPasswordException;
+import ie.dublinanalytica.web.orders.Order;
+import ie.dublinanalytica.web.orders.OrderService;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.util.AuthUtils;
@@ -28,6 +32,7 @@ public class UserService {
 
   private UserRepository userRepository;
   private DatasetService datasetService;
+  private OrderService orderService;
 
   @Autowired
   public void setUserRepository(UserRepository repository) {
@@ -37,6 +42,11 @@ public class UserService {
   @Autowired
   public void setDatasetService(DatasetService service) {
     this.datasetService = service;
+  }
+
+  @Autowired
+  public void setOrderService(@Lazy OrderService orderService) {
+    this.orderService = orderService;
   }
 
   /**
@@ -67,6 +77,17 @@ public class UserService {
     verifyAuthToken(user, token);
     return user.getCart().getItems();
   }
+
+  /**
+   * Gets a users order.
+   *
+   * @param orderId the order id
+   * @throws OrderNotFoundException if order not found
+   */
+  public Order getOrder(UUID orderId) throws OrderNotFoundException {
+    return orderService.findById(orderId);
+  }
+
 
   /**
    * Adds an item to a user's cart.
