@@ -16,6 +16,9 @@ import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
 
+/**
+ * Service for managing orders.
+ */
 @Service
 public class OrderService {
 
@@ -57,6 +60,13 @@ public class OrderService {
     orderRepository.save(newOrder);
   }
 
+  /**
+   * Finds an oder using the order's id.
+   *
+   * @param id The id of the order
+   * @return The order
+   * @throws OrderNotFoundException If the order wasn't found
+   */
   public Order findById(UUID id) throws OrderNotFoundException {
     Optional<Order> order = orderRepository.findById(id);
 
