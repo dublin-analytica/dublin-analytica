@@ -272,4 +272,8 @@ public class UserService {
       throw new UserAuthenticationException("User is not an admin");
     }
   }
+
+  public void save(User user) {
+    this.userRepository.save(user);
+  }
 }
