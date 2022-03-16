@@ -76,4 +76,8 @@ public class OrderService {
 
     throw new OrderNotFoundException();
   }
+
+  public void save(Order order) {
+    orderRepository.save(order);
+  }
 }

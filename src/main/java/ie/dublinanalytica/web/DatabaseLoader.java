@@ -37,9 +37,11 @@ public class DatabaseLoader implements CommandLineRunner {
     this.userRepository.save(
       new User("Alice the User", "user@gmail.com", "user".toCharArray())
     );
-    this.userRepository.save(
-      new User("Bob the Admin", "admin@gmail.com", "admin".toCharArray())
-    );
+
+    User admin = new User("Bob the Admin", "admin@gmail.com", "admin".toCharArray());
+    admin.setAdmin(true);
+
+    this.userRepository.save(admin);
 
     this.datasetRepository.save(
       new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com")

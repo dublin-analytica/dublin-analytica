@@ -1,10 +1,13 @@
 package ie.dublinanalytica.web.api;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -84,6 +87,31 @@ public class UserAPIController {
       throws UserAlreadyExistsException {
     userService.registerUser(data);
     return new EmptyResponse(HttpStatus.CREATED);
+  }
+
+  /**
+   * Gets the information about a specific user.
+   *
+   * @param authHeader The Authorization header (ADMIN only)
+   * @param userid The user's id
+   * @throws UserAuthenticationException If the user is not an admin
+   * @throws UserNotFoundException If the user is not found
+   */
+  @GetMapping("/{userid}")
+  public Response getUserInfo(
+      @RequestHeader("Authorization") String authHeader,
+      @PathVariable("userid") String userid)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User requestingUser = userService.findById(payload.getId());
+    if (!requestingUser.isAdmin()) {
+      throw new UserAuthenticationException("User is not an admin");
+    }
+
+    UUID id = UUID.fromString(userid);
+    User user = userService.findById(id);
+
+    return new Response(user);
   }
 
   /**

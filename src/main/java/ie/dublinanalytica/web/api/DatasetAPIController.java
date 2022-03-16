@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,10 @@ import ie.dublinanalytica.web.dataset.DatasetDTO;
 import ie.dublinanalytica.web.dataset.DatasetService;
 import ie.dublinanalytica.web.exceptions.DatasetAlreadyExistsException;
 import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
+import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
+import ie.dublinanalytica.web.exceptions.UserNotFoundException;
+import ie.dublinanalytica.web.user.User;
+import ie.dublinanalytica.web.user.UserService;
 
 /**
  * API Controller for /api/dataset endpoints.
@@ -29,10 +34,16 @@ import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
 public class DatasetAPIController {
 
   private DatasetService datasetService;
+  private UserService userService;
 
   @Autowired
   public void setDatasetService(DatasetService datasetService) {
     this.datasetService = datasetService;
+  }
+
+  @Autowired
+  public void setUserService(UserService userService) {
+    this.userService = userService;
   }
 
   /**
@@ -43,8 +54,15 @@ public class DatasetAPIController {
    * @throws DatasetAlreadyExistsException if the dataset already exists
    */
   @PostMapping("/create")
-  public Response create(@RequestBody @Valid DatasetDTO data)
-      throws DatasetAlreadyExistsException {
+  public Response create(@RequestHeader("Authorization") String authHeader,
+                         @RequestBody @Valid DatasetDTO data)
+      throws DatasetAlreadyExistsException, UserAuthenticationException, UserNotFoundException {
+
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+
+    userService.verifyAdmin(user);
+
     datasetService.createDataset(data);
     return new EmptyResponse(HttpStatus.CREATED);
   }
@@ -67,7 +85,7 @@ public class DatasetAPIController {
 
   /**
    * Returns all existing datasets.
-   * 
+   *
    */
   @GetMapping("/get")
   public Response getAllDataset() {

@@ -23,6 +23,13 @@ import ie.dublinanalytica.web.user.User;
 @Table(name = "orders")
 public class Order {
 
+  /**
+   * Enum to represent the status of the order.
+   */
+  public enum OrderStatus {
+    PLACED, PROCESSING, SHIPPED
+  }
+
   private LocalDateTime timestamp;
 
   @Id
@@ -35,11 +42,20 @@ public class Order {
   @ManyToOne
   private User user;
 
-  public Order() {
+  private OrderStatus status;
 
+  public Order() {
+    this.status = OrderStatus.PLACED;
   }
 
+  /**
+   * Create an order for a user from a shopping cart.
+   *
+   * @param cart The cart to use
+   * @param user The user to create the order for
+   */
   public Order(ShoppingCart cart, User user) {
+    this();
     this.items = new HashMap<>(cart.getItems());
     this.user = user;
   }
@@ -62,5 +78,13 @@ public class Order {
 
   public Map<UUID, Integer> getItems() {
     return items;
+  }
+
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
   }
 }
