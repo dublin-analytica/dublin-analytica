@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
@@ -19,13 +20,14 @@ import ie.dublinanalytica.web.user.User;
  * Class for storing orders.
  */
 @Entity
+@Table(name = "orders")
 public class Order {
 
   /**
    * Enum to represent the status of the order.
    */
   public enum OrderStatus {
-    PLACED, PROCESSING, SHIPPED, DELIVERED
+    PLACED, PROCESSING, SHIPPED
   }
 
   private LocalDateTime timestamp;
@@ -43,10 +45,17 @@ public class Order {
   private OrderStatus status;
 
   public Order() {
-
+    this.status = OrderStatus.PLACED;
   }
 
+  /**
+   * Create an order for a user from a shopping cart.
+   *
+   * @param cart The cart to use
+   * @param user The user to create the order for
+   */
   public Order(ShoppingCart cart, User user) {
+    this();
     this.items = new HashMap<>(cart.getItems());
     this.user = user;
   }

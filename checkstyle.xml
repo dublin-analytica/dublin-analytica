@@ -253,7 +253,7 @@
       <property name="arrayInitIndent" value="2"/>
     </module>
     <module name="AbbreviationAsWordInName">
-      <property name="allowedAbbreviations" value="API,DTO,JWT,JSON"/>
+      <property name="allowedAbbreviations" value="API,DTO,JWT,JSON,UUID"/>
       <property name="ignoreFinal" value="true"/>
       <property name="allowedAbbreviationLength" value="0"/>
       <property name="tokens"
