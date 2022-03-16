@@ -57,7 +57,7 @@ public class OrderAPIController {
    */
   @GetMapping("/{orderid}")
   public Response getOrder(@PathVariable("orderid") String orderid)
-    throws OrderNotFoundException {
+      throws OrderNotFoundException {
     return new Response(userService.getOrder(UUID.fromString(orderid)));
   }
 
