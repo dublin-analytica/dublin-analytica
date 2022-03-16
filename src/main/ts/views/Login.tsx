@@ -1,18 +1,24 @@
 import { useTheme } from 'styled-components';
 
-import { Button, Form, Input } from '@components';
+import {
+  Button, ErrorToast, Form, Input,
+} from '@components';
 import { Container } from '@containers';
 import type { Theme } from '@styles/theme';
 import { useState } from 'react';
 import { useAuthActions } from '@hooks';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const theme = useTheme() as Theme;
   const { login } = useAuthActions();
 
   const [state, setState] = useState({
-    name: '', email: '', password: '', confirmation: '',
+    email: '', password: '',
   });
+
+  const [error, setError] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -20,10 +26,10 @@ const Login = () => {
   };
 
   const handleSubmit = () => {
-    const { name, email } = state;
-    login(name, email)
-      .then(console.log)
-      .catch(console.error);
+    const { email, password } = state;
+    login(email, password)
+      .then(() => navigate('/marketplace'))
+      .catch(setError);
   };
 
   return (
@@ -32,18 +38,19 @@ const Login = () => {
         <Form onSubmit={handleSubmit}>
           <div>
             <h2>Welcome back!</h2>
-            <span>Please sign in to your account</span>
+            <p>Please sign in to your account</p>
           </div>
           <div>
             <Input label="Email" name="email" onChange={handleChange} />
-            <Input label="Password" name="password" type="password" placeholder="8+ characters" onChange={handleChange} />
+            <Input label="Password" name="password" type="password" onChange={handleChange} />
           </div>
+          <ErrorToast message={error} />
           <Button type="submit" color={theme.colors.primary}>Sign In</Button>
-          <span>
+          <p>
             Not a member?
             {' '}
             <a href="/register">Sign Up</a>
-          </span>
+          </p>
         </Form>
       </Container>
     </div>

@@ -35,11 +35,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const setUserFromToken = (token: string) => {
     try {
       const decoded = jwtDecode(token);
-      console.log(decoded);
       setUser(decoded as User);
-      console.log(`user: ${JSON.stringify(user)}`);
     } catch (error) {
-      console.log(error);
       removeToken();
     }
   };

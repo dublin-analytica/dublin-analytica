@@ -21,3 +21,8 @@ main > * {
   margin: 0.5rem;
   width: 100%;
 }
+
+a {
+  font-weight: 600;
+  color: #53ca9d;
+}

@@ -6,6 +6,7 @@ type ContainerProps = JSX.IntrinsicElements['div'] & {
   unpadded?: boolean,
   nav?: boolean,
   cursor?: boolean,
+  fullscreen? : boolean,
 };
 
 const Container = styled.div<ContainerProps>`
@@ -14,14 +15,14 @@ const Container = styled.div<ContainerProps>`
     justify-content: ${({ justify = 'flex-start' }) => justify};
     align-items: center;
     width: ${({ theme }) => `calc(100% - ${theme.spacing.medium} - ${theme.spacing.medium})`};
-    padding: ${({ unpadded, nav, theme }) => (unpadded ? 0 : `${nav ? '5rem' : theme.spacing.small} ${theme.spacing.medium}`)};
+    padding: ${({ unpadded, nav, theme }) => (unpadded ? 0 : `${nav ? '5rem' : theme.spacing.medium} ${theme.spacing.medium}`)};
     border-radius: ${({ theme }) => theme.spacing.medium};
     background-color: ${({ color }) => color};
     cursor: ${({ cursor }) => (cursor ? 'pointer' : 'default')};
     color: ${({ color = 'transparent', theme }) => {
-    const { transparent } = theme.colors;
+    const { transparent, white } = theme.colors;
     const { dark, light } = theme.text.colors;
-    return color === transparent ? dark : light;
+    return color === transparent || color === white ? dark : light;
   }};
 
     & > * {

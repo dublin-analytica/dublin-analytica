@@ -7,7 +7,7 @@ type FormProps = JSX.IntrinsicElements['form'] & { children: React.ReactNode };
 const S = {
   Form: styled.form`
     width: 35%;
-    height: 70vh;
+    height: calc(fit-content + 50px);
 
     & h2 {
       margin-bottom: 1rem;
@@ -16,23 +16,18 @@ const S = {
       color: ${({ theme }) => theme.text.colors.dark};
     }
 
-    & span {
+    & p {
       color: ${({ theme }) => theme.colors.dark};
     }
 
     & ${Container} {
       height: 100%;
+      padding: 2rem;
     }
 
     & div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
       width: 100%;
-    }
-
-    & div span a {
-      color: ${({ theme }) => theme.text.colors.primary} !important;
     }
   `,
 };
@@ -47,7 +42,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
   return (
     <S.Form onSubmit={handleSubmit}>
-      <Container color={theme.colors.white} justify="space-around">
+      <Container color={theme.colors.white} justify="space-between">
         {children}
       </Container>
     </S.Form>
