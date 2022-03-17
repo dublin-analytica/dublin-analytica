@@ -45,9 +45,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
     this.userRepository.save(admin);
 
-    Dataset dataset = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
-    dataset.setId(UUID.randomUUID());
-    this.datasetRepository.save(dataset);
+    this.datasetRepository.save(
+      new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com")
+    );
 
     this.datasetRepository.save(
       new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")

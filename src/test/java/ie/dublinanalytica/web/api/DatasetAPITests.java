@@ -3,6 +3,7 @@ package ie.dublinanalytica.web.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.jayway.jsonpath.JsonPath;
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.dataset.DatasetDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
@@ -15,11 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -88,10 +86,30 @@ public class DatasetAPITests {
   @Test
   @Order(2)
   public void returnAllDatasets() throws Exception {
-    String token = getAuthToken();
     this.mockMvc.perform(
       get("/api/dataset/"))
-      .andExpect(status().isOk());
+      .andDo(print())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Some dataset"))
+      .andExpect(status().isOk())
+      .andReturn();
   }
 
+  @Test
+  @Order(2)
+  public void returnDataset() throws Exception {
+    MvcResult result = this.mockMvc.perform(
+        get("/api/dataset/"))
+      .andReturn();
+
+    String response = result.getResponse().getContentAsString();
+    String id = JsonPath.parse(response).read("$.[0].id");
+    String url = "/api/dataset/" + id;
+
+    this.mockMvc.perform(
+      get(url))
+      .andDo(print())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Some dataset"))
+      .andExpect(status().isOk())
+      .andReturn();
+  }
 }
