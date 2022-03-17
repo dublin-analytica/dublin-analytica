@@ -46,6 +46,7 @@ public class Order {
 
   public Order() {
     this.status = OrderStatus.PLACED;
+    this.timestamp = LocalDateTime.now();
   }
 
   /**
