@@ -58,15 +58,18 @@ public class DatasetAPITests {
     }
   }
 
+  /**
+   * Gets the Auth token associated with a given user.
+   */
   public String getAuthToken() throws Exception {
     MvcResult result = this.mockMvc.perform(
-      post("/api/users/login")
+        post("/api/users/login")
         .contentType("application/json")
         .content(toJSON(new RegistrationDTO(USERNAME, EMAIL, PASSWORD)))
     ).andReturn();
 
     AuthResponse.AuthObject response = (new ObjectMapper())
-      .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+        .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     return response.token();
   }
@@ -117,7 +120,7 @@ public class DatasetAPITests {
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Some dataset"))
       .andExpect(status().isOk())
-      .andReturn();
+        .andReturn();
   }
 
   @Test
@@ -125,7 +128,7 @@ public class DatasetAPITests {
   public void returnDataset() throws Exception {
     MvcResult result = this.mockMvc.perform(
         get("/api/dataset/"))
-      .andReturn();
+        .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[0].id");
@@ -136,6 +139,6 @@ public class DatasetAPITests {
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Some dataset"))
       .andExpect(status().isOk())
-      .andReturn();
+        .andReturn();
   }
 }
