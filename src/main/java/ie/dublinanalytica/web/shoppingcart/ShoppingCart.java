@@ -1,8 +1,5 @@
 package ie.dublinanalytica.web.shoppingcart;
 
-import ie.dublinanalytica.web.user.User;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 

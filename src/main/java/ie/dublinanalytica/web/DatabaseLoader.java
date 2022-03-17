@@ -1,21 +1,19 @@
 package ie.dublinanalytica.web;
 
-import ie.dublinanalytica.web.orders.Order;
-import ie.dublinanalytica.web.orders.OrderRepository;
-import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
+import ie.dublinanalytica.web.orders.Order;
+import ie.dublinanalytica.web.orders.OrderRepository;
+import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserRepository;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Pre-save data into the database.
@@ -38,8 +36,12 @@ public class DatabaseLoader implements CommandLineRunner {
    */
   private final OrderRepository orderRepository;
 
+  /**
+   * Initilizes different instances of classes into repositorys for testing.
+   */
   @Autowired
-  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository, OrderRepository orderRepository) {
+  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository, 
+      OrderRepository orderRepository) {
     this.userRepository = repository;
     this.datasetRepository = datasetRepository;
     this.orderRepository = orderRepository;
