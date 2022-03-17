@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.dataset.DatasetDTO;
-import ie.dublinanalytica.web.user.AuthDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
-import ie.dublinanalytica.web.user.User;
-import ie.dublinanalytica.web.user.UserService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,8 +15,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,5 +84,14 @@ public class DatasetAPITests {
     ).andDo(print())
       .andExpect(status().isCreated());
   }
-  
+
+  @Test
+  @Order(2)
+  public void returnAllDatasets() throws Exception {
+    String token = getAuthToken();
+    this.mockMvc.perform(
+      get("/api/dataset/"))
+      .andExpect(status().isOk());
+  }
+
 }

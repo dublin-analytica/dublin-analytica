@@ -74,7 +74,7 @@ public class DatasetAPIController {
    * @return Database
    * @throws DatasetNotFoundException if the dataset does not exist
    */
-  @GetMapping("/get/{id}")
+  @GetMapping("/{id}")
   public Response getDataset(@PathVariable String id) throws
       DatasetNotFoundException {
     UUID uuid = UUID.fromString(id);
@@ -87,7 +87,7 @@ public class DatasetAPIController {
    * Returns all existing datasets.
    *
    */
-  @GetMapping("/get")
+  @GetMapping("/")
   public Response getAllDataset() {
     return new Response(datasetService.findAllDatasets());
   }

@@ -10,6 +10,8 @@ import ie.dublinanalytica.web.dataset.DatasetRepository;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserRepository;
 
+import java.util.UUID;
+
 /**
  * Pre-save data into the database.
  */
@@ -43,9 +45,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
     this.userRepository.save(admin);
 
-    this.datasetRepository.save(
-      new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com")
-    );
+    Dataset dataset = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
+    dataset.setId(UUID.randomUUID());
+    this.datasetRepository.save(dataset);
 
     this.datasetRepository.save(
       new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
