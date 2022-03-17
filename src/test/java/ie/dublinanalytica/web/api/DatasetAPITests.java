@@ -85,6 +85,19 @@ public class DatasetAPITests {
 
   @Test
   @Order(2)
+  public void createShouldErrorIfDatasetExists() throws Exception {
+    String token = getAuthToken();
+    this.mockMvc.perform(
+        post("/api/dataset/create")
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
+      ).andDo(print())
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Order(3)
   public void returnAllDatasets() throws Exception {
     this.mockMvc.perform(
       get("/api/dataset/"))
@@ -95,7 +108,7 @@ public class DatasetAPITests {
   }
 
   @Test
-  @Order(2)
+  @Order(3)
   public void returnDataset() throws Exception {
     MvcResult result = this.mockMvc.perform(
         get("/api/dataset/"))
