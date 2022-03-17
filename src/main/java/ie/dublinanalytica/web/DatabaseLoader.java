@@ -10,8 +10,6 @@ import ie.dublinanalytica.web.dataset.DatasetRepository;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserRepository;
 
-import java.util.UUID;
-
 /**
  * Pre-save data into the database.
  */

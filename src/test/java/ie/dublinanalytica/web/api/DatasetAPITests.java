@@ -2,11 +2,8 @@ package ie.dublinanalytica.web.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.jayway.jsonpath.JsonPath;
-import ie.dublinanalytica.web.api.response.AuthResponse;
-import ie.dublinanalytica.web.dataset.DatasetDTO;
-import ie.dublinanalytica.web.user.RegistrationDTO;
+
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,8 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import ie.dublinanalytica.web.api.response.AuthResponse;
+import ie.dublinanalytica.web.dataset.DatasetDTO;
+import ie.dublinanalytica.web.user.RegistrationDTO;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
