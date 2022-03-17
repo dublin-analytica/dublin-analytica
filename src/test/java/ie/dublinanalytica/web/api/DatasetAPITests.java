@@ -37,8 +37,6 @@ public class DatasetAPITests {
   private final String DATAPOINTS = "alice, bob";
   private final double SIZE = 1.0;
   private final String URL = "https://helloworld.com";
-  private final String USERNAME = "Bob the Admin";
-  private final String EMAIL = "admin@gmail.com";
   private final char[] PASSWORD = "admin".toCharArray();
 
   @Autowired
@@ -62,6 +60,8 @@ public class DatasetAPITests {
    * Gets the Auth token associated with a given user.
    */
   public String getAuthToken() throws Exception {
+    String USERNAME = "Bob the Admin";
+    String EMAIL = "admin@gmail.com";
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
         .contentType("application/json")
@@ -102,7 +102,7 @@ public class DatasetAPITests {
 
   @Test
   @Order(2)
-  public void createShouldUnauthorizedIfNoToken() throws Exception {
+  public void createShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/dataset/create")
           .header("Authorization", "Bearer INVALID TOKEN")
@@ -140,5 +140,15 @@ public class DatasetAPITests {
       .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Some dataset"))
       .andExpect(status().isOk())
         .andReturn();
+  }
+
+  @Test
+  @Order(3)
+  public void returnExceptionIfIncorrectDatasetId() throws Exception {
+    this.mockMvc.perform(
+        get("/api/dataset/9af-e9468f4785f3"))
+      .andDo(print())
+      .andExpect(status().isBadRequest())
+      .andReturn();
   }
 }
