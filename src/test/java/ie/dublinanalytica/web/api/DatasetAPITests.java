@@ -97,6 +97,18 @@ public class DatasetAPITests {
   }
 
   @Test
+  @Order(2)
+  public void createShouldUnauthorizedIfNoToken() throws Exception {
+    this.mockMvc.perform(
+        post("/api/dataset/create")
+          .header("Authorization", "Bearer INVALID TOKEN")
+          .contentType("application/json")
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
+      ).andDo(print())
+      .andExpect(status().isUnauthorized());
+  }
+
+  @Test
   @Order(3)
   public void returnAllDatasets() throws Exception {
     this.mockMvc.perform(
