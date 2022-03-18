@@ -7,6 +7,8 @@ type ContainerProps = JSX.IntrinsicElements['div'] & {
   nav?: boolean,
   cursor?: boolean,
   fullscreen? : boolean,
+  nomargin?: boolean,
+  unrounded?: boolean,
 };
 
 const Container = styled.div<ContainerProps>`
@@ -15,18 +17,22 @@ const Container = styled.div<ContainerProps>`
     justify-content: ${({ justify = 'flex-start' }) => justify};
     align-items: center;
     width: ${({ theme }) => `calc(100% - ${theme.spacing.medium} - ${theme.spacing.medium})`};
-    padding: ${({ unpadded, nav, theme }) => (unpadded ? 0 : `${nav ? '5rem' : theme.spacing.medium} ${theme.spacing.medium}`)};
-    border-radius: ${({ theme }) => theme.spacing.medium};
+    padding: ${({ unpadded, theme }) => (unpadded ? 0 : `${theme.spacing.medium}`)};
+    padding-top: ${({ nav }) => (nav ? '12rem' : 0)};
+    border-radius: ${({ unrounded, theme }) => (unrounded ? 0 : theme.spacing.medium)};
     background-color: ${({ color }) => color};
     cursor: ${({ cursor }) => (cursor ? 'pointer' : 'default')};
+
     color: ${({ color = 'transparent', theme }) => {
-    const { transparent, white } = theme.colors;
+    const { transparent, white, gray } = theme.colors;
     const { dark, light } = theme.text.colors;
-    return color === transparent || color === white ? dark : light;
+    return color === transparent || color === white || color === gray ? dark : light;
   }};
 
-    & > * {
-      margin: ${({ theme, direction = 'column' }) => {
+
+  & > * {
+      margin: ${({ theme, nomargin = false, direction = 'column' }) => {
+    if (nomargin) return 0;
     const { small, medium } = theme.spacing;
     return direction === 'column' ? `${small} 0` : `0 ${medium}`;
   }
