@@ -51,7 +51,7 @@ public class OrderAPIController {
    * @return Users order
    * @throws OrderNotFoundException      if the order not found
    */
-  @GetMapping("/{orderid}")
+  @GetMapping("/{orderid:.{36}}")
   public Response getOrder(
       @RequestHeader("Authorization") String authHeader,
       @PathVariable("orderid") String orderid)
@@ -81,7 +81,7 @@ public class OrderAPIController {
     User user = userService.findById(payload.getId());
 
     if (!user.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
+      throw new UserAuthenticationException("User is not an admin", HttpStatus.FORBIDDEN);
     }
 
     return new Response(orderService.findAllOrders());
@@ -108,7 +108,7 @@ public class OrderAPIController {
     User user = userService.findById(payload.getId());
 
     if (!user.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
+      throw new UserAuthenticationException("User is not an admin", HttpStatus.FORBIDDEN);
     }
 
     UUID orderUUID = UUID.fromString(orderid);
@@ -145,6 +145,7 @@ public class OrderAPIController {
       return new Response(orderService.getUserOrders(user));
     }
 
-    throw new UserAuthenticationException("Not authorized");
+    throw new UserAuthenticationException("You're not allowed to access this resource",
+      HttpStatus.FORBIDDEN);
   }
 }

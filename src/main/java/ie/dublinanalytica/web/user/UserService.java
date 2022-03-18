@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -269,7 +270,11 @@ public class UserService {
    */
   public void verifyAdmin(User user) throws UserAuthenticationException {
     if (!user.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
+      throw new UserAuthenticationException("User is not an admin", HttpStatus.FORBIDDEN);
     }
+  }
+
+  public void save(User user) {
+    userRepository.save(user);
   }
 }
