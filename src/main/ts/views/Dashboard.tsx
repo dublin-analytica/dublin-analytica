@@ -1,17 +1,20 @@
-import styled from 'styled-components';
-import { BeakerIcon } from '@heroicons/react/solid';
+import { useNavigate } from 'react-router-dom';
 
-const H1 = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  `;
+import { useAuth } from '@context/AuthProvider';
+import { SplitView } from '@components';
 
-const Dashboard = () => (
-  <H1>
-    Dashboard
-    <BeakerIcon />
-  </H1>
-);
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  if (!user?.isAdmin && false) navigate('/404');
+
+  return (
+    <SplitView>
+      <h1>Dashboard</h1>
+      <h1>Admin</h1>
+    </SplitView>
+  );
+};
 
 export default Dashboard;

@@ -11,8 +11,8 @@ const S = {
     width: 60%;
     margin-right: auto;
     position: absolute;
-    top: 45rem;
-    left: 5rem;
+    top: 37rem;
+    left: 0;
   `,
 };
 
@@ -21,8 +21,8 @@ const Landing = () => {
 
   return (
     <div>
-      <Container nav color={colors.primary}>
-        <Container direction="row" justify="space-around">
+      <Container color={colors.primary}>
+        <Container direction="row" justify="space-around" style={{ marginTop: '2rem' }}>
           <Title color={text.colors.light} size="6rem" />
           <Logo fill={text.colors.light} width={750} height={750} />
         </Container>

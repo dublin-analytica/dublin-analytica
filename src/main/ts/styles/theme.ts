@@ -33,13 +33,13 @@ const theme: Theme = {
     transparent: 'transparent',
 
     accent: '#9c27b0',
-    error: '#ed4337',
+    error: '#ef5350',
     warning: '#ffeb3b',
     info: '#2196f3',
     success: '#4caf50',
 
     white: '#ffffff',
-    gray: '#e5e7eb',
+    gray: '#f1f1f1',
     light: '#fafafa',
     dark: '#212121',
   },
