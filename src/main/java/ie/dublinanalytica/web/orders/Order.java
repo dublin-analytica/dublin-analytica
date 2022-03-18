@@ -44,6 +44,8 @@ public class Order {
 
   private OrderStatus status;
 
+  private double price;
+
   public Order() {
     this.status = OrderStatus.PLACED;
     this.timestamp = LocalDateTime.now();
@@ -91,5 +93,9 @@ public class Order {
 
   public User getUser() {
     return user;
+  }
+
+  public double getPrice() {
+    return 0;
   }
 }
