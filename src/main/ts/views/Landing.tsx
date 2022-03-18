@@ -12,7 +12,11 @@ const S = {
     margin-right: auto;
     position: absolute;
     top: 37rem;
+<<<<<<< HEAD
     left: 7rem;
+=======
+    left: 0;
+>>>>>>> 2f6c6bb (Implement SplitView and Checkbox)
   `,
 };
 
