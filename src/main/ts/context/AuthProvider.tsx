@@ -6,7 +6,7 @@ import type User from 'types/User';
 type AuthProviderProps = { children: React.ReactNode };
 
 type GetToken = () => string | null;
-type SetToken = (token: string) => void;
+type SetToken = (token: string) => User | null;
 type RemoveToken = () => void;
 
 type Context = {
@@ -35,11 +35,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (error) {
       removeToken();
     }
+
+    return user;
   };
 
   const setToken = (token: string) => {
     localStorage.setItem('token', token);
-    setUserFromToken(token);
+    return setUserFromToken(token);
   };
 
   useEffect(() => {

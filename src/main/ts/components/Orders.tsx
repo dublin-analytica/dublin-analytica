@@ -1,51 +1,17 @@
-import { useState } from 'react';
+import { Container } from '@containers';
 import styled from 'styled-components';
 import Order from 'types/Order';
+import Table from './Table';
 
 type OrdersProps = { orders: Order[] };
 
 const S = {
-  Table: styled.table`
-    border-collapse: collapse;
-    width: 100%;
-  `,
-
-  THead: styled.thead`
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
-  `,
-
-  TH: styled.th`
-    text-align: left;
-  `,
-
-  TR: styled.tr`
-    height: 3rem;
+  H1: styled.h1`
+    color: ${({ theme }) => theme.text.colors.secondary};
   `,
 };
 
 const Orders = ({ orders }: OrdersProps) => {
-  const [selected, setSelected] = useState(new Set() as Set<string>);
-
-  const toggleSelected = (id: string) => () => {
-    setSelected((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.has(id)) newSelected.delete(id);
-      else newSelected.add(id);
-      return newSelected;
-    });
-  };
-
-  const toggleAll = () => {
-    setSelected((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.size === orders.length) newSelected.clear();
-      else orders.forEach(({ id }) => newSelected.add(id));
-      return newSelected;
-    });
-  };
-
-  const allSelected = () => selected.size === orders.length;
-
   const formatStatus = (status: string) => status.slice(0, 1) + status.slice(1).toLowerCase();
 
   const formatDate = (timestamp: number) => {
@@ -69,47 +35,25 @@ const Orders = ({ orders }: OrdersProps) => {
     return formatter.format(-Math.round(magnitude), unit);
   };
 
+  const headers = ['User', 'Status', 'Order Number', 'Price', 'Date'];
+  const rows = orders.map(({
+    id, user, status, number, price, timestamp,
+  }) => ({
+    id,
+    values: [
+      user.name,
+      formatStatus(status),
+      `# ${number.toString().padStart(4, '0')}`,
+      `€${price}`,
+      formatDate(timestamp),
+    ],
+  }));
+
   return (
-    <S.Table>
-      <S.THead>
-        <S.TR>
-          <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>
-          <S.TH>User</S.TH>
-          <S.TH>Status</S.TH>
-          <S.TH>Order Number</S.TH>
-          <S.TH>Price</S.TH>
-          <S.TH>Date</S.TH>
-        </S.TR>
-      </S.THead>
-      <tbody>
-        {orders.map(({
-          user, status, id, price, timestamp, number,
-        }) => (
-          <S.TR key={id} className={selected.has(id) ? 'selected' : ''}>
-            <td>
-              <input
-                aria-label="Select"
-                type="checkbox"
-                checked={selected.has(id)}
-                onChange={toggleSelected(id)}
-              />
-            </td>
-            <td>{user.name}</td>
-            <td>{formatStatus(status)}</td>
-            <td>
-              #
-              {' '}
-              {number.toString().padStart(4, '0')}
-            </td>
-            <td>
-              €
-              {price}
-            </td>
-            <td>{formatDate(timestamp)}</td>
-          </S.TR>
-        ))}
-      </tbody>
-    </S.Table>
+    <Container style={{ marginTop: '4rem' }}>
+      {orders.length === 0 && <S.H1>You haven&apos;t made any orders yet!</S.H1>}
+      {orders.length > 0 && <Table headers={headers} rows={rows} />}
+    </Container>
   );
 };
 

@@ -16,7 +16,7 @@ const SplitView = ({ children }: SplitViewProps) => {
           style={{
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
-            flexBasis: '30%',
+            flexBasis: '20%',
           }}
         >
           {children[0]}

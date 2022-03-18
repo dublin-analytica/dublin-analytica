@@ -58,6 +58,7 @@
     "react/prop-types": "off",
     "require-default-props": "off",
     "react/require-default-props": "off",
+    "react/no-unused-prop-types": "off",
     "no-shadow": "off"
   }
 }
