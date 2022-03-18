@@ -2,7 +2,7 @@ type User = {
   id: string;
   name: string;
   email: string;
-  isAdmin: boolean;
+  admin: boolean;
 }
 
 export default User;
