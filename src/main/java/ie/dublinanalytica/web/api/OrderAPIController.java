@@ -67,28 +67,8 @@ public class OrderAPIController {
     return new Response(order);
   }
 
-<<<<<<< HEAD
-  /**
-   * Gets all orders.
-   *
-   * @param authHeader Authentication header
-   * @throws UserAuthenticationException If the user is not an admin
-   * @throws UserNotFoundException If the user is not found
-   */
-  @GetMapping("")
-  public Response getAllOrders(@RequestHeader("Authorization") String authHeader)
-      throws UserAuthenticationException, UserNotFoundException {
-    JWTPayload payload = JWTPayload.fromHeader(authHeader);
-    User user = userService.findById(payload.getId());
-
-    if (!user.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
-    }
-
-=======
   @GetMapping("")
   public Response getAllOrders() throws OrderNotFoundException {
->>>>>>> 2ae871f (Add toggle selection functionality to orders)
     return new Response(orderService.findAllOrders());
   }
 
