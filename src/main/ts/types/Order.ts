@@ -2,9 +2,11 @@ import User from './User';
 import Status from './Status';
 
 type Order = {
-  id: string;
+  id: number;
   status: Status;
   user: User;
+  timestamp: number;
+  price: number;
   items: { [key: string]: number };
 }
 

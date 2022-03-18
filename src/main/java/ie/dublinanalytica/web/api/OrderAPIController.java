@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.Response;
 import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
@@ -68,6 +67,7 @@ public class OrderAPIController {
     return new Response(order);
   }
 
+<<<<<<< HEAD
   /**
    * Gets all orders.
    *
@@ -85,6 +85,10 @@ public class OrderAPIController {
       throw new UserAuthenticationException("User is not an admin");
     }
 
+=======
+  @GetMapping("")
+  public Response getAllOrders() throws OrderNotFoundException {
+>>>>>>> 2ae871f (Add toggle selection functionality to orders)
     return new Response(orderService.findAllOrders());
   }
 
