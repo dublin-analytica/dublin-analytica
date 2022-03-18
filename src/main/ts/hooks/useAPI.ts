@@ -13,7 +13,7 @@ const useAPI = () => {
 
     if (response.ok) return data;
 
-    if (response.status === 401 || response.status === 403) {
+    if (response.status === 401) {
       removeToken();
       navigate('/login');
     }
@@ -29,7 +29,7 @@ const useAPI = () => {
       if (body) headers['Content-Type'] = 'application/json';
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      return fetch(`/api/${url}`, {
+      return fetch(`localhost:8080/api/${url}`, {
         method,
         headers,
         body: body ? JSON.stringify(body) : null,
