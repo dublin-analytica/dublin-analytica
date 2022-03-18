@@ -1,7 +1,27 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import Order from 'types/Order';
 
 type OrdersProps = { orders: Order[] };
+
+const S = {
+  Table: styled.table`
+    border-collapse: collapse;
+    width: 100%;
+  `,
+
+  THead: styled.thead`
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+  `,
+
+  TH: styled.th`
+    text-align: left;
+  `,
+
+  TR: styled.tr`
+    height: 3rem;
+  `,
+};
 
 const Orders = ({ orders }: OrdersProps) => {
   const [selected, setSelected] = useState(new Set() as Set<string>);
@@ -50,22 +70,22 @@ const Orders = ({ orders }: OrdersProps) => {
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></th>
-          <th>User</th>
-          <th>Status</th>
-          <th>Order Number</th>
-          <th>Price</th>
-          <th>Date</th>
-        </tr>
-      </thead>
+    <S.Table>
+      <S.THead>
+        <S.TR>
+          <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>
+          <S.TH>User</S.TH>
+          <S.TH>Status</S.TH>
+          <S.TH>Order Number</S.TH>
+          <S.TH>Price</S.TH>
+          <S.TH>Date</S.TH>
+        </S.TR>
+      </S.THead>
       <tbody>
         {orders.map(({
           user, status, id, price, timestamp, number,
         }) => (
-          <tr key={id} className={selected.has(id) ? 'selected' : ''}>
+          <S.TR key={id} className={selected.has(id) ? 'selected' : ''}>
             <td>
               <input
                 aria-label="Select"
@@ -78,17 +98,18 @@ const Orders = ({ orders }: OrdersProps) => {
             <td>{formatStatus(status)}</td>
             <td>
               #
-              {number}
+              {' '}
+              {number.toString().padStart(4, '0')}
             </td>
             <td>
               €
               {price}
             </td>
             <td>{formatDate(timestamp)}</td>
-          </tr>
+          </S.TR>
         ))}
       </tbody>
-    </table>
+    </S.Table>
   );
 };
 
