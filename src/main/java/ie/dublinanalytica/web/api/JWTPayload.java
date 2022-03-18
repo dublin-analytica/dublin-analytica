@@ -17,6 +17,7 @@ public class JWTPayload {
   private String name;
   private String email;
   private String authToken;
+  private boolean admin;
 
   /**
    * Create the JWT token from the information.
@@ -26,15 +27,16 @@ public class JWTPayload {
    * @param email The user's email
    * @param token The user's auth token
    */
-  public JWTPayload(UUID id, String name, String email, String token) {
+  public JWTPayload(UUID id, String name, String email, String token, boolean admin) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.authToken = token;
+    this.admin = admin;
   }
 
   public JWTPayload(User user, String token) {
-    this(user.getId(), user.getName(), user.getEmail(), token);
+    this(user.getId(), user.getName(), user.getEmail(), token, user.isAdmin());
   }
 
   /**
@@ -50,12 +52,13 @@ public class JWTPayload {
     String name = jwt.getClaim("name").asString();
     String email = jwt.getClaim("email").asString();
     String authToken = jwt.getClaim("authToken").asString();
+    boolean admin = jwt.getClaim("admin").asBoolean();
 
     if (uuidString == null || name == null || email == null || authToken == null) {
       throw new UserAuthenticationException("Invalid JWT payload");
     }
 
-    return new JWTPayload(UUID.fromString(uuidString), name, email, authToken);
+    return new JWTPayload(UUID.fromString(uuidString), name, email, authToken, admin);
   }
 
   /**
@@ -70,6 +73,7 @@ public class JWTPayload {
         put("name", name);
         put("email", email);
         put("authToken", authToken);
+        put("admin", admin);
       }
     });
   }
@@ -104,5 +108,13 @@ public class JWTPayload {
 
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
+  }
+
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
+  }
+
+  public boolean isAdmin() {
+    return admin;
   }
 }
