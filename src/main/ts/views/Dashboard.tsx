@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@context/AuthProvider';
-import { SplitView } from '@components';
+import { Orders, SplitView } from '@components';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <SplitView>
       <h1>Dashboard</h1>
-      <h1>Admin</h1>
+      <Orders />
     </SplitView>
   );
 };
