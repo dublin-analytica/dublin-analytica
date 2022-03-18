@@ -54,8 +54,6 @@ input[type="checkbox"]:checked:after {
   position: absolute;
   line-height: 1rem;
   font-size: 0.8rem;
-  padding-left: 1px;
-  padding-bottom: 2px;
 }
 
 th {

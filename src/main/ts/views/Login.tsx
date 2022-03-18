@@ -28,7 +28,7 @@ const Login = () => {
   const handleSubmit = () => {
     const { email, password } = state;
     login(email, password)
-      .then(() => navigate('/marketplace'))
+      .then((user) => navigate(user?.admin ? '/dashboard' : '/marketplace'))
       .catch(setError);
   };
 

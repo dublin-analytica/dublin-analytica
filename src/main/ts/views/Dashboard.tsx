@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 
-import { Orders, SplitView, Stats } from '@components';
+import {
+  Orders, Sidebar, SplitView, Stats,
+} from '@components';
 import { useOrderActions } from '@hooks';
 // import { useAuth } from '@context/AuthProvider';
 
@@ -31,7 +33,7 @@ const Dashboard = () => {
 
   return (
     <SplitView>
-      <h1>Dashboard</h1>
+      <Sidebar />
       <>
         <Stats stats={stats} />
         <Orders orders={orders} />

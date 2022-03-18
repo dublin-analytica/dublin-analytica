@@ -1,18 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
-import { Button } from '@components';
 import { Container } from '@containers';
-
 import type { Theme } from '@styles/theme';
 
 import { useAuth } from '@context/AuthProvider';
 import Logo from './Logo';
 import Title from './Title';
+import Link from './Link';
 
 type NavbarProps = { scrolled: boolean };
-
-type NavLinkProps = { text: string; to: string; primary?: boolean; };
 
 const S = {
   Navbar: styled.nav<NavbarProps>`
@@ -22,18 +19,6 @@ const S = {
     display: flex;
     justify-content: center;
   `,
-};
-
-const NavLink = ({ text, to, primary }: NavLinkProps) => {
-  const navigate = useNavigate();
-  return (
-    <Button
-      variant={primary ? 'primary' : 'transparent'}
-      onClick={() => navigate(to)}
-    >
-      {text}
-    </Button>
-  );
 };
 
 const Navbar = ({ scrolled }: NavbarProps) => {
@@ -49,12 +34,12 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <Title onClick={() => navigate('/')} color={text.colors.dark} size="2rem" />
         </Container>
         <Container direction="row" justify="flex-end">
-          <NavLink text="Marketplace" to="/marketplace" />
-          {user && <NavLink text="Basket" to="/basket" />}
-          {!user && <NavLink text="Login" to="/login" />}
-          {user && !user?.admin && <NavLink text="My Account" to="/account" primary />}
-          {user?.admin && <NavLink text="Dashboard" to="/dashboard" primary />}
-          {!user && <NavLink text="Sign Up" to="/register" primary />}
+          <Link text="Marketplace" to="/marketplace" unpadded />
+          {user && <Link text="Basket" to="/basket" unpadded />}
+          {!user && <Link text="Login" to="/login" unpadded />}
+          {user && !user?.admin && <Link text="My Account" to="/account" primary />}
+          {user?.admin && <Link text="Dashboard" to="/dashboard" primary />}
+          {!user && <Link text="Sign Up" to="/register" primary />}
         </Container>
       </Container>
     </S.Navbar>

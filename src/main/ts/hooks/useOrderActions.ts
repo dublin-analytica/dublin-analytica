@@ -6,7 +6,9 @@ import useAPI from './useAPI';
 const useOrderActions = () => {
   const { get, post } = useAPI();
 
-  const getOrders = (): Promise<Order[]> => get('orders');
+  const getOrders = (user?: string): Promise<Order[]> => (
+    user ? get(`orders/user/${user}`) : get('orders')
+  );
 
   const getOrder = (id: number): Promise<Order> => get(`orders/${id}`);
 

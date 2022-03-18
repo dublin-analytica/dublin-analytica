@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-type ButtonProps = JSX.IntrinsicElements['button'] & { variant?: 'primary' | 'secondary' | 'transparent' };
+type ButtonProps = JSX.IntrinsicElements['button'] & { variant?: 'primary' | 'secondary' | 'transparent', unpadded?: boolean };
 
 const S = {
   Button: styled.button<ButtonProps>`
@@ -15,7 +15,7 @@ const S = {
     cursor: pointer;
     font-size: ${({ theme }) => theme.typography.size.default};
     font-weight: ${({ theme }) => theme.typography.weight.bold};
-    padding: ${({ theme, variant }) => `0 ${variant === 'transparent' ? 0 : theme.spacing.medium}`};
+    padding: ${({ theme, unpadded }) => `0 ${unpadded ? 0 : theme.spacing.medium}`};
     transition: all 0.2s ease-in-out;
 
   &:hover {
@@ -30,9 +30,11 @@ const S = {
 };
 
 const Button = ({
-  children, type, variant = 'primary', onClick,
+  children, type, variant = 'primary', unpadded = false, onClick,
 }: ButtonProps) => (
-  <S.Button type={type} onClick={onClick} variant={variant}>{children}</S.Button>
+  <S.Button unpadded={unpadded} type={type} onClick={onClick} variant={variant}>
+    {children}
+  </S.Button>
 );
 
 export default Button;
