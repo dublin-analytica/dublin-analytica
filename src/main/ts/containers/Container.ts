@@ -3,6 +3,7 @@ import styled from 'styled-components';
 type ContainerProps = JSX.IntrinsicElements['div'] & {
   direction?: 'row' | 'column',
   justify?: 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around',
+  align?: 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch',
   unpadded?: boolean,
   nav?: boolean,
   cursor?: boolean,
@@ -15,7 +16,7 @@ const Container = styled.div<ContainerProps>`
     display: flex;
     flex-direction: ${({ direction = 'column' }) => direction};
     justify-content: ${({ justify = 'flex-start' }) => justify};
-    align-items: center;
+    align-items: ${({ align = 'center' }) => align};
     width: ${({ theme }) => `calc(100% - ${theme.spacing.medium} - ${theme.spacing.medium})`};
     padding: ${({ unpadded, theme }) => (unpadded ? 0 : theme.spacing.medium)};
     padding-top: ${({ nav, unpadded, theme }) => {

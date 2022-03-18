@@ -10,7 +10,7 @@ const SplitView = ({ children }: SplitViewProps) => {
 
   return (
     <Container nav color={colors.primary}>
-      <Container nomargin unpadded color={colors.white} direction="row">
+      <Container nomargin unpadded color={colors.white} direction="row" align="stretch">
         <Container
           color={colors.gray}
           style={{

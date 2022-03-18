@@ -41,6 +41,10 @@ input[type="checkbox"] {
   position: relative;
   top: 5px;
   box-sizing: border-box;
+  border: 1px solid #53ca9d;
+}
+
+input[type="checkbox"]:checked {
   background-color: #53ca9d;
 }
 

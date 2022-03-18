@@ -1,18 +1,37 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Orders, SplitView, Stats } from '@components';
+import { useOrderActions } from '@hooks';
 import { useAuth } from '@context/AuthProvider';
-import { Orders, SplitView } from '@components';
+
+import Order from 'types/Order';
 
 const Dashboard = () => {
+  const [orders, setOrders] = useState([] as Order[]);
+
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { getOrders } = useOrderActions();
 
-  if (!user?.admin) navigate('/404');
+  useEffect(() => {
+    getOrders().then(setOrders);
+    return () => {
+      setOrders([]);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!user?.admin) navigate('/404');
+  }, []);
 
   return (
     <SplitView>
       <h1>Dashboard</h1>
-      <Orders />
+      <>
+        <Stats stats={[]} />
+        <Orders orders={orders} />
+      </>
     </SplitView>
   );
 };

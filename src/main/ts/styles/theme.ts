@@ -11,7 +11,7 @@ export type Color = 'primary'
   | 'light'
   | 'gray';
 
-export type TextColor = 'dark' | 'light';
+export type TextColor = 'dark' | 'light' | 'secondary';
 
 export type Spacing = 'small' | 'medium' | 'large';
 
@@ -47,6 +47,7 @@ const theme: Theme = {
     colors: {
       dark: '#212121',
       light: '#ffffff',
+      secondary: '#f1f1f1',
     },
   },
   spacing: {

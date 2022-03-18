@@ -1,35 +1,32 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
 import Order from 'types/Order';
-import { useOrderActions } from '@hooks';
 
-const Orders = () => {
-  const [orders, setOrders] = useState([] as Order[]);
-  const [selected, setSelected] = useState(new Set() as Set<number>);
+type OrdersProps = { orders: Order[] };
 
-  const { getOrders } = useOrderActions();
+const Orders = ({ orders }: OrdersProps) => {
+  const [selected, setSelected] = useState(new Set() as Set<string>);
 
-  useEffect(() => {
-    getOrders().then(setOrders);
-    return () => setOrders([]);
-  }, []);
-
-  const toggleSelected = (id: number) => () => {
-    if (selected.has(id)) selected.delete(id);
-    else selected.add(id);
-    setSelected(selected);
+  const toggleSelected = (id: string) => () => {
+    setSelected((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if (newSelected.has(id)) newSelected.delete(id);
+      else newSelected.add(id);
+      return newSelected;
+    });
   };
 
   const toggleAll = () => {
-    if (selected.size === orders.length) selected.clear();
-    else orders.forEach(({ id }) => selected.add(id));
-
-    setSelected(selected);
+    setSelected((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if (newSelected.size === orders.length) newSelected.clear();
+      else orders.forEach(({ id }) => newSelected.add(id));
+      return newSelected;
+    });
   };
 
-  const allSelected = selected.size === orders.length;
+  const allSelected = () => selected.size === orders.length;
 
-  const formatStatus = (status: string) => status.slice(0, 1).toUpperCase() + status.slice(1);
+  const formatStatus = (status: string) => status.slice(0, 1) + status.slice(1).toLowerCase();
 
   const formatDate = (timestamp: number) => {
     const getArgs = (diff: number): [number, Intl.RelativeTimeFormatUnit] => {
@@ -56,7 +53,7 @@ const Orders = () => {
     <table>
       <thead>
         <tr>
-          <th><input aria-label="Select All" type="checkbox" checked={allSelected} onChange={toggleAll} /></th>
+          <th><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></th>
           <th>User</th>
           <th>Status</th>
           <th>Order Number</th>
@@ -66,15 +63,22 @@ const Orders = () => {
       </thead>
       <tbody>
         {orders.map(({
-          user, status, id, price, timestamp,
+          user, status, id, price, timestamp, number,
         }) => (
           <tr key={id} className={selected.has(id) ? 'selected' : ''}>
-            <td><input aria-label="Select" type="checkbox" checked={selected.has(id)} onChange={toggleSelected(id)} /></td>
+            <td>
+              <input
+                aria-label="Select"
+                type="checkbox"
+                checked={selected.has(id)}
+                onChange={toggleSelected(id)}
+              />
+            </td>
             <td>{user.name}</td>
             <td>{formatStatus(status)}</td>
             <td>
               #
-              {id}
+              {number}
             </td>
             <td>
               €
