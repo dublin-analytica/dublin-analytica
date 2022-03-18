@@ -53,13 +53,42 @@ public class OrderAPIController {
    * @throws OrderNotFoundException      if the order not found
    */
   @GetMapping("/{orderid}")
-  public Response getOrder(@PathVariable("orderid") String orderid)
-      throws OrderNotFoundException {
-    return new Response(userService.getOrder(UUID.fromString(orderid)));
+  public Response getOrder(
+      @RequestHeader("Authorization") String authHeader,
+      @PathVariable("orderid") String orderid)
+      throws OrderNotFoundException, UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    Order order = orderService.findById(UUID.fromString(orderid));
+
+    if (order.getUser().getId() != user.getId()) {
+      throw new UserAuthenticationException("User does not own order");
+    }
+
+    if (!user.isAdmin()) {
+      throw new UserAuthenticationException("User is not an admin");
+    }
+
+    return new Response(user);
   }
 
+  /**
+   * Gets all orders.
+   *
+   * @param authHeader Authentication header
+   * @throws UserAuthenticationException If the user is not an admin
+   * @throws UserNotFoundException If the user is not found
+   */
   @GetMapping("/")
-  public Response getAllOrders() throws OrderNotFoundException {
+  public Response getAllOrders(@RequestHeader("Authorization") String authHeader)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+
+    if (!user.isAdmin()) {
+      throw new UserAuthenticationException("User is not an admin");
+    }
+
     return new Response(orderService.findAllOrders());
   }
 
@@ -117,7 +146,7 @@ public class OrderAPIController {
     UUID uuid = UUID.fromString(userid);
     User user = userService.findById(uuid);
 
-    if (authUser.getId().equals(user.getId())) {
+    if (authUser.getId().equals(user.getId()) || user.isAdmin()) {
       return new Response(orderService.getUserOrders(user));
     }
 
