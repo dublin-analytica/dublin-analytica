@@ -22,7 +22,7 @@ const Container = styled.div<ContainerProps>`
     border-radius: ${({ unrounded, theme }) => (unrounded ? 0 : theme.spacing.medium)};
     background-color: ${({ color }) => color};
     cursor: ${({ cursor }) => (cursor ? 'pointer' : 'default')};
-    height: ${({ fullscreen }) => (fullscreen ? '88vh' : 'auto')};
+    min-height: ${({ fullscreen }) => (fullscreen ? '88vh' : 'auto')};
 
     color: ${({ color = 'transparent', theme }) => {
     const { transparent, white, gray } = theme.colors;
