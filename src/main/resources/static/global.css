@@ -57,3 +57,7 @@ input[type="checkbox"]:checked:after {
   padding-left: 1px;
   padding-bottom: 2px;
 }
+
+th {
+  text-align: left;
+}

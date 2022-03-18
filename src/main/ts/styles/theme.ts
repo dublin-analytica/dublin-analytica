@@ -47,7 +47,7 @@ const theme: Theme = {
     colors: {
       dark: '#212121',
       light: '#ffffff',
-      secondary: '#f1f1f1',
+      secondary: '#c4c4c4',
     },
   },
   spacing: {
