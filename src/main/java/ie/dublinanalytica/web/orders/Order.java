@@ -38,7 +38,7 @@ public class Order {
   @GeneratedValue
   private UUID id;
 
-  private long orderNumber;
+  private long number;
 
   @ElementCollection
   private Map<UUID, Integer> items;
@@ -65,7 +65,7 @@ public class Order {
     this();
     this.items = new HashMap<>(cart.getItems());
     this.user = user;
-    this.orderNumber = ORDER_COUNT++;
+    this.number = ORDER_COUNT++;
   }
 
   public LocalDateTime getTimestamp() {
@@ -104,11 +104,11 @@ public class Order {
     return 0;
   }
 
-  public long getOrderNumber() {
-    return orderNumber;
+  public long getNumber() {
+    return number;
   }
 
-  public long setOrderNumber(long orderNumber) {
-    return this.orderNumber = orderNumber;
+  public long setNumber(long orderNumber) {
+    return this.number = orderNumber;
   }
 }
