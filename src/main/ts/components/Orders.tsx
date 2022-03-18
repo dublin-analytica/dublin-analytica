@@ -32,21 +32,24 @@ const Orders = () => {
   const formatStatus = (status: string) => status.slice(0, 1).toUpperCase() + status.slice(1);
 
   const formatDate = (timestamp: number) => {
-    const getUnit = (diff: number) => {
-      if (diff < 60) return 'second';
-      if (diff < 3600) return 'minute';
-      if (diff < 86400) return 'hour';
-      if (diff < 604800) return 'day';
-      if (diff < 2419200) return 'week';
-      if (diff < 29030400) return 'month';
-      return 'year';
+    const getArgs = (diff: number): [number, Intl.RelativeTimeFormatUnit] => {
+      const seconds = Math.floor(diff / 1000);
+
+      if (seconds < 60) return [seconds, 'second'];
+      if (seconds < 3600) return [seconds / 60, 'minute'];
+      if (seconds < 86400) return [seconds / 3600, 'hour'];
+      if (seconds < 604800) return [seconds / 86400, 'day'];
+      if (seconds < 2419200) return [seconds / 604800, 'week'];
+      if (seconds < 29030400) return [seconds / 2419200, 'month'];
+      return [seconds / 2419200, 'year'];
     };
 
     const formatter = new Intl.RelativeTimeFormat('en', { style: 'narrow' });
     const date = new Date(timestamp);
-    const diff = Math.round((new Date().getTime() - date.getTime()) / 1000);
-    const unit = getUnit(diff);
-    return formatter.format(diff, unit);
+    const diff = Math.round((new Date().getTime() - date.getTime()));
+
+    const [magnitude, unit] = getArgs(diff);
+    return formatter.format(-Math.round(magnitude), unit);
   };
 
   return (

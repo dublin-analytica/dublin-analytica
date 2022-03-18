@@ -19,6 +19,8 @@ const S = {
     position: ${({ scrolled }) => (scrolled ? 'fixed' : 'absolute')};
     top: ${({ scrolled }) => (scrolled ? '-20px' : '64px')};
     width: 90%;
+    display: flex;
+    justify-content: center;
   `,
 };
 

@@ -18,7 +18,11 @@ const Container = styled.div<ContainerProps>`
     align-items: center;
     width: ${({ theme }) => `calc(100% - ${theme.spacing.medium} - ${theme.spacing.medium})`};
     padding: ${({ unpadded, theme }) => (unpadded ? 0 : theme.spacing.medium)};
-    padding-top: ${({ nav, theme }) => (nav ? '12rem' : theme.spacing.medium)};
+    padding-top: ${({ nav, unpadded, theme }) => {
+    if (nav) return '15rem';
+    if (unpadded) return 0;
+    return theme.spacing.medium;
+  }};
     border-radius: ${({ unrounded, theme }) => (unrounded ? 0 : theme.spacing.medium)};
     background-color: ${({ color }) => color};
     cursor: ${({ cursor }) => (cursor ? 'pointer' : 'default')};
