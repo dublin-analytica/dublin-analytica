@@ -14,11 +14,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,23 +58,54 @@ public class ShoppingCartAPITests {
   @Test
   public void addToCart() throws Exception {
     String token = getAuthToken();
-
-    MvcResult result = this.mockMvc.perform(
-        get("/api/dataset/"))
-      .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[0].id");
-
+    String id = getId();
 
     this.mockMvc.perform(
       post("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
-      .andDo(print())
       .andExpect(status().isCreated());
   }
+
+  @Test
+  public void addToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
+    String id = getId();
+
+    this.mockMvc.perform(
+        post("/api/cart/")
+          .header("Authorization", "Bearer INVALID TOKEN")
+          .contentType("application/json")
+          .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void putToCart() throws Exception {
+    String token = getAuthToken();
+    String id = getId();
+
+    this.mockMvc.perform(
+        put("/api/cart/")
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
+      .andExpect(status().isCreated());
+  }
+
+  @Test
+  public void putToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
+    String id = getId();
+
+    this.mockMvc.perform(
+        put("/api/cart/")
+          .header("Authorization", "Bearer INVALID TOKEN")
+          .contentType("application/json")
+          .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
+      .andExpect(status().isUnauthorized());
+  }
+
+
 
   /**
    * Converts an object to JSON using jackson.
@@ -106,5 +137,17 @@ public class ShoppingCartAPITests {
       .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     return response.token();
+  }
+
+  /**
+   * Gets the id of a dataset
+   */
+  public String getId() throws Exception {
+    MvcResult result = this.mockMvc.perform(
+        get("/api/dataset/"))
+      .andReturn();
+
+    String response = result.getResponse().getContentAsString();
+    return JsonPath.parse(response).read("$.[0].id");
   }
 }
