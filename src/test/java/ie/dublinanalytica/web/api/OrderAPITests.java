@@ -104,7 +104,7 @@ public class OrderAPITests {
     this.mockMvc.perform(
         get("/api/orders/9af-e9468f4785f3"))
       .andDo(print())
-      .andExpect(status().isBadRequest())
+      .andExpect(status().isNotFound())
       .andReturn();
   }
 
