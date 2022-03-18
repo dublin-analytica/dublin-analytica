@@ -1,12 +1,17 @@
 package ie.dublinanalytica.web;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
+import ie.dublinanalytica.web.orders.Order;
+import ie.dublinanalytica.web.orders.OrderRepository;
+import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserRepository;
 
@@ -26,10 +31,20 @@ public class DatabaseLoader implements CommandLineRunner {
    */
   private final DatasetRepository datasetRepository;
 
+  /**
+   * Order repository.
+   */
+  private final OrderRepository orderRepository;
+
+  /**
+   * Initilizes different instances of classes into repositorys for testing.
+   */
   @Autowired
-  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository) {
+  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository, 
+      OrderRepository orderRepository) {
     this.userRepository = repository;
     this.datasetRepository = datasetRepository;
+    this.orderRepository = orderRepository;
   }
 
   @Override
@@ -43,12 +58,23 @@ public class DatabaseLoader implements CommandLineRunner {
 
     this.userRepository.save(admin);
 
-    this.datasetRepository.save(
-      new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com")
-    );
+    Dataset set = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
+
+    this.datasetRepository.save(set);
 
     this.datasetRepository.save(
       new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
+    );
+
+    HashMap<UUID, Integer> map = new HashMap<>();
+    map.put(set.getId(), 10);
+    Order order = new Order(new ShoppingCart(map), admin);
+    order.setStatus(Order.OrderStatus.PROCESSING);
+
+    this.orderRepository.save(order);
+
+    this.orderRepository.save(
+      new Order(new ShoppingCart(map), admin)
     );
   }
 }

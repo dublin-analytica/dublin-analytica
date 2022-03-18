@@ -50,15 +50,17 @@ public class OrderAPIController {
    *
    * @param orderid Order id
    * @return Users order
-   * @throws UserAuthenticationException if no authorization header is provided or
-   *                                     is invalid
-   * @throws UserNotFoundException       if the user not found
    * @throws OrderNotFoundException      if the order not found
    */
   @GetMapping("/{orderid}")
   public Response getOrder(@PathVariable("orderid") String orderid)
       throws OrderNotFoundException {
     return new Response(userService.getOrder(UUID.fromString(orderid)));
+  }
+
+  @GetMapping("/")
+  public Response getAllOrders() throws OrderNotFoundException {
+    return new Response(orderService.findAllOrders());
   }
 
 

@@ -11,6 +11,11 @@ public class ChangeStatusDTO {
   public Order.OrderStatus status;
 
   public ChangeStatusDTO() {
+
+  }
+
+  public ChangeStatusDTO(Order.OrderStatus status) {
+    this.status = status;
   }
 
   public Order.OrderStatus getStatus() {

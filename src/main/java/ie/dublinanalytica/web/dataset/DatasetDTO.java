@@ -27,6 +27,19 @@ public class DatasetDTO {
   @NotEmpty
   private String url;
 
+  public DatasetDTO() {}
+
+  /**
+   * Constructor class for DatasetDTO.
+   */
+  public DatasetDTO(String name, String description, String datapoints, double size, String url) {
+    this.name = name;
+    this.description = description;
+    this.datapoints = datapoints;
+    this.size = size;
+    this.url = url;
+  }
+
   public String getName() {
     return name;
   }

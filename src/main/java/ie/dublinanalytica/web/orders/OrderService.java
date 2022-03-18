@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-
 import ie.dublinanalytica.web.exceptions.BadRequest;
 import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
@@ -61,7 +60,7 @@ public class OrderService {
   }
 
   /**
-   * Finds an oder using the order's id.
+   * Finds an order using the order's id.
    *
    * @param id The id of the order
    * @return The order
@@ -79,5 +78,14 @@ public class OrderService {
 
   public void save(Order order) {
     orderRepository.save(order);
+  }
+
+  /**
+   * Finds all orders in crud repository.
+   *
+   * @return All the Order objects
+   */
+  public Iterable<Order> findAllOrders() {
+    return orderRepository.findAll();
   }
 }
