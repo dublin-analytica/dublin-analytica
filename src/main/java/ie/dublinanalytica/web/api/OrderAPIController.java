@@ -65,7 +65,7 @@ public class OrderAPIController {
       throw new UserAuthenticationException();
     }
 
-    return new Response(user);
+    return new Response(order);
   }
 
   /**
@@ -75,7 +75,7 @@ public class OrderAPIController {
    * @throws UserAuthenticationException If the user is not an admin
    * @throws UserNotFoundException If the user is not found
    */
-  @GetMapping("/")
+  @GetMapping("")
   public Response getAllOrders(@RequestHeader("Authorization") String authHeader)
       throws UserAuthenticationException, UserNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);

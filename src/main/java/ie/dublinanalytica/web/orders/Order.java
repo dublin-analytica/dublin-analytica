@@ -27,7 +27,7 @@ public class Order {
    * Enum to represent the status of the order.
    */
   public enum OrderStatus {
-    PLACED, PROCESSING, SHIPPED
+    PLACED, PROCESSING, DELIVERED
   }
 
   private LocalDateTime timestamp;
