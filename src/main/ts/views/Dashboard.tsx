@@ -7,7 +7,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  if (!user?.isAdmin && false) navigate('/404');
+  if (!user?.admin) navigate('/404');
 
   return (
     <SplitView>
