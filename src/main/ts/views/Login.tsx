@@ -33,27 +33,25 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <Container nav color={theme.colors.primary}>
-        <Form onSubmit={handleSubmit}>
-          <div>
-            <h2>Welcome back!</h2>
-            <p>Please sign in to your account</p>
-          </div>
-          <div>
-            <Input label="Email" name="email" onChange={handleChange} />
-            <Input label="Password" name="password" type="password" onChange={handleChange} />
-          </div>
-          <ErrorToast message={error} />
-          <Button type="submit" color={theme.colors.primary}>Sign In</Button>
-          <p>
-            Not a member?
-            {' '}
-            <a href="/register">Sign Up</a>
-          </p>
-        </Form>
-      </Container>
-    </div>
+    <Container color={theme.colors.primary} justify="center" fullscreen>
+      <Form onSubmit={handleSubmit}>
+        <div>
+          <h2>Welcome back!</h2>
+          <p>Please sign in to your account</p>
+        </div>
+        <div>
+          <Input label="Email" name="email" onChange={handleChange} />
+          <Input label="Password" name="password" type="password" onChange={handleChange} />
+        </div>
+        <ErrorToast message={error} />
+        <Button type="submit" color={theme.colors.primary}>Sign In</Button>
+        <p>
+          Not a member?
+          {' '}
+          <a href="/register">Sign Up</a>
+        </p>
+      </Form>
+    </Container>
   );
 };
 
