@@ -21,6 +21,11 @@ public class ItemDTO {
 
   public ItemDTO() {}
 
+  public ItemDTO(UUID datasetId, int datapointCount) {
+    this.datasetId = datasetId;
+    this.datapointCount = datapointCount;
+  }
+
   public UUID getDatasetId() {
     return this.datasetId;
   }
