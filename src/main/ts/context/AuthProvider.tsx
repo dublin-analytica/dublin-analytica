@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import jwtDecode from 'jwt-decode';
 
-type AuthProviderProps = { children: React.ReactNode };
+import type User from 'types/User';
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-} | null
+type AuthProviderProps = { children: React.ReactNode };
 
 type GetToken = () => string | null;
 type SetToken = (token: string) => void;

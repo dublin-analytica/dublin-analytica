@@ -57,6 +57,7 @@
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "require-default-props": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-shadow": "off"
   }
 }

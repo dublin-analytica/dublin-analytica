@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class ReactAppController implements ErrorController {
-  @GetMapping({ "/", "/login", "/register", "/dashboard", "/dataset", "/marketplace", "/404" })
+  @GetMapping({
+    "/", "/login", "/register", "/account", "/dashboard", "/dataset", "/marketplace", "/404"
+  })
+  
   public String getIndex() {
     return "/index.html";
   }

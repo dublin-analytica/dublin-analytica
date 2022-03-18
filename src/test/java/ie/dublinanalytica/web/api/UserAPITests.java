@@ -219,7 +219,4 @@ public class UserAPITests {
       .andDo(print())
         .andExpect(status().isBadRequest());
   }
-
-  /* TODO: Add tests to verify that auth tokens can actually be used.
-  Not done for /users/me in case it gets removed */
 }

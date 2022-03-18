@@ -13,7 +13,7 @@ const useAPI = () => {
 
     if (response.ok) return data;
 
-    if (response.status === 401 || response.status === 403) {
+    if (response.status === 401) {
       removeToken();
       navigate('/login');
     }
