@@ -23,6 +23,8 @@ import ie.dublinanalytica.web.user.User;
 @Table(name = "orders")
 public class Order {
 
+  private static long ORDER_COUNT = 0;
+
   /**
    * Enum to represent the status of the order.
    */
@@ -35,6 +37,8 @@ public class Order {
   @Id
   @GeneratedValue
   private UUID id;
+
+  private long orderNumber;
 
   @ElementCollection
   private Map<UUID, Integer> items;
@@ -61,6 +65,7 @@ public class Order {
     this();
     this.items = new HashMap<>(cart.getItems());
     this.user = user;
+    this.orderNumber = ORDER_COUNT++;
   }
 
   public LocalDateTime getTimestamp() {
@@ -97,5 +102,13 @@ public class Order {
 
   public double getPrice() {
     return 0;
+  }
+
+  public long getOrderNumber() {
+    return orderNumber;
+  }
+
+  public long setOrderNumber(long orderNumber) {
+    return this.orderNumber = orderNumber;
   }
 }

@@ -52,7 +52,7 @@ public class OrderAPIController {
    * @return Users order
    * @throws OrderNotFoundException      if the order not found
    */
-  @GetMapping("/{orderid}")
+  @GetMapping("/{orderid:.{36}}")
   public Response getOrder(
       @RequestHeader("Authorization") String authHeader,
       @PathVariable("orderid") String orderid)

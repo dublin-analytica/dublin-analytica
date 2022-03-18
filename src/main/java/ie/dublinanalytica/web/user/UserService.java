@@ -273,4 +273,8 @@ public class UserService {
       throw new UserAuthenticationException("User is not an admin", HttpStatus.FORBIDDEN);
     }
   }
+
+  public void save(User user) {
+    userRepository.save(user);
+  }
 }
