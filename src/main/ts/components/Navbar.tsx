@@ -50,9 +50,9 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <NavLink text="Marketplace" to="/marketplace" />
           {user && <NavLink text="Basket" to="/basket" />}
           {!user && <NavLink text="Login" to="/login" />}
-          {!user?.isAdmin && <NavLink text="My Account" to="/account" primary />}
+          {user && !user?.isAdmin && <NavLink text="My Account" to="/account" primary />}
           {user?.isAdmin && <NavLink text="Dashboard" to="/dashboard" primary />}
-          {!user && <NavLink text="Sign Up" to="/register" />}
+          {!user && <NavLink text="Sign Up" to="/register" primary />}
         </Container>
       </Container>
     </S.Navbar>
