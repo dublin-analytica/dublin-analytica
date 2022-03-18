@@ -71,7 +71,7 @@ public class OrderAPITests {
     String authToken = getAuthToken();
 
     this.mockMvc.perform(
-        get("/api/orders/").header("Authorization", "Bearer " + authToken))
+        get("/api/orders").header("Authorization", "Bearer " + authToken))
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.[0].status").value("PROCESSING"))
       .andExpect(status().isOk())
@@ -83,12 +83,12 @@ public class OrderAPITests {
     String authToken = getAuthToken();
 
     MvcResult result = this.mockMvc.perform(
-        get("/api/order/"))
+        get("/api/orders"))
         .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/orders/" + id;
+    String url = "/api/orders" + id;
 
     this.mockMvc.perform(
         get(url).header("Authorization", "Bearer " + authToken))

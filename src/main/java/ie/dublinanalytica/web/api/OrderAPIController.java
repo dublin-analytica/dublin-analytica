@@ -67,7 +67,7 @@ public class OrderAPIController {
     return new Response(order);
   }
 
-   /**
+  /**
    * Gets all orders.
    *
    * @param authHeader Authentication header
