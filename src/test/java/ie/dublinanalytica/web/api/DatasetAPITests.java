@@ -97,7 +97,7 @@ public class DatasetAPITests {
           .contentType("application/json")
           .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
       ).andDo(print())
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isConflict());
   }
 
   @Test

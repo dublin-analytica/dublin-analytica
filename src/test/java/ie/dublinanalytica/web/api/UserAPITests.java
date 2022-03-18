@@ -79,7 +79,7 @@ public class UserAPITests {
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD)))
     ).andDo(print())
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isConflict());
   }
 
   @Test
@@ -90,7 +90,7 @@ public class UserAPITests {
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
         .andDo(print())
-        .andExpect(status().isBadRequest())
+        .andExpect(status().isConflict())
         .andExpect(content().string(
         matchesRegex(ERROR_PATTERN)
       ));
