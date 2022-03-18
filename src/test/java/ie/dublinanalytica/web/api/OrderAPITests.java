@@ -52,16 +52,16 @@ public class OrderAPITests {
    * Gets the Auth token associated with a given user.
    */
   public String getAuthToken() throws Exception {
-    String USERNAME = "Bob the Admin";
-    String EMAIL = "admin@gmail.com";
+    final String USERNAME = "Bob the Admin";
+    final String EMAIL = "admin@gmail.com";
     MvcResult result = this.mockMvc.perform(
-      post("/api/users/login")
+        post("/api/users/login")
         .contentType("application/json")
         .content(toJSON(new RegistrationDTO(USERNAME, EMAIL, PASSWORD)))
     ).andReturn();
 
     AuthResponse.AuthObject response = (new ObjectMapper())
-      .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+        .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     return response.token();
   }
@@ -75,7 +75,7 @@ public class OrderAPITests {
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.[0].status").value("PROCESSING"))
       .andExpect(status().isOk())
-      .andReturn();
+        .andReturn();
   }
 
   @Test
@@ -84,7 +84,7 @@ public class OrderAPITests {
 
     MvcResult result = this.mockMvc.perform(
         get("/api/orders/").header("Authorization", "Bearer " + authToken))
-      .andReturn();
+          .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[1].id");
@@ -95,7 +95,7 @@ public class OrderAPITests {
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("PLACED"))
       .andExpect(status().isOk())
-      .andReturn();
+        .andReturn();
   }
 
   @Test
@@ -104,7 +104,7 @@ public class OrderAPITests {
         get("/api/orders/9af-e9468f4785f3"))
       .andDo(print())
       .andExpect(status().isBadRequest())
-      .andReturn();
+        .andReturn();
   }
 
   @Test
@@ -112,7 +112,7 @@ public class OrderAPITests {
     String token = getAuthToken();
     MvcResult result = this.mockMvc.perform(
         get("/api/orders/").header("Authorization", "Bearer " + token))
-      .andReturn();
+        .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[1].id");
@@ -131,7 +131,7 @@ public class OrderAPITests {
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("DELIVERED"))
       .andExpect(status().isOk())
-      .andReturn();
+        .andReturn();
   }
 
   @Test
@@ -140,7 +140,7 @@ public class OrderAPITests {
 
     MvcResult result = this.mockMvc.perform(
         get("/api/orders/").header("Authorization", "Bearer " + authToken))
-      .andReturn();
+        .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[1].id");
