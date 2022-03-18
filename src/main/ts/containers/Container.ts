@@ -17,11 +17,12 @@ const Container = styled.div<ContainerProps>`
     justify-content: ${({ justify = 'flex-start' }) => justify};
     align-items: center;
     width: ${({ theme }) => `calc(100% - ${theme.spacing.medium} - ${theme.spacing.medium})`};
-    padding: ${({ unpadded, theme }) => (unpadded ? 0 : `${theme.spacing.medium}`)};
-    padding-top: ${({ nav }) => (nav ? '12rem' : 0)};
+    padding: ${({ unpadded, theme }) => (unpadded ? 0 : theme.spacing.medium)};
+    padding-top: ${({ nav, theme }) => (nav ? '12rem' : theme.spacing.medium)};
     border-radius: ${({ unrounded, theme }) => (unrounded ? 0 : theme.spacing.medium)};
     background-color: ${({ color }) => color};
     cursor: ${({ cursor }) => (cursor ? 'pointer' : 'default')};
+    height: ${({ fullscreen }) => (fullscreen ? '88vh' : 'auto')};
 
     color: ${({ color = 'transparent', theme }) => {
     const { transparent, white, gray } = theme.colors;

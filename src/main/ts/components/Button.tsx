@@ -29,8 +29,10 @@ const S = {
   `,
 };
 
-const Button = ({ children, variant = 'primary', onClick }: ButtonProps) => (
-  <S.Button onClick={onClick} variant={variant}>{children}</S.Button>
+const Button = ({
+  children, type, variant = 'primary', onClick,
+}: ButtonProps) => (
+  <S.Button type={type} onClick={onClick} variant={variant}>{children}</S.Button>
 );
 
 export default Button;

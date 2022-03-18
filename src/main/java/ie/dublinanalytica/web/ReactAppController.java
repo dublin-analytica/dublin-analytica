@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class ReactAppController {
-  @GetMapping({ "/", "/login", "/register", "/dashboard", "/dataset", "/marketplace", "/404" })
+  @GetMapping({
+    "/", "/login", "/register", "/account", "/dashboard", "/dataset", "/marketplace", "/404"
+  })
   public String getIndex() {
     return "/index.html";
   }
