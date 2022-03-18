@@ -28,7 +28,7 @@ import ie.dublinanalytica.web.user.UserService;
  * API Controller for /api/order endpoints.
  */
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/orders")
 public class OrderAPIController {
 
   private UserService userService;
@@ -61,12 +61,8 @@ public class OrderAPIController {
     User user = userService.findById(payload.getId());
     Order order = orderService.findById(UUID.fromString(orderid));
 
-    if (order.getUser().getId() != user.getId()) {
-      throw new UserAuthenticationException("User does not own order");
-    }
-
-    if (!user.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
+    if (order.getUser().getId() != user.getId() && !user.isAdmin()) {
+      throw new UserAuthenticationException();
     }
 
     return new Response(user);
