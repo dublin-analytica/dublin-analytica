@@ -105,7 +105,7 @@ public class UserAPIController {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User requestingUser = userService.findById(payload.getId());
     if (!requestingUser.isAdmin()) {
-      throw new UserAuthenticationException("User is not an admin");
+      throw new UserAuthenticationException("User is not an admin", HttpStatus.FORBIDDEN);
     }
 
     UUID id = UUID.fromString(userid);

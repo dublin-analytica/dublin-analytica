@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  */
 public class UserNotFoundException extends BaseException {
   public static final String DEFAULT_MESSAGE = "User couldn't be found";
-  public static final HttpStatus DEFAULT_HTTP_STATUS = HttpStatus.UNAUTHORIZED;
+  public static final HttpStatus DEFAULT_HTTP_STATUS = HttpStatus.NOT_FOUND;
 
   public UserNotFoundException() {
     super(DEFAULT_MESSAGE, DEFAULT_HTTP_STATUS);
