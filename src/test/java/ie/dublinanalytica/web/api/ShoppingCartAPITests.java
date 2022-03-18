@@ -4,17 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import ie.dublinanalytica.web.api.response.AuthResponse;
-import ie.dublinanalytica.web.orders.ChangeStatusDTO;
-import ie.dublinanalytica.web.orders.Order;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShoppingCartAPITests {
 
   @Autowired
@@ -36,6 +37,45 @@ public class ShoppingCartAPITests {
   private final char[] PASSWORD = "admin".toCharArray();
 
   @Test
+  @Order(1)
+  public void confirmCheckoutShouldThrowExceptionIfCartIsEmpty() throws Exception {
+    String token = getAuthToken();
+
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer " + token))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Order(2)
+  public void confirmCheckoutShouldReturnOkIfSuccessful() throws Exception {
+    String token = getAuthToken();
+    String id = getId();
+
+    this.mockMvc.perform(
+      put("/api/cart/")
+        .header("Authorization", "Bearer " + token)
+        .contentType("application/json")
+        .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
+
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer " + token))
+      .andExpect(status().isCreated());
+  }
+
+  @Test
+  @Order(2)
+  public void confirmCheckoutShouldBeUnauthorizedIfInvalidToken() throws Exception {
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer INVALID TOKEN"))
+      .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  @Order(3)
   public void returnCart() throws Exception {
     String token = getAuthToken();
 
@@ -47,6 +87,7 @@ public class ShoppingCartAPITests {
   }
 
   @Test
+  @Order(3)
   public void returnCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         get("/api/cart/")
@@ -56,6 +97,7 @@ public class ShoppingCartAPITests {
   }
 
   @Test
+  @Order(4)
   public void addToCart() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -69,6 +111,7 @@ public class ShoppingCartAPITests {
   }
 
   @Test
+  @Order(4)
   public void addToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     String id = getId();
 
@@ -81,6 +124,7 @@ public class ShoppingCartAPITests {
   }
 
   @Test
+  @Order(5)
   public void putToCart() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -94,6 +138,7 @@ public class ShoppingCartAPITests {
   }
 
   @Test
+  @Order(5)
   public void putToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     String id = getId();
 
@@ -104,8 +149,6 @@ public class ShoppingCartAPITests {
           .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
       .andExpect(status().isUnauthorized());
   }
-
-
 
   /**
    * Converts an object to JSON using jackson.

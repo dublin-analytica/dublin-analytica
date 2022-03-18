@@ -44,13 +44,7 @@ public class OrderAPITests {
 
   @Test
   public void returnOrder() throws Exception {
-    MvcResult result = this.mockMvc.perform(
-        get("/api/order/"))
-      .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/order/" + id;
+    String url = getOrderUrl();
 
     this.mockMvc.perform(
         get(url))
@@ -72,13 +66,7 @@ public class OrderAPITests {
   @Test
   public void updateOrderStatus() throws Exception {
     String token = getAuthToken();
-    MvcResult result = this.mockMvc.perform(
-        get("/api/order/"))
-      .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/order/" + id + "/status";
+    String url = getOrderUrl() + "/status";
 
     this.mockMvc.perform(
       post(url)
@@ -98,13 +86,7 @@ public class OrderAPITests {
 
   @Test
   public void updateOrderStatusShouldBeUnauthorizedIfInvalidToken() throws Exception {
-    MvcResult result = this.mockMvc.perform(
-        get("/api/order/"))
-      .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/order/" + id + "/status";
+    String url = getOrderUrl() + "/status";
 
     this.mockMvc.perform(
         post(url)
@@ -145,5 +127,18 @@ public class OrderAPITests {
       .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     return response.token();
+  }
+
+  /**
+   * Gets the url for a specific order
+   */
+  public String getOrderUrl() throws Exception {
+    MvcResult result = this.mockMvc.perform(
+        get("/api/order/"))
+      .andReturn();
+
+    String response = result.getResponse().getContentAsString();
+    String id = JsonPath.parse(response).read("$.[1].id");
+    return "/api/order/" + id;
   }
 }
