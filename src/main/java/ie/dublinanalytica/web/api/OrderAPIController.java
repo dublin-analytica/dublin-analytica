@@ -146,6 +146,7 @@ public class OrderAPIController {
       return new Response(orderService.getUserOrders(user));
     }
 
-    throw new UserAuthenticationException("You're not allowed to access this resource", HttpStatus.FORBIDDEN);
+    throw new UserAuthenticationException("You're not allowed to access this resource",
+      HttpStatus.FORBIDDEN);
   }
 }
