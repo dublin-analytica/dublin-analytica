@@ -25,6 +25,7 @@ public class Dataset {
   private String url;
 
   private boolean hidden;
+  private double pricePerDatapoint;
 
   public Dataset() {
   }
@@ -112,5 +113,13 @@ public class Dataset {
 
   public void setHidden(boolean hidden) {
     this.hidden = hidden;
+  }
+
+  public double getPricePerDatapoint() {
+    return pricePerDatapoint;
+  }
+
+  public void setPricePerDatapoint(double pricePerDatapoint) {
+    this.pricePerDatapoint = pricePerDatapoint;
   }
 }

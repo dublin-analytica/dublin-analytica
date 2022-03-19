@@ -1,6 +1,7 @@
 package ie.dublinanalytica.web.shoppingcart;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -10,12 +11,15 @@ import javax.validation.constraints.NotNull;
 public class CardDTO {
 
   @NotNull
+  @NotEmpty
   private String cvv;
 
   @NotNull
+  @NotEmpty
   private String expiry;
 
   @NotNull
+  @NotEmpty
   private String cardNum;
 
   public CardDTO() {}
