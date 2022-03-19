@@ -1,8 +1,10 @@
 import {
   SmartForm as Form, Sidebar, SplitView, Divider,
 } from '@components';
+import { SubmitAction } from '@components/SmartForm';
 import { Container } from '@containers';
 import { useAuth } from '@context/AuthProvider';
+import { useAuthActions } from '@hooks';
 
 import {
   nameValidator, emailValidator, passwordValidator, confirmationValidator,
@@ -10,13 +12,14 @@ import {
 
 const Account = () => {
   const { user } = useAuth();
+  const { update, changePassword } = useAuthActions();
 
   const updateDetailsFields = [
     {
-      name: 'name', label: 'Name', placeholder: user?.name, validator: nameValidator,
+      name: 'name', label: 'Name', validator: nameValidator, value: user?.name,
     },
     {
-      name: 'email', label: 'Email', placeholder: user?.email, validator: emailValidator,
+      name: 'email', label: 'Email', validator: emailValidator, value: user?.email,
     },
   ];
 
@@ -30,11 +33,12 @@ const Account = () => {
     },
   ];
 
-  const updateDetails = () => {
-
+  const updateDetails: SubmitAction = ({ name, email }, setError) => {
+    update(name!, email!).catch(setError);
   };
 
-  const updatePassword = () => {
+  const updatePassword: SubmitAction = ({ oldPassword, password }, setError) => {
+    changePassword(oldPassword!, password!).catch(setError);
   };
 
   return (
