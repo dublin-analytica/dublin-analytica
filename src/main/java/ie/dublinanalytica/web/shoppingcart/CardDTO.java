@@ -18,8 +18,11 @@ public class CardDTO {
   @NotNull
   private String cardNum;
 
-  public CardDTO() {};
+  public CardDTO() {}
 
+  /**
+   * Constructor for CardDTO.
+   */
   public CardDTO(String cvv, String expiry, String cardNum) {
     this.cvv = cvv;
     this.expiry = expiry;

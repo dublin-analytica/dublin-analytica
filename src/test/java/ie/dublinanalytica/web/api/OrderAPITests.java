@@ -143,12 +143,12 @@ public class OrderAPITests {
   }
 
   /**
-   * Gets the url for a specific order
+   * Gets the url for a specific order.
    */
   public String getOrderUrl() throws Exception {
     MvcResult result = this.mockMvc.perform(
         get("/api/orders/").header("Authorization", "Bearer " + getAuthToken()))
-      .andReturn();
+        .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[1].id");

@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import ie.dublinanalytica.web.exceptions.*;
-import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +18,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.Response;
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetService;
+import ie.dublinanalytica.web.exceptions.BadRequest;
+import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
+import ie.dublinanalytica.web.exceptions.InvalidCardExpiryDate;
+import ie.dublinanalytica.web.exceptions.InvalidCardNumber;
+import ie.dublinanalytica.web.exceptions.InvalidCvvNumber;
+import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
+import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.orders.OrderService;
+import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
@@ -137,7 +142,7 @@ public class ShoppingCartAPIController {
   public Response confirmCheckout(@RequestHeader("Authorization") String authHeader,
                                   @RequestBody @Valid CardDTO card)
       throws UserAuthenticationException, UserNotFoundException, BadRequest,
-      InvalidCVVNumber, InvalidCardExpiryDate, ParseException, InvalidCardNumber {
+      InvalidCvvNumber, InvalidCardExpiryDate, ParseException, InvalidCardNumber {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
     orderService.verifyCardPayment(card);
