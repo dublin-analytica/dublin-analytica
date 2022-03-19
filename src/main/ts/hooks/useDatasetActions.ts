@@ -6,15 +6,15 @@ const useDatasetActions = () => {
 
   const getDatasets = () => get('datasets');
 
-  const getDataset = (id: string) => {
-    get(`datasets/${id}`);
+  const getDataset = (id: string) => get(`datasets/${id}`);
+
+  const createDataset = (dataset: Dataset) => post('datasets', dataset);
+
+  const updateDataset = (id: string, dataset: Partial<Dataset>) => post(`datasets/${id}`, dataset);
+
+  return {
+    getDatasets, getDataset, createDataset, updateDataset,
   };
-
-  const updateDataset = (id: string, dataset: Partial<Dataset>) => (
-    post(`datasets/${id}`, dataset)
-  );
-
-  return { getDatasets, getDataset };
 };
 
 export default useDatasetActions;
