@@ -24,6 +24,8 @@ public class Dataset {
   private int size;
   private String url;
 
+  private String image;
+
   private boolean hidden;
   private double unitPrice;
 
@@ -121,5 +123,13 @@ public class Dataset {
 
   public void setUnitPrice(double pricePerDatapoint) {
     this.unitPrice = pricePerDatapoint;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getImage() {
+    return image;
   }
 }
