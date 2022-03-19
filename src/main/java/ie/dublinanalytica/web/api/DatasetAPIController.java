@@ -130,7 +130,7 @@ public class DatasetAPIController {
       dataset.setHidden(dto.isHidden());
     }
 
-    if(dto.getPricePerDatapoint() > 0) {
+    if (dto.getPricePerDatapoint() > 0) {
       dataset.setPricePerDatapoint(dto.getPricePerDatapoint());
     }
 

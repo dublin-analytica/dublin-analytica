@@ -38,7 +38,8 @@ public class DatasetDTO {
   /**
    * Constructor class for DatasetDTO.
    */
-  public DatasetDTO(String name, String description, String datapoints, double size, String url, double pricePerDatapoint) {
+  public DatasetDTO(String name, String description, String datapoints, double size,
+                    String url, double pricePerDatapoint) {
     this.name = name;
     this.description = description;
     this.datapoints = datapoints;
