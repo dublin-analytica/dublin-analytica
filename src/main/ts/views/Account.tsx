@@ -1,9 +1,8 @@
 import {
-  SmartForm as Form, Sidebar, SplitView, Divider, Button,
+  SmartForm as Form, Sidebar, SplitView, Divider,
 } from '@components';
 import { Container } from '@containers';
 import { useAuth } from '@context/AuthProvider';
-import { useAuthActions } from '@hooks';
 
 import {
   nameValidator, emailValidator, passwordValidator, confirmationValidator,
@@ -11,7 +10,6 @@ import {
 
 const Account = () => {
   const { user } = useAuth();
-  const { logout } = useAuthActions();
 
   const updateDetailsFields = [
     {
