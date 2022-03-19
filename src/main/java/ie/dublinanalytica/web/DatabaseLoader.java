@@ -102,7 +102,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
       set.setImage("https://i.imgflip.com/db5xf.jpg");
 
-      set.setUnitPrice(rand.nextDouble(0.0001, 0.01));
+      double price = Math.round(rand.nextDouble(0.0001, 0.01) * Math.pow(10, 5)) / Math.pow(10, 5);
+
+      set.setUnitPrice(price);
 
       if (rand.nextFloat() < 0.15) {
         set.setHidden(true);
