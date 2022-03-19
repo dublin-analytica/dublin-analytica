@@ -15,7 +15,7 @@ public class BaseException extends Exception {
   }
 
   public BaseException(String message) {
-    this(message, HttpStatus.BAD_REQUEST);
+    this(message, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   public HttpStatus getStatus() {

@@ -154,7 +154,7 @@ public class DatasetAPIController {
         JWTPayload payload = JWTPayload.fromHeader(authHeader);
         User user = userService.findById(payload.getId());
         isAdminTemp = user.isAdmin();
-      } catch (UserAuthenticationException | UserNotFoundException e) {
+      } catch (Exception e) {
         // Do nothing. Will return non-hidden datasets.
         // Here auth is only used for admins to see hidden datasets
       }
