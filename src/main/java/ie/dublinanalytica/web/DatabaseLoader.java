@@ -97,8 +97,10 @@ public class DatabaseLoader implements CommandLineRunner {
           name,
           description,
           fields,
-          rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg"
+          rand.nextInt(100, 10000), ""
       );
+
+      set.setImage("https://i.imgflip.com/db5xf.jpg");
 
       set.setUnitPrice(rand.nextDouble(0.0001, 0.01));
 
