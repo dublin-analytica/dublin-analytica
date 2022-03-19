@@ -1,11 +1,19 @@
 package ie.dublinanalytica.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
+
+import com.thedeanda.lorem.Lorem;
+import com.thedeanda.lorem.LoremIpsum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
@@ -47,46 +55,65 @@ public class DatabaseLoader implements CommandLineRunner {
     this.orderRepository = orderRepository;
   }
 
+  private final Lorem lorem = LoremIpsum.getInstance();
+
+  private final String[] words = {
+    "name", "email", "address", "likes", "dislikes", "other", "something", "location", "preference", "sexuality",
+    "something", "lorem", "data", "information"
+  };
+
   @Override
   public void run(final String... strings) throws Exception {
-    this.userRepository.save(
-      new User("Alice the User", "user@gmail.com", "user".toCharArray())
-    );
+    userRepository.deleteAll();
+    datasetRepository.deleteAll();
+    orderRepository.deleteAll();
 
-    User admin = new User("Bob the Admin", "admin@gmail.com", "admin".toCharArray());
-    admin.setAdmin(true);
+    User alice = new User("Alice the admin", "alice@gmail.com", "alice".toCharArray(), true);
+    User bob = new User("Bob the businesman", "bob@gmail.com", "bob".toCharArray(), false);
 
-    this.userRepository.save(admin);
+    userRepository.save(alice);
+    userRepository.save(bob);
 
-    Dataset set = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
+    Random rand = new Random();
 
-    set.setImage("https://i.imgflip.com/db5xf.jpg");
+    for (int i = 0; i < 50; i++) {
+      String name = "Dataset " + i;
+      String description = lorem.getWords(rand.nextInt(10, 25));
 
-    this.datasetRepository.save(set);
+      List<String> fields = new ArrayList<>();
 
-    for (int i = 0; i < 10; i++) {
-      set = new Dataset("Another dataset " + i, "Another great dataset", "no", 500, "www.com");
-      set.setImage("https://preview.redd.it/o6y07vrwfz561.jpg?auto=webp&s=6982d23e08c8f3e5a1e8e39dbca01aa71609fed2");
+      for (int j = 0; j < rand.nextInt(2, 5); j++) {
+          fields.add(words[rand.nextInt(words.length)]);
+      }
+
+      Dataset set = new Dataset(
+        name,
+        description,
+        fields,
+        rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg"
+      );
+
+      set.setUnitPrice(rand.nextDouble(0.0001, 0.01));
+
+      if (rand.nextFloat() < 0.15) {
+        set.setHidden(true);
+      }
+
+      datasetRepository.save(set);
     }
 
-    this.datasetRepository.save(set);
-
-    Dataset hiddenSet = new Dataset(
-        "Hidden dataset", "This dataset is hidden by default", "no", 500, "www.com");
-    hiddenSet.setHidden(true);
-    hiddenSet.setImage("https://i.insider.com/602ee9ced3ad27001837f2ac?width=750&format=jpeg&auto=webp");
-
-    this.datasetRepository.save(hiddenSet);
+    Iterable<Dataset> datasets = datasetRepository.findAll();
+    List<Dataset> all = StreamSupport.stream(datasets.spliterator(), false).toList();
 
     HashMap<UUID, Integer> map = new HashMap<>();
-    map.put(set.getId(), 10);
-    Order order = new Order(new ShoppingCart(map), admin, 10);
-    order.setStatus(Order.OrderStatus.PROCESSING);
+
+    for (int i = 0; i < rand.nextInt(2, 10); i++) {
+      Dataset set = all.get(rand.nextInt(all.size()));
+      map.put(set.getId(), rand.nextInt(10, set.getSize()));
+    }
+
+    Order order = new Order(new ShoppingCart(map), bob, rand.nextFloat(10, 500));
 
     this.orderRepository.save(order);
-
-    this.orderRepository.save(
-      new Order(new ShoppingCart(map), admin, 10)
-    );
   }
 }

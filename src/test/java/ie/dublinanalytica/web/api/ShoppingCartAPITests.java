@@ -39,7 +39,7 @@ public class ShoppingCartAPITests {
   @Autowired
   private MockMvc mockMvc;
 
-  private final char[] PASSWORD = "admin".toCharArray();
+  private final char[] PASSWORD = "alice".toCharArray();
 
   @Test
   @Order(1)
@@ -238,7 +238,7 @@ public class ShoppingCartAPITests {
    */
   public String getAuthToken() throws Exception {
     String USERNAME = "Bob the Admin";
-    String EMAIL = "admin@gmail.com";
+    String EMAIL = "alice@gmail.com";
     MvcResult result = this.mockMvc.perform(
       post("/api/users/login")
         .contentType("application/json")

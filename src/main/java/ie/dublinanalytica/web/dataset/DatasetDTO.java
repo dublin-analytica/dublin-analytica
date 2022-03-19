@@ -1,5 +1,7 @@
 package ie.dublinanalytica.web.dataset;
 
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -16,9 +18,7 @@ public class DatasetDTO {
   @NotEmpty
   private String description;
 
-  @NotNull
-  @NotEmpty
-  private String datapoints;
+  private List<String> datapoints;
 
   @NotNull
   private Integer size;
@@ -38,7 +38,7 @@ public class DatasetDTO {
   /**
    * Constructor class for DatasetDTO.
    */
-  public DatasetDTO(String name, String description, String datapoints, int size,
+  public DatasetDTO(String name, String description, List<String> datapoints, int size,
                     String url, double pricePerDatapoint) {
     this.name = name;
     this.description = description;
@@ -64,11 +64,11 @@ public class DatasetDTO {
     this.description = description;
   }
 
-  public String getDatapoints() {
+  public List<String> getDatapoints() {
     return datapoints;
   }
 
-  public void setDatapoints(String datapoints) {
+  public void setDatapoints(List<String> datapoints) {
     this.datapoints = datapoints;
   }
 

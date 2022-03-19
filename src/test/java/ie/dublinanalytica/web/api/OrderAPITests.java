@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class OrderAPITests {
 
-  private final char[] PASSWORD = "admin".toCharArray();
+  private final char[] PASSWORD = "alice".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;
@@ -53,7 +53,7 @@ public class OrderAPITests {
    */
   public String getAuthToken() throws Exception {
     final String USERNAME = "Bob the Admin";
-    final String EMAIL = "admin@gmail.com";
+    final String EMAIL = "alice@gmail.com";
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
         .contentType("application/json")
@@ -73,7 +73,7 @@ public class OrderAPITests {
     this.mockMvc.perform(
         get("/api/orders/").header("Authorization", "Bearer " + authToken))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].status").value("PROCESSING"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].status").value("DELIVERED"))
       .andExpect(status().isOk())
         .andReturn();
   }
@@ -130,7 +130,7 @@ public class OrderAPITests {
         .andReturn();
 
     String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
+    String id = JsonPath.parse(response).read("$.[0].id");
     String url = "/api/orders/" + id + "/status";
 
     this.mockMvc.perform(
@@ -151,7 +151,7 @@ public class OrderAPITests {
         .andReturn();
 
     String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
+    String id = JsonPath.parse(response).read("$.[0].id");
     return "/api/orders/" + id;
   }
 }

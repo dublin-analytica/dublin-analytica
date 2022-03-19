@@ -1,7 +1,9 @@
 package ie.dublinanalytica.web.dataset;
 
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +22,10 @@ public class Dataset {
 
   private String name;
   private String description;
-  private String fields;
+
+  @ElementCollection
+  private List<String> fields;
+
   private int size;
   private String url;
 
@@ -46,7 +51,7 @@ public class Dataset {
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, String fields, int size, String url) {
+  public Dataset(String name, String description, List<String> fields, int size, String url) {
     this.name = name;
     this.description = description;
     this.fields = fields;
@@ -78,15 +83,15 @@ public class Dataset {
     this.description = description;
   }
 
-  public String getFields() {
+  public List<String> getFields() {
     return fields;
   }
 
-  public void setFields(String datapoint) {
+  public void setFields(List<String> datapoint) {
     this.fields = datapoint;
   }
 
-  public double getSize() {
+  public int getSize() {
     return size;
   }
 

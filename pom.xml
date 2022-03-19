@@ -73,6 +73,15 @@
       <artifactId>dotenv-java</artifactId>
       <version>2.2.3</version>
     </dependency>
+
+<!--    TODO: Remove for production-->
+    <dependency>
+      <groupId>com.thedeanda</groupId>
+      <artifactId>lorem</artifactId>
+      <version>2.1</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

@@ -1,5 +1,7 @@
 package ie.dublinanalytica.web.api;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -34,11 +36,11 @@ public class DatasetAPITests {
 
   private final String NAME = "Dataset1";
   private final String DESCRIPTION = "A dataset";
-  private final String DATAPOINTS = "alice, bob";
+  private final List<String> DATAPOINTS = List.of("some point", "some other point");
   private final int SIZE = 10;
   private final String URL = "https://helloworld.com";
   private final double PRICE = 1.0;
-  private final char[] PASSWORD = "admin".toCharArray();
+  private final char[] PASSWORD = "alice".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;
@@ -62,7 +64,7 @@ public class DatasetAPITests {
    */
   public String getAuthToken() throws Exception {
     String USERNAME = "Bob the Admin";
-    String EMAIL = "admin@gmail.com";
+    String EMAIL = "alice@gmail.com";
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
         .contentType("application/json")
@@ -119,7 +121,7 @@ public class DatasetAPITests {
     this.mockMvc.perform(
       get("/api/datasets/"))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Some dataset"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Dataset 0"))
       .andExpect(status().isOk())
         .andReturn();
   }
@@ -138,7 +140,7 @@ public class DatasetAPITests {
     this.mockMvc.perform(
       get(url))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Some dataset"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Dataset 0"))
       .andExpect(status().isOk())
         .andReturn();
   }

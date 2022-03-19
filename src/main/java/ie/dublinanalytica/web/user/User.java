@@ -38,7 +38,7 @@ public class User extends BaseUser {
    * @param data The registration DTO
    */
   public User(RegistrationDTO data) {
-    this(data.getName(), data.getEmail(), data.getPassword());
+    this(data.getName(), data.getEmail(), data.getPassword(), false);
   }
 
   /**
@@ -78,13 +78,13 @@ public class User extends BaseUser {
    * @param password The password of the User. This will not be stored but used to
    *                 create the authHash using a random salt.
    */
-  public User(String name, String email, char[] password) {
+  public User(String name, String email, char[] password, boolean isAdmin) {
     super(name, email);
     this.salt = AuthUtils.generateSalt();
     this.authHash = AuthUtils.hash(password, this.salt);
     Arrays.fill(password, '\0');
     this.authTokens = new HashSet<>();
-    this.isAdmin = false;
+    this.isAdmin = isAdmin;
   }
 
   public boolean isAdmin() {
