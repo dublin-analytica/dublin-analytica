@@ -1,6 +1,15 @@
 import { useRoutes } from 'react-router-dom';
 import {
-  OrderDashboard, DataDashboard, Dataset, Landing, Login, Marketplace, Register, Account, Orders, Basket,
+  OrderDashboard,
+  DataDashboard,
+  Dataset,
+  Landing,
+  Login,
+  Marketplace,
+  Register,
+  Account,
+  Orders,
+  Basket,
 } from '@views';
 // import { useAuth } from '@context/AuthProvider';
 
