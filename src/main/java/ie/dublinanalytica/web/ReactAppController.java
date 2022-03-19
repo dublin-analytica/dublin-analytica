@@ -21,9 +21,9 @@ public class ReactAppController implements ErrorController {
     "/dataset",
     "/marketplace",
     "/404",
-    "/orders"
+    "/orders",
+    "/basket"
   })
-  
   public String getIndex() {
     return "/index.html";
   }
