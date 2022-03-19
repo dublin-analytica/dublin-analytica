@@ -23,6 +23,7 @@ import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.exceptions.WrongPasswordException;
 import ie.dublinanalytica.web.user.AuthDTO;
+import ie.dublinanalytica.web.user.BaseUser;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
@@ -97,7 +98,7 @@ public class UserAPIController {
    * @throws UserAuthenticationException If the user is not an admin
    * @throws UserNotFoundException If the user is not found
    */
-  @GetMapping("/{userid}")
+  @GetMapping("/{userid:.{36}}")
   public Response getUserInfo(
       @RequestHeader("Authorization") String authHeader,
       @PathVariable("userid") String userid)
@@ -130,5 +131,35 @@ public class UserAPIController {
     User user = userService.findById(payload.getId());
     userService.verifyAuthToken(user, payload.getAuthToken());
     return new Response(user);
+  }
+
+  /**
+   * Update a user's name or email.
+   *
+   * @param authHeader The auth header
+   * @param dto data
+   * @throws UserAuthenticationException If token is invalid
+   * @throws UserNotFoundException If the user couldn't be found
+   */
+  @PostMapping("/me")
+  public Response updateUser(
+      @RequestHeader("Authorization") String authHeader,
+      @RequestBody BaseUser dto)
+      throws UserAuthenticationException, UserNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    userService.verifyAuthToken(user, payload.getAuthToken());
+
+    if (dto.getName() != null) {
+      user.setName(dto.getName());
+    }
+
+    if (dto.getEmail() != null) {
+      user.setEmail(dto.getEmail());
+    }
+
+    userService.save(user);
+
+    return new EmptyResponse(HttpStatus.OK);
   }
 }
