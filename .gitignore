@@ -75,4 +75,4 @@ src/main/resources/static/built/
 
 logs/
 
-spring-boot-h2-db.mv.db
+spring-boot-h2-db.*
