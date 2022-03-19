@@ -1,6 +1,8 @@
 package ie.dublinanalytica.web.api;
 
 import java.util.UUID;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.validation.Valid;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.Response;
@@ -87,8 +90,29 @@ public class DatasetAPIController {
    * Returns all existing datasets.
    *
    */
+  @SuppressWarnings("checkstyle:EmptyCatchBlock")
   @GetMapping("/")
-  public Response getAllDataset() {
-    return new Response(datasetService.findAllDatasets());
+  public Response getAllDataset(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+    boolean isAdminTemp = false;
+
+    if (authHeader != null) {
+      try {
+        JWTPayload payload = JWTPayload.fromHeader(authHeader);
+        User user = userService.findById(payload.getId());
+        isAdminTemp = user.isAdmin();
+      } catch (UserAuthenticationException | UserNotFoundException e) {
+        // Do nothing. Will return non-hidden datasets.
+        // Here auth is only used for admins to see hidden datasets
+      }
+    }
+
+    // Captured variable should be final so using a temporary variable.
+    final boolean isAdmin = isAdminTemp;
+    Iterable<Dataset> datasets = datasetService.findAllDatasets();
+
+    Stream<Dataset> filtered = StreamSupport.stream(datasets.spliterator(), false).filter(d -> isAdmin || !d.isHidden());
+
+    return new Response(filtered);
   }
 }
