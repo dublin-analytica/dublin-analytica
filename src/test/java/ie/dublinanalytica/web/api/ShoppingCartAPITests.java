@@ -187,7 +187,7 @@ public class ShoppingCartAPITests {
    */
   public String getId() throws Exception {
     MvcResult result = this.mockMvc.perform(
-        get("/api/dataset/"))
+        get("/api/datasets/"))
       .andReturn();
 
     String response = result.getResponse().getContentAsString();
