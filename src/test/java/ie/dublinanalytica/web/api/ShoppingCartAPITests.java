@@ -74,6 +74,66 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  public void confirmCheckoutShouldThrowExceptionIfCardNumberIsInvalid() throws Exception {
+    String token = getAuthToken();
+    String id = getId();
+
+    this.mockMvc.perform(
+      put("/api/cart/")
+        .header("Authorization", "Bearer " + token)
+        .contentType("application/json")
+        .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
+
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("233", "12/22", "4444"))))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Order(2)
+  public void confirmCheckoutShouldThrowExceptionIfExpiryDateIsInvalid() throws Exception {
+    String token = getAuthToken();
+    String id = getId();
+
+    this.mockMvc.perform(
+      put("/api/cart/")
+        .header("Authorization", "Bearer " + token)
+        .contentType("application/json")
+        .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
+
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("233", "12/19", "4444"))))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Order(2)
+  public void confirmCheckoutShouldThrowExceptionIfCvvIsInvalid() throws Exception {
+    String token = getAuthToken();
+    String id = getId();
+
+    this.mockMvc.perform(
+      put("/api/cart/")
+        .header("Authorization", "Bearer " + token)
+        .contentType("application/json")
+        .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
+
+    this.mockMvc.perform(
+        post("/api/cart/checkout")
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("23377", "12/19", "4444"))))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Order(2)
   public void confirmCheckoutShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/cart/checkout")
