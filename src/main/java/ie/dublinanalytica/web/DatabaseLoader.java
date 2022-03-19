@@ -60,15 +60,20 @@ public class DatabaseLoader implements CommandLineRunner {
 
     Dataset set = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
 
+    set.setImage("https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/XA6KIXE6FBFM5EWSA25JI5YAU4.jpg");
+
     this.datasetRepository.save(set);
 
-    this.datasetRepository.save(
-      new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
-    );
+    set = new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
+    set.setImage("https://preview.redd.it/o6y07vrwfz561.jpg?auto=webp&s=6982d23e08c8f3e5a1e8e39dbca01aa71609fed2");
+
+
+    this.datasetRepository.save(set);
 
     Dataset hiddenSet = new Dataset(
         "Hidden dataset", "This dataset is hidden by default", "no", 500, "www.com");
     hiddenSet.setHidden(true);
+    hiddenSet.setImage("https://i.insider.com/602ee9ced3ad27001837f2ac?width=750&format=jpeg&auto=webp");
 
     this.datasetRepository.save(hiddenSet);
 
