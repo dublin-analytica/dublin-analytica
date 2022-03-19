@@ -144,7 +144,7 @@ public class DatasetAPIController {
    *
    */
   @SuppressWarnings("checkstyle:EmptyCatchBlock")
-  @GetMapping("/")
+  @GetMapping("")
   public Response getAllDataset(
       @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
