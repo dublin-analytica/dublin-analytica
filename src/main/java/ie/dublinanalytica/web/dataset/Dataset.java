@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"image"})
+@JsonIgnoreProperties(value = {"url"})
 public class Dataset {
   @Id
   @GeneratedValue
@@ -28,6 +28,7 @@ public class Dataset {
 
   private int size;
   private String image;
+  private String url;
 
   private boolean hidden;
   private double unitPrice;
@@ -126,5 +127,13 @@ public class Dataset {
 
   public String getImage() {
     return image;
+  }
+
+  public String getUrl() {
+    return this.url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 }
