@@ -6,6 +6,7 @@ type TableProps = { headers: string[], rows: { id: string, values: string[] }[] 
 const S = {
   Table: styled.table`
     width: 90%;
+    border-collapse: collapse;
   `,
 
   THead: styled.thead`

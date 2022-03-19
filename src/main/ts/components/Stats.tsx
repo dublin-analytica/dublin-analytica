@@ -1,6 +1,8 @@
 import { Container } from '@containers';
 import styled from 'styled-components';
 
+import Divider from './Divider';
+
 type StatsProps = { stats: { name: string, value: string }[] };
 
 const S = {
@@ -11,13 +13,6 @@ const S = {
 
   Name: styled.span`
     color: ${({ theme }) => theme.text.colors.secondary};
-  `,
-
-  Divider: styled.hr`
-    border: none;
-    border-left: 1px solid ${({ theme }) => theme.colors.gray};
-    height: 7rem;
-    margin: 0.5rem 0;
   `,
 
   StatContainer: styled(Container)`
@@ -34,7 +29,7 @@ const Stats = ({ stats }: StatsProps) => (
           <S.Value>{value}</S.Value>
           <S.Name>{name}</S.Name>
         </Container>
-        {i !== stats.length - 1 && <S.Divider />}
+        {i !== stats.length - 1 && <Divider />}
       </S.StatContainer>
     ))}
   </Container>
