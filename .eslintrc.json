@@ -59,6 +59,8 @@
     "require-default-props": "off",
     "react/require-default-props": "off",
     "react/no-unused-prop-types": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off"
   }
 }
