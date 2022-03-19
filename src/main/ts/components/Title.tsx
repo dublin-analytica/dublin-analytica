@@ -24,7 +24,7 @@ const S = {
 };
 
 const Title = ({
-  color, size, onClick, children
+  color, size, onClick, children,
 }: TitleProps) => {
   const handleClick = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (onClick) onClick(e);
