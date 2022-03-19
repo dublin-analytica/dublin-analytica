@@ -141,8 +141,8 @@ public class ShoppingCartAPIController {
   @PostMapping("/checkout")
   public Response confirmCheckout(@RequestHeader("Authorization") String authHeader,
                                   @RequestBody @Valid CardDTO card)
-    throws UserAuthenticationException, UserNotFoundException, BadRequest,
-    InvalidCvvNumber, InvalidCardExpiryDate, ParseException, InvalidCardNumber, DatasetNotFoundException {
+      throws UserAuthenticationException, UserNotFoundException, BadRequest,
+      InvalidCvvNumber, InvalidCardExpiryDate, ParseException, InvalidCardNumber, DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
     orderService.verifyCardPayment(card);
