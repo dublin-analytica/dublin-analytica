@@ -102,7 +102,7 @@ public class ShoppingCartAPIController {
       @RequestHeader("Authorization") String authHeader,
       @RequestBody @Valid ItemDTO item)
       throws UserAuthenticationException, UserNotFoundException,
-              BadRequest, DatasetNotFoundException {
+               DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
     userService.addToCart(user, payload.getAuthToken(), item);
@@ -142,7 +142,7 @@ public class ShoppingCartAPIController {
   public Response confirmCheckout(@RequestHeader("Authorization") String authHeader,
                                   @RequestBody @Valid CardDTO card)
       throws UserAuthenticationException, UserNotFoundException, BadRequest,
-      InvalidCvvNumber, InvalidCardExpiryDate, ParseException, 
+      InvalidCvvNumber, InvalidCardExpiryDate, ParseException,
       InvalidCardNumber, DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());

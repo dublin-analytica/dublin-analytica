@@ -99,7 +99,7 @@ public class UserService {
    * @throws UserAuthenticationException if the user isn't authenticated
    */
   public void addToCart(User user, String token, ItemDTO item)
-      throws UserAuthenticationException, DatasetNotFoundException, BadRequest {
+      throws UserAuthenticationException, DatasetNotFoundException {
     verifyAuthToken(user, token);
 
     UUID datasetId = item.getId();
@@ -112,11 +112,7 @@ public class UserService {
     int current = items.getOrDefault(datasetId, 0);
     int updated = current + count;
 
-    if (updated > dataset.getSize()) {
-      throw new BadRequest("Dataset does not have enough datapoints");
-    }
-
-    user.getCart().put(datasetId, updated);
+    user.getCart().put(datasetId, (int) Math.max(updated, dataset.getSize()));
 
     userRepository.save(user);
   }
