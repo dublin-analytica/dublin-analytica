@@ -58,15 +58,22 @@ public class DatabaseLoader implements CommandLineRunner {
   private final Lorem lorem = LoremIpsum.getInstance();
 
   private final String[] words = {
-    "name", "email", "address", "likes", "dislikes", "other", "something", "location", "preference", "sexuality",
-    "something", "lorem", "data", "information"
+    "name", "email", "address", "likes", "dislikes", "other", "something", "location", "preference",
+    "sexuality", "something", "lorem", "data", "information"
   };
 
   @Override
-  public void run(final String... strings) throws Exception {
-    userRepository.deleteAll();
-    datasetRepository.deleteAll();
+  public void run(final String... args) throws Exception {
+    //populateDatabase();
+  }
+
+  /**
+   * Populates the database with dummy data.
+   */
+  public void populateDatabase() {
     orderRepository.deleteAll();
+    datasetRepository.deleteAll();
+    userRepository.deleteAll();
 
     User alice = new User("Alice the admin", "alice@gmail.com", "alice".toCharArray(), true);
     User bob = new User("Bob the businesman", "bob@gmail.com", "bob".toCharArray(), false);
@@ -83,14 +90,14 @@ public class DatabaseLoader implements CommandLineRunner {
       List<String> fields = new ArrayList<>();
 
       for (int j = 0; j < rand.nextInt(2, 5); j++) {
-          fields.add(words[rand.nextInt(words.length)]);
+        fields.add(words[rand.nextInt(words.length)]);
       }
 
       Dataset set = new Dataset(
-        name,
-        description,
-        fields,
-        rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg"
+          name,
+          description,
+          fields,
+          rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg"
       );
 
       set.setUnitPrice(rand.nextDouble(0.0001, 0.01));
