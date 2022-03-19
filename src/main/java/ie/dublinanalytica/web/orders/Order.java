@@ -1,6 +1,7 @@
 package ie.dublinanalytica.web.orders;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -69,8 +70,8 @@ public class Order {
     this.price = price;
   }
 
-  public LocalDateTime getTimestamp() {
-    return timestamp;
+  public long getTimestamp() {
+    return timestamp.toEpochSecond(ZoneOffset.UTC);
   }
 
   public void setTimestamp(LocalDateTime timestamp) {
