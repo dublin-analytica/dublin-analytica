@@ -11,7 +11,7 @@ export type Color = 'primary'
   | 'light'
   | 'gray';
 
-export type TextColor = 'dark' | 'light';
+export type TextColor = 'dark' | 'light' | 'secondary';
 
 export type Spacing = 'small' | 'medium' | 'large';
 
@@ -33,13 +33,13 @@ const theme: Theme = {
     transparent: 'transparent',
 
     accent: '#9c27b0',
-    error: '#ed4337',
+    error: '#ef5350',
     warning: '#ffeb3b',
     info: '#2196f3',
     success: '#4caf50',
 
     white: '#ffffff',
-    gray: '#e5e7eb',
+    gray: '#f1f1f1',
     light: '#fafafa',
     dark: '#212121',
   },
@@ -47,6 +47,7 @@ const theme: Theme = {
     colors: {
       dark: '#212121',
       light: '#ffffff',
+      secondary: '#c4c4c4',
     },
   },
   spacing: {

@@ -79,7 +79,7 @@ public class DatasetAPITests {
   public void createShouldReturnCreatedIfSuccessful() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
-      post("/api/dataset/create")
+      post("/api/datasets/create")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
@@ -92,19 +92,19 @@ public class DatasetAPITests {
   public void createShouldErrorIfDatasetExists() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
-        post("/api/dataset/create")
+        post("/api/datasets/create")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
       ).andDo(print())
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isConflict());
   }
 
   @Test
   @Order(2)
   public void createShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
-        post("/api/dataset/create")
+        post("/api/datasets/create")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
@@ -116,7 +116,7 @@ public class DatasetAPITests {
   @Order(3)
   public void returnAllDatasets() throws Exception {
     this.mockMvc.perform(
-      get("/api/dataset/"))
+      get("/api/datasets/"))
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Some dataset"))
       .andExpect(status().isOk())
@@ -127,12 +127,12 @@ public class DatasetAPITests {
   @Order(3)
   public void returnDataset() throws Exception {
     MvcResult result = this.mockMvc.perform(
-        get("/api/dataset/"))
+        get("/api/datasets/"))
         .andReturn();
 
     String response = result.getResponse().getContentAsString();
     String id = JsonPath.parse(response).read("$.[0].id");
-    String url = "/api/dataset/" + id;
+    String url = "/api/datasets/" + id;
 
     this.mockMvc.perform(
       get(url))
@@ -146,7 +146,7 @@ public class DatasetAPITests {
   @Order(3)
   public void returnExceptionIfIncorrectDatasetId() throws Exception {
     this.mockMvc.perform(
-        get("/api/dataset/9af-e9468f4785f3"))
+        get("/api/datasets/9af-e9468f4785f3"))
       .andDo(print())
       .andExpect(status().isBadRequest())
       .andReturn();

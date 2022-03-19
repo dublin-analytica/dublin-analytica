@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
-import { Button } from '@components';
 import { Container } from '@containers';
-
 import type { Theme } from '@styles/theme';
 
+import { useAuth } from '@context/AuthProvider';
 import Logo from './Logo';
 import Title from './Title';
+import Link from './Link';
 
 type NavbarProps = { scrolled: boolean };
 
@@ -15,14 +15,16 @@ const S = {
   Navbar: styled.nav<NavbarProps>`
     position: ${({ scrolled }) => (scrolled ? 'fixed' : 'absolute')};
     top: ${({ scrolled }) => (scrolled ? '-20px' : '64px')};
-    width: 70%;
-    /* top: 0; */
+    width: 90%;
+    display: flex;
+    justify-content: center;
   `,
 };
 
 const Navbar = ({ scrolled }: NavbarProps) => {
   const navigate = useNavigate();
   const { text, colors } = useTheme() as Theme;
+  const { user } = useAuth();
 
   return (
     <S.Navbar scrolled={scrolled}>
@@ -32,9 +34,12 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <Title onClick={() => navigate('/')} color={text.colors.dark} size="2rem" />
         </Container>
         <Container direction="row" justify="flex-end">
-          <Button variant="transparent" onClick={() => navigate('/marketplace')}>Marketplace</Button>
-          <Button variant="transparent" onClick={() => navigate('/login')}>Sign In</Button>
-          <Button onClick={() => navigate('/register')}>Sign Up</Button>
+          <Link text="Marketplace" to="/marketplace" unpadded />
+          {user && <Link text="Basket" to="/basket" unpadded />}
+          {!user && <Link text="Login" to="/login" unpadded />}
+          {user && !user?.admin && <Link text="My Account" to="/account" primary />}
+          {user?.admin && <Link text="Dashboard" to="/dashboard" primary />}
+          {!user && <Link text="Sign Up" to="/register" primary />}
         </Container>
       </Container>
     </S.Navbar>

@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import jwtDecode from 'jwt-decode';
 
+import type User from 'types/User';
+
 type AuthProviderProps = { children: React.ReactNode };
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-} | null
-
 type GetToken = () => string | null;
-type SetToken = (token: string) => void;
+type SetToken = (token: string) => User | null;
 type RemoveToken = () => void;
 
 type Context = {
@@ -39,11 +35,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (error) {
       removeToken();
     }
+
+    return user;
   };
 
   const setToken = (token: string) => {
     localStorage.setItem('token', token);
-    setUserFromToken(token);
+    return setUserFromToken(token);
   };
 
   useEffect(() => {

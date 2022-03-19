@@ -56,6 +56,8 @@ public class OrderService {
 
     user.getCart().clear();
 
+    userService.save(user);
+
     orderRepository.save(newOrder);
   }
 

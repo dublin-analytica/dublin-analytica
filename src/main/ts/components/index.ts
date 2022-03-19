@@ -5,3 +5,7 @@ export { default as Title } from './Title';
 export { default as Input } from './Input';
 export { default as Form } from './Form';
 export { default as ErrorToast } from './ErrorToast';
+export { default as SplitView } from './SplitView';
+export { default as Orders } from './Orders';
+export { default as Stats } from './Stats';
+export { default as Sidebar } from './Sidebar';

@@ -1,5 +1,10 @@
 package ie.dublinanalytica.web.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.Response;
+import ie.dublinanalytica.web.dataset.Dataset;
+import ie.dublinanalytica.web.dataset.DatasetService;
 import ie.dublinanalytica.web.exceptions.BadRequest;
 import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
@@ -33,6 +40,7 @@ public class ShoppingCartAPIController {
 
   private UserService userService;
   private OrderService orderService;
+  private DatasetService datasetService;
 
   @Autowired
   public void setUserService(UserService userService) {
@@ -42,6 +50,11 @@ public class ShoppingCartAPIController {
   @Autowired
   public void setOrderService(OrderService orderService) {
     this.orderService = orderService;
+  }
+
+  @Autowired
+  public void setDatasetService(DatasetService datasetService) {
+    this.datasetService = datasetService;
   }
 
   /**
@@ -55,10 +68,21 @@ public class ShoppingCartAPIController {
    */
   @GetMapping("/")
   public Response getShoppingCart(@RequestHeader("Authorization") String authHeader)
-      throws UserAuthenticationException, UserNotFoundException {
+      throws UserAuthenticationException, UserNotFoundException, DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
-    return new Response(userService.getCart(user, payload.getAuthToken()));
+
+    Map<UUID, Integer> items = userService.getCart(user, payload.getAuthToken());
+
+    List<Dataset> formattedItems = new ArrayList<>();
+
+    for (UUID id : items.keySet()) {
+      Dataset dataset = datasetService.findById(id);
+      dataset.setSize(items.get(id));
+      formattedItems.add(dataset);
+    }
+
+    return new Response(formattedItems);
   }
 
   /**

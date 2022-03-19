@@ -69,34 +69,36 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <Container color={theme.colors.primary}>
-        <Form onSubmit={handleSubmit}>
-          <div>
-            <h2>Welcome to Dublin Analytica!</h2>
-            <p>By continuing you agree to the terms of service and privacy policy.</p>
+    <Container fullscreen justify="center" color={theme.colors.primary}>
+      <Form onSubmit={handleSubmit}>
+        <div>
+          <h2>Welcome to Dublin Analytica!</h2>
+          <p>By continuing you agree to the terms of service and privacy policy.</p>
+        </div>
+        <div>
+          <Input label="Name" name="name" value={name} onChange={handleChange} valid={validateName()} error={errors.name} />
+          <Input label="Email" name="email" value={email} onChange={handleChange} valid={validateEmail()} error={errors.email} />
+          <Input label="Password" name="password" value={password} type={showPassword ? 'text' : 'password'} placeholder="8+ characters" onChange={handleChange} valid={validatePassword()} error={errors.password} />
+          <Input label="Confirm Password" name="confirmation" value={confirmation} type={showPassword ? 'text' : 'password'} placeholder="8+ characters" onChange={handleChange} valid={validateConfirmation()} error={errors.confirmation} />
+          <div style={{ textAlign: 'left', marginLeft: '3.5rem' }}>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            Show password
           </div>
-          <div>
-            <Input label="Name" name="name" value={name} onChange={handleChange} valid={validateName()} error={errors.name} />
-            <Input label="Email" name="email" value={email} onChange={handleChange} valid={validateEmail()} error={errors.email} />
-            <Input label="Password" name="password" value={password} type={showPassword ? 'text' : 'password'} placeholder="8+ characters" onChange={handleChange} valid={validatePassword()} error={errors.password} />
-            <Input label="Confirm Password" name="confirmation" value={confirmation} type={showPassword ? 'text' : 'password'} placeholder="8+ characters" onChange={handleChange} valid={validateConfirmation()} error={errors.confirmation} />
-            <div style={{ alignSelf: 'left' }}>
-              <input type="checkbox" checked={showPassword} onClick={() => setShowPassword(!showPassword)} />
-              Show password
-            </div>
-          </div>
-          <ErrorToast message={error} />
-          <Button type="submit" color={theme.colors.primary}>Register</Button>
-          <hr />
-          <p>
-            Already a member?
-            {' '}
-            <a href="/login">Sign In</a>
-          </p>
-        </Form>
-      </Container>
-    </div>
+        </div>
+        <ErrorToast message={error} />
+        <Button type="submit" color={theme.colors.primary}>Register</Button>
+        <hr />
+        <p>
+          Already a member?
+          {' '}
+          <a href="/login">Sign In</a>
+        </p>
+      </Form>
+    </Container>
   );
 };
 

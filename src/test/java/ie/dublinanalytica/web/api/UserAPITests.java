@@ -79,7 +79,7 @@ public class UserAPITests {
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD)))
     ).andDo(print())
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isConflict());
   }
 
   @Test
@@ -90,7 +90,7 @@ public class UserAPITests {
           .contentType("application/json")
           .content(toJSON(new RegistrationDTO(NAME, EMAIL, PASSWORD))))
         .andDo(print())
-        .andExpect(status().isBadRequest())
+        .andExpect(status().isConflict())
         .andExpect(content().string(
         matchesRegex(ERROR_PATTERN)
       ));
@@ -219,7 +219,4 @@ public class UserAPITests {
       .andDo(print())
         .andExpect(status().isBadRequest());
   }
-
-  /* TODO: Add tests to verify that auth tokens can actually be used.
-  Not done for /users/me in case it gets removed */
 }

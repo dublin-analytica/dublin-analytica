@@ -30,7 +30,7 @@ import ie.dublinanalytica.web.user.UserService;
  * API Controller for /api/dataset endpoints.
  */
 @RestController
-@RequestMapping("/api/dataset")
+@RequestMapping("/api/datasets")
 public class DatasetAPIController {
 
   private DatasetService datasetService;
