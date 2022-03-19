@@ -20,12 +20,12 @@ public class Dataset {
 
   private String name;
   private String description;
-  private String datapoints;
-  private double size;
+  private String fields;
+  private int size;
   private String url;
 
   private boolean hidden;
-  private double pricePerDatapoint;
+  private double unitPrice;
 
   public Dataset() {
   }
@@ -44,10 +44,10 @@ public class Dataset {
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, String datapoints, double size, String url) {
+  public Dataset(String name, String description, String fields, int size, String url) {
     this.name = name;
     this.description = description;
-    this.datapoints = datapoints;
+    this.fields = fields;
     this.size = size;
     this.url = url;
   }
@@ -76,19 +76,19 @@ public class Dataset {
     this.description = description;
   }
 
-  public String getDatapoints() {
-    return datapoints;
+  public String getFields() {
+    return fields;
   }
 
-  public void setDatapoints(String datapoint) {
-    this.datapoints = datapoint;
+  public void setFields(String datapoint) {
+    this.fields = datapoint;
   }
 
   public double getSize() {
     return size;
   }
 
-  public void setSize(double size) {
+  public void setSize(int size) {
     this.size = size;
   }
 
@@ -104,7 +104,7 @@ public class Dataset {
   public String toString() {
     return String.format(
         "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', url: '%s'}",
-        id, name, description, datapoints, size, url);
+        id, name, description, fields, size, url);
   }
 
   public boolean isHidden() {
@@ -115,11 +115,11 @@ public class Dataset {
     this.hidden = hidden;
   }
 
-  public double getPricePerDatapoint() {
-    return pricePerDatapoint;
+  public double getUnitPrice() {
+    return unitPrice;
   }
 
-  public void setPricePerDatapoint(double pricePerDatapoint) {
-    this.pricePerDatapoint = pricePerDatapoint;
+  public void setUnitPrice(double pricePerDatapoint) {
+    this.unitPrice = pricePerDatapoint;
   }
 }

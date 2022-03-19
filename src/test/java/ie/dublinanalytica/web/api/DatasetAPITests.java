@@ -35,7 +35,7 @@ public class DatasetAPITests {
   private final String NAME = "Dataset1";
   private final String DESCRIPTION = "A dataset";
   private final String DATAPOINTS = "alice, bob";
-  private final double SIZE = 1.0;
+  private final int SIZE = 10;
   private final String URL = "https://helloworld.com";
   private final double PRICE = 1.0;
   private final char[] PASSWORD = "admin".toCharArray();

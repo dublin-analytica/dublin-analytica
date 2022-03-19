@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,7 +77,7 @@ public class DatasetAPIController {
    * @return Database
    * @throws DatasetNotFoundException if the dataset does not exist
    */
-  @GetMapping("/{id}")
+  @GetMapping("/{id:.{36}}")
   public Response getDataset(@PathVariable String id) throws
       DatasetNotFoundException {
     UUID uuid = UUID.fromString(id);
@@ -97,7 +96,7 @@ public class DatasetAPIController {
    * @throws UserNotFoundException if the user does not exist (invalid jwt token)
    * @throws DatasetNotFoundException If the dataset does not exist
    */
-  @PatchMapping("/{id}")
+  @PostMapping("/{id:.{36}}")
   public Response editDataset(
       @RequestHeader("Authorization") String authHeader,
       @PathVariable String id,
@@ -119,10 +118,10 @@ public class DatasetAPIController {
     }
 
     if (dto.getDatapoints() != null) {
-      dataset.setDatapoints(dto.getDatapoints());
+      dataset.setFields(dto.getDatapoints());
     }
 
-    if (dto.getSize() > 0) {
+    if (dto.getSize() != null) {
       dataset.setSize(dto.getSize());
     }
 
@@ -130,8 +129,8 @@ public class DatasetAPIController {
       dataset.setHidden(dto.isHidden());
     }
 
-    if (dto.getPricePerDatapoint() > 0) {
-      dataset.setPricePerDatapoint(dto.getPricePerDatapoint());
+    if (dto.getPricePerDatapoint() != null) {
+      dataset.setUnitPrice(dto.getPricePerDatapoint());
     }
 
     datasetService.save(dataset);

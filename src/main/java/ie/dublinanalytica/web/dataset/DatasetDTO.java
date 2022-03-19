@@ -21,7 +21,7 @@ public class DatasetDTO {
   private String datapoints;
 
   @NotNull
-  private Double size;
+  private Integer size;
 
   @NotNull
   @NotEmpty
@@ -38,7 +38,7 @@ public class DatasetDTO {
   /**
    * Constructor class for DatasetDTO.
    */
-  public DatasetDTO(String name, String description, String datapoints, double size,
+  public DatasetDTO(String name, String description, String datapoints, int size,
                     String url, double pricePerDatapoint) {
     this.name = name;
     this.description = description;
@@ -72,11 +72,11 @@ public class DatasetDTO {
     this.datapoints = datapoints;
   }
 
-  public Double getSize() {
+  public Integer getSize() {
     return size;
   }
 
-  public void setSize(double size) {
+  public void setSize(int size) {
     this.size = size;
   }
 

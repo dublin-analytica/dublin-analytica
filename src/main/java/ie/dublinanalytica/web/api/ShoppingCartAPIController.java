@@ -70,7 +70,7 @@ public class ShoppingCartAPIController {
    *                                     is invalid
    * @throws UserNotFoundException       if the user not found
    */
-  @GetMapping("/")
+  @GetMapping("")
   public Response getShoppingCart(@RequestHeader("Authorization") String authHeader)
       throws UserAuthenticationException, UserNotFoundException, DatasetNotFoundException {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
@@ -97,7 +97,7 @@ public class ShoppingCartAPIController {
    * @throws UserAuthenticationException if no authorization header is provided or is invalid
    * @throws UserNotFoundException if the user not found
    */
-  @PostMapping("/")
+  @PostMapping("")
   public Response addToShoppingCart(
       @RequestHeader("Authorization") String authHeader,
       @RequestBody @Valid ItemDTO item)
@@ -119,7 +119,7 @@ public class ShoppingCartAPIController {
    * @throws BadRequest if the request is invalid
    * @throws DatasetNotFoundException if the dataset not found
    */
-  @PutMapping("/")
+  @PutMapping("")
   public Response updateShoppingCart(
       @RequestHeader("Authorization") String authHeader,
       @RequestBody @Valid ItemDTO item)
