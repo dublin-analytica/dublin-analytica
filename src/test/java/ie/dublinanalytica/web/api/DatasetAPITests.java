@@ -37,6 +37,7 @@ public class DatasetAPITests {
   private final String DATAPOINTS = "alice, bob";
   private final double SIZE = 1.0;
   private final String URL = "https://helloworld.com";
+  private final double PRICE = 1.0;
   private final char[] PASSWORD = "admin".toCharArray();
 
   @Autowired
@@ -82,7 +83,7 @@ public class DatasetAPITests {
       post("/api/datasets/create")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
-        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
+        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
     ).andDo(print())
       .andExpect(status().isCreated());
   }
@@ -95,7 +96,7 @@ public class DatasetAPITests {
         post("/api/datasets/create")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
       ).andDo(print())
       .andExpect(status().isConflict());
   }
@@ -107,7 +108,7 @@ public class DatasetAPITests {
         post("/api/datasets/create")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
       ).andDo(print())
       .andExpect(status().isUnauthorized());
   }
