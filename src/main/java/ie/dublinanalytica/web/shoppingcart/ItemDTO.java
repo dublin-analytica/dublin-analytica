@@ -14,39 +14,39 @@ import javax.validation.constraints.NotNull;
 public class ItemDTO {
 
   @NotNull
-  private UUID datasetId;
+  private UUID id;
 
   @NotNull
-  private int datapointCount;
+  private int size;
 
   public ItemDTO() {}
 
-  public ItemDTO(UUID datasetId, int datapointCount) {
-    this.datasetId = datasetId;
-    this.datapointCount = datapointCount;
+  public ItemDTO(UUID id, int datapointCount) {
+    this.id = id;
+    this.size = datapointCount;
   }
 
-  public UUID getDatasetId() {
-    return this.datasetId;
+  public UUID getId() {
+    return this.id;
   }
 
-  public void setDatasetId(UUID datasetId) {
-    this.datasetId = datasetId;
+  public void setId(UUID datasetId) {
+    this.id = datasetId;
   }
 
-  public int getDatapointCount() {
-    return this.datapointCount;
+  public int getSize() {
+    return this.size;
   }
 
-  public void setDatapointCount(int datapointCount) {
-    this.datapointCount = datapointCount;
+  public void setSize(int datapointCount) {
+    this.size = datapointCount;
   }
 
   @Override
   public String toString() {
     return String.format(
         "ItemDTO{id: '%s', datapointCount: '%s'}",
-        datasetId, datapointCount);
+      id, size);
   }
 
 }

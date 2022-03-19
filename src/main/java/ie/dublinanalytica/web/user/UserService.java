@@ -102,10 +102,10 @@ public class UserService {
       throws UserAuthenticationException, DatasetNotFoundException, BadRequest {
     verifyAuthToken(user, token);
 
-    UUID datasetId = item.getDatasetId();
+    UUID datasetId = item.getId();
     Dataset dataset = datasetService.findById(datasetId);
 
-    int count = item.getDatapointCount();
+    int count = item.getSize();
 
     Map<UUID, Integer> items = user.getCart().getItems();
 
@@ -135,19 +135,19 @@ public class UserService {
       throws DatasetNotFoundException, BadRequest, UserAuthenticationException {
     verifyAuthToken(user, authToken);
 
-    UUID datasetId = item.getDatasetId();
+    UUID datasetId = item.getId();
     Dataset dataset = datasetService.findById(datasetId);
 
-    if (item.getDatapointCount() < 0) {
+    if (item.getSize() < 0) {
       throw new BadRequest("Can't have less than 0 datapoints");
     }
 
-    if (item.getDatapointCount() > dataset.getSize()) {
+    if (item.getSize() > dataset.getSize()) {
       throw new BadRequest("Dataset does not have enough datapoints");
     }
 
     ShoppingCart cart = user.getCart();
-    cart.put(datasetId, item.getDatapointCount());
+    cart.put(datasetId, item.getSize());
     userRepository.save(user);
   }
 
