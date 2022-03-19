@@ -64,9 +64,10 @@ public class DatabaseLoader implements CommandLineRunner {
 
     this.datasetRepository.save(set);
 
-    set = new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com");
-    set.setImage("https://preview.redd.it/o6y07vrwfz561.jpg?auto=webp&s=6982d23e08c8f3e5a1e8e39dbca01aa71609fed2");
-
+    for (int i = 0; i < 10; i++) {
+      set = new Dataset("Another dataset " + i, "Another great dataset", "no", 500, "www.com");
+      set.setImage("https://preview.redd.it/o6y07vrwfz561.jpg?auto=webp&s=6982d23e08c8f3e5a1e8e39dbca01aa71609fed2");
+    }
 
     this.datasetRepository.save(set);
 
