@@ -7,3 +7,4 @@ export { default as Marketplace } from './Marketplace';
 export { default as Register } from './Register';
 export { default as Account } from './Account';
 export { default as Orders } from './Orders';
+export { default as Page404 } from './404';

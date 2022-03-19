@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 type TitleProps = {
-  color: string, size: string, onClick?: React.MouseEventHandler<HTMLHeadingElement>
+  color: string, size: string, onClick?: React.MouseEventHandler<HTMLHeadingElement>,
+  children?: React.ReactNode
 };
 
 const S = {
@@ -22,17 +23,24 @@ const S = {
   `,
 };
 
-const Title = ({ color, size, onClick }: TitleProps) => {
+const Title = ({
+  color, size, onClick, children }: TitleProps) => {
   const handleClick = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (onClick) onClick(e);
   };
 
+  // Must be a nicer way to do this...
   return (
     <S.Title color={color} size={size} onClick={handleClick}>
       <h1>
-        Dublin
-        <br />
-        Analytica
+        { children
+          || (
+          <>
+            Dublin
+            <br />
+            Analytica
+          </>
+          )}
       </h1>
     </S.Title>
   );
