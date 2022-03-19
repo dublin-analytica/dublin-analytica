@@ -13,14 +13,17 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.dataset.DatasetDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -79,6 +82,7 @@ public class DatasetAPITests {
 
   @Test
   @Order(1)
+  @Rollback
   public void createShouldReturnCreatedIfSuccessful() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
@@ -92,6 +96,7 @@ public class DatasetAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void createShouldErrorIfDatasetExists() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
@@ -105,6 +110,7 @@ public class DatasetAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void createShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/datasets")
@@ -117,17 +123,19 @@ public class DatasetAPITests {
 
   @Test
   @Order(3)
+  @Rollback
   public void returnAllDatasets() throws Exception {
     this.mockMvc.perform(
       get("/api/datasets/"))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Dataset 0"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value(startsWith("Dataset")))
       .andExpect(status().isOk())
         .andReturn();
   }
 
   @Test
   @Order(3)
+  @Rollback
   public void returnDataset() throws Exception {
     MvcResult result = this.mockMvc.perform(
         get("/api/datasets/"))
@@ -140,13 +148,14 @@ public class DatasetAPITests {
     this.mockMvc.perform(
       get(url))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Dataset 0"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(startsWith("Dataset")))
       .andExpect(status().isOk())
         .andReturn();
   }
 
   @Test
   @Order(3)
+  @Rollback
   public void returnExceptionIfIncorrectDatasetId() throws Exception {
     this.mockMvc.perform(
         get("/api/datasets/9af-e9468f4785f3"))

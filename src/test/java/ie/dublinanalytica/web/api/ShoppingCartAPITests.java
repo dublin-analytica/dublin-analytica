@@ -13,8 +13,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.shoppingcart.CardDTO;
@@ -43,6 +45,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(1)
+  @Rollback
   public void confirmCheckoutShouldThrowExceptionIfCartIsEmpty() throws Exception {
     String token = getAuthToken();
 
@@ -54,6 +57,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void confirmCheckoutShouldReturnOkIfSuccessful() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -74,6 +78,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void confirmCheckoutShouldThrowExceptionIfCardNumberIsInvalid() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -94,6 +99,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void confirmCheckoutShouldThrowExceptionIfExpiryDateIsInvalid() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -114,6 +120,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void confirmCheckoutShouldThrowExceptionIfCvvIsInvalid() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -134,6 +141,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void confirmCheckoutShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/cart/checkout")
@@ -145,6 +153,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(3)
+  @Rollback
   public void returnCart() throws Exception {
     String token = getAuthToken();
 
@@ -157,6 +166,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(3)
+  @Rollback
   public void returnCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         get("/api/cart/")
@@ -167,6 +177,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(4)
+  @Rollback
   public void addToCart() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -181,6 +192,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(4)
+  @Rollback
   public void addToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     String id = getId();
 
@@ -194,6 +206,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(5)
+  @Rollback
   public void putToCart() throws Exception {
     String token = getAuthToken();
     String id = getId();
@@ -208,6 +221,7 @@ public class ShoppingCartAPITests {
 
   @Test
   @Order(5)
+  @Rollback
   public void putToCartShouldBeUnauthorizedIfInvalidToken() throws Exception {
     String id = getId();
 

@@ -13,8 +13,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.user.AuthDTO;
@@ -62,6 +64,7 @@ public class UserAPITests {
 
   @Test
   @Order(1)
+  @Rollback
   public void registerShouldReturnCreatedIfSuccessful() throws Exception {
     this.mockMvc.perform(
       post("/api/users/register")
@@ -73,6 +76,7 @@ public class UserAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void registerShouldReturnBadRequestIfEmailIsInUse() throws Exception {
     this.mockMvc.perform(
         post("/api/users/register")
@@ -84,6 +88,7 @@ public class UserAPITests {
 
   @Test
   @Order(2)
+  @Rollback
   public void registerShouldReturnErrorObjectIfEmailIsInUse() throws Exception {
     this.mockMvc.perform(
         post("/api/users/register")
@@ -98,6 +103,7 @@ public class UserAPITests {
 
   @Test
   @Order(3)
+  @Rollback
   public void loginShouldReturnOkIfSuccessful() throws Exception {
     this.mockMvc.perform(
         post("/api/users/login")
@@ -109,6 +115,7 @@ public class UserAPITests {
 
   @Test
   @Order(3)
+  @Rollback
   public void loginShouldReturnErrorObjectIfFailure() throws Exception {
     this.mockMvc.perform(
         post("/api/users/login")
@@ -125,6 +132,7 @@ public class UserAPITests {
 
   @Test
   @Order(4)
+  @Rollback
   public void loginShouldReturnAuthResponseIfSuccessful() throws Exception {
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
@@ -141,6 +149,7 @@ public class UserAPITests {
 
   @Test
   @Order(4)
+  @Rollback
   public void loginShouldReturnTokenWithUserDataIfSuccessful() throws Exception {
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
@@ -176,6 +185,7 @@ public class UserAPITests {
 
   @Test
   @Order(5)
+  @Rollback
   public void logoutShouldReturnOkIfSuccessful() throws Exception {
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
@@ -199,6 +209,7 @@ public class UserAPITests {
 
   @Test
   @Order(5)
+  @Rollback
   public void logoutShouldReturnUnauthorizedIfNoToken() throws Exception {
     this.mockMvc.perform(
         post("/api/users/logout").header("Authorization", "Bearer INVALID TOKEN"))
@@ -208,6 +219,7 @@ public class UserAPITests {
 
   @Test
   @Order(5)
+  @Rollback
   public void logoutShouldReturnBadRequestIfMalformedAuthorizationHeader() throws Exception {
     this.mockMvc.perform(
         post("/api/users/logout"))
