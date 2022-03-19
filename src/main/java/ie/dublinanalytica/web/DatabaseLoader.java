@@ -66,7 +66,8 @@ public class DatabaseLoader implements CommandLineRunner {
       new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
     );
 
-    Dataset hiddenSet = new Dataset("Hidden dataset", "This dataset is hidden by default", "no", 500, "www.com");
+    Dataset hiddenSet = new Dataset(
+        "Hidden dataset", "This dataset is hidden by default", "no", 500, "www.com");
     hiddenSet.setHidden(true);
 
     this.datasetRepository.save(hiddenSet);

@@ -87,6 +87,16 @@ public class DatasetAPIController {
     return new Response(dataset);
   }
 
+  /**
+   * Change a dataset.
+   *
+   * @param authHeader Authorization header, should be admin
+   * @param id ID of the dataset
+   * @param dto new information
+   * @throws UserAuthenticationException if the user is not an admin
+   * @throws UserNotFoundException if the user does not exist (invalid jwt token)
+   * @throws DatasetNotFoundException If the dataset does not exist
+   */
   @PatchMapping("/{id}")
   public Response editDataset(
       @RequestHeader("Authorization") String authHeader,
@@ -131,7 +141,8 @@ public class DatasetAPIController {
    */
   @SuppressWarnings("checkstyle:EmptyCatchBlock")
   @GetMapping("/")
-  public Response getAllDataset(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+  public Response getAllDataset(
+      @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
     boolean isAdminTemp = false;
 
@@ -150,7 +161,8 @@ public class DatasetAPIController {
     final boolean isAdmin = isAdminTemp;
     Iterable<Dataset> datasets = datasetService.findAllDatasets();
 
-    Stream<Dataset> filtered = StreamSupport.stream(datasets.spliterator(), false).filter(d -> isAdmin || !d.isHidden());
+    Stream<Dataset> filtered = StreamSupport.stream(
+        datasets.spliterator(), false).filter(d -> isAdmin || !d.isHidden());
 
     return new Response(filtered);
   }
