@@ -81,14 +81,7 @@ public class OrderAPITests {
   @Test
   public void returnOrder() throws Exception {
     String authToken = getAuthToken();
-
-    MvcResult result = this.mockMvc.perform(
-        get("/api/orders/").header("Authorization", "Bearer " + authToken))
-          .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/orders/" + id;
+    String url = getOrderUrl();
 
     this.mockMvc.perform(
         get(url).header("Authorization", "Bearer " + authToken))
@@ -110,13 +103,7 @@ public class OrderAPITests {
   @Test
   public void updateOrderStatus() throws Exception {
     String token = getAuthToken();
-    MvcResult result = this.mockMvc.perform(
-        get("/api/orders/").header("Authorization", "Bearer " + token))
-        .andReturn();
-
-    String response = result.getResponse().getContentAsString();
-    String id = JsonPath.parse(response).read("$.[1].id");
-    String url = "/api/orders/" + id + "/status";
+    String url = getOrderUrl() + "/status";
 
     this.mockMvc.perform(
       post(url)
@@ -127,7 +114,7 @@ public class OrderAPITests {
         .andExpect(status().isOk());
 
     this.mockMvc.perform(
-        get("/api/orders/" + id).header("Authorization", "Bearer " + token))
+        get(getOrderUrl()).header("Authorization", "Bearer " + token))
       .andDo(print())
       .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("DELIVERED"))
       .andExpect(status().isOk())
@@ -153,5 +140,18 @@ public class OrderAPITests {
           .content(toJSON(new ChangeStatusDTO(Order.OrderStatus.DELIVERED)))
       ).andDo(print())
       .andExpect(status().isUnauthorized());
+  }
+
+  /**
+   * Gets the url for a specific order
+   */
+  public String getOrderUrl() throws Exception {
+    MvcResult result = this.mockMvc.perform(
+        get("/api/orders/").header("Authorization", "Bearer " + getAuthToken()))
+      .andReturn();
+
+    String response = result.getResponse().getContentAsString();
+    String id = JsonPath.parse(response).read("$.[1].id");
+    return "/api/orders/" + id;
   }
 }
