@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"url", "hidden"})
+@JsonIgnoreProperties(value = {"url"})
 public class Dataset {
   @Id
   @GeneratedValue
