@@ -24,6 +24,7 @@ import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.exceptions.WrongPasswordException;
 import ie.dublinanalytica.web.user.AuthDTO;
 import ie.dublinanalytica.web.user.BaseUser;
+import ie.dublinanalytica.web.user.PasswordChangeDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
@@ -161,5 +162,31 @@ public class UserAPIController {
     userService.save(user);
 
     return new EmptyResponse(HttpStatus.OK);
+  }
+
+  /**
+   * Changes the user's password and returns a new jwt-token for auth.
+   *
+   * @param authHeader The auth header
+   * @param dto data object
+   * @throws UserAuthenticationException Invalid auth token
+   * @throws UserNotFoundException User not found in the database
+   * @throws WrongPasswordException Wrong old password field
+   */
+  @PostMapping("/me/password")
+  public Response changePassword(
+      @RequestHeader("Authorization") String authHeader,
+      @RequestBody PasswordChangeDTO dto)
+        throws UserAuthenticationException, UserNotFoundException, WrongPasswordException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+
+    // Need copy because changePassword() will clear the password during verification
+    char[] newPasswordCopy = dto.getNewPassword().clone();
+
+    userService.verifyAuthToken(user, payload.getAuthToken());
+    userService.changePassword(user, dto.getOldPassword(), dto.getNewPassword());
+    String authToken = userService.createNewAuthToken(user, newPasswordCopy);
+    return new AuthResponse(user, authToken);
   }
 }

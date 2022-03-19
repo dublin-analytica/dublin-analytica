@@ -135,4 +135,9 @@ public class User extends BaseUser {
   public ShoppingCart getCart() {
     return this.cart;
   }
+
+  public void setPassword(char[] newPassword) {
+    this.authHash = AuthUtils.hash(newPassword, this.salt);
+    this.authTokens.clear();
+  }
 }

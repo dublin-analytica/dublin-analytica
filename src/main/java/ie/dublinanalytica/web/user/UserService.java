@@ -277,4 +277,19 @@ public class UserService {
   public void save(User user) {
     userRepository.save(user);
   }
+
+  /**
+   * Updates the user's password.
+   *
+   * @param user The user
+   * @param oldPassword Their old password
+   * @param newPassword Their new password
+   * @throws WrongPasswordException If the old password doesn't match the stored hash
+   */
+  public void changePassword(User user, char[] oldPassword, char[] newPassword)
+      throws WrongPasswordException {
+    verifyPassword(user, oldPassword);
+    user.setPassword(newPassword);
+    userRepository.save(user);
+  }
 }
