@@ -17,9 +17,6 @@ import { toTitleCase } from '@utils/utils';
 const Dashboard = () => {
   const [selected, setSelected] = useState(new Set<string>());
   const [orders, setOrders] = useState([] as Order[]);
-
-  // const navigate = useNavigate();
-  // const { user } = useAuth();
   const { getOrders, updateOrderStatus } = useOrderActions();
 
   const updateOrders = () => getOrders().then((orders) => setOrders(orders));
@@ -38,7 +35,7 @@ const Dashboard = () => {
   };
 
   const stats = [
-    { name: 'Revenue', value: `€${orders.reduce((acc, order) => acc + order.price, 0)}` },
+    { name: 'Revenue', value: `€${orders.reduce((acc, order) => acc + order.price, 0).toFixed(2)}` },
     { name: 'Total Orders', value: orders.length.toString() },
     { name: 'Pending Orders', value: orders.filter((order) => order.status !== Status.DELIVERED).length.toString() },
   ];

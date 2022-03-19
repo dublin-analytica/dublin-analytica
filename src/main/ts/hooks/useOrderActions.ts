@@ -6,9 +6,10 @@ import useAPI from './useAPI';
 const useOrderActions = () => {
   const { get, post } = useAPI();
 
-  const getOrders = (user?: string): Promise<Order[]> => (
-    user ? get(`orders/user/${user}`) : get('orders')
-  );
+  const getOrders = async (user?: string): Promise<Order[]> => {
+    const orders: Order[] = await (user ? get(`orders/user/${user}`) : get('orders'));
+    return orders.sort((a, b) => b.timestamp - a.timestamp);
+  };
 
   const getOrder = (id: string): Promise<Order> => get(`orders/${id}`);
 

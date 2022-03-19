@@ -18,6 +18,11 @@ const S = {
     width: 90%;
     display: flex;
     justify-content: center;
+    z-index: 1;
+
+    & > ${Container} {
+      border: 1px solid ${({ theme }) => theme.colors.gray};
+    }
   `,
 };
 
@@ -38,7 +43,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           {user && <Link text="Basket" to="/basket" unpadded />}
           {!user && <Link text="Login" to="/login" unpadded />}
           {user && !user?.admin && <Link text="My Account" to="/account" primary />}
-          {user?.admin && <Link text="Dashboard" to="/dashboard/orders" primary />}
+          {user?.admin && <Link text="Dashboard" to="/orderdashboard" primary />}
           {!user && <Link text="Sign Up" to="/register" primary />}
         </Container>
       </Container>
