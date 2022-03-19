@@ -161,7 +161,7 @@ public class UserAPIController {
 
     userService.save(user);
 
-    return new EmptyResponse(HttpStatus.OK);
+    return new AuthResponse(user, payload.getAuthToken());
   }
 
   /**
