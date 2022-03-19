@@ -41,9 +41,10 @@ const useAPI = () => {
   const post = request('POST');
   const put = request('PUT');
   const del = request('DELETE');
+  const patch = request('PATCH');
 
   return {
-    get, post, put, del,
+    get, post, put, del, patch,
   };
 };
 
