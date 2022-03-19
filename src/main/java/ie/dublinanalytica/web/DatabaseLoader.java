@@ -130,9 +130,13 @@ public class DatabaseLoader implements CommandLineRunner {
         map.put(set.getId(), rand.nextInt(10, set.getSize()));
       }
 
-      Order order = new Order(new ShoppingCart(map), owner, Math.round(rand.nextFloat(10, 500) * Math.pow(10, 2)) / Math.pow(10, 2));
+      Order order = new Order(
+          new ShoppingCart(map), owner,
+          Math.round(rand.nextFloat(10, 500) * Math.pow(10, 2)) / Math.pow(10, 2));
 
-      order.setTimestamp(LocalDateTime.ofEpochSecond(rand.nextInt(0, (int)(new Date().toInstant().getEpochSecond())), 0, ZoneOffset.UTC));
+      order.setTimestamp(
+          LocalDateTime.ofEpochSecond(
+            rand.nextInt(0, (int) (new Date().toInstant().getEpochSecond())), 0, ZoneOffset.UTC));
 
       this.orderRepository.save(order);
     }
