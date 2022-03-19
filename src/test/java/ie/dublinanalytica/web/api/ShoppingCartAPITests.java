@@ -1,11 +1,11 @@
 package ie.dublinanalytica.web.api;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import ie.dublinanalytica.web.api.response.AuthResponse;
-import ie.dublinanalytica.web.shoppingcart.ItemDTO;
-import ie.dublinanalytica.web.user.RegistrationDTO;
+
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.UUID;
+import ie.dublinanalytica.web.api.response.AuthResponse;
+import ie.dublinanalytica.web.shoppingcart.CardDTO;
+import ie.dublinanalytica.web.shoppingcart.ItemDTO;
+import ie.dublinanalytica.web.user.RegistrationDTO;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,7 +66,9 @@ public class ShoppingCartAPITests {
 
     this.mockMvc.perform(
         post("/api/cart/checkout")
-          .header("Authorization", "Bearer " + token))
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
       .andExpect(status().isCreated());
   }
 
@@ -70,7 +77,9 @@ public class ShoppingCartAPITests {
   public void confirmCheckoutShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/cart/checkout")
-          .header("Authorization", "Bearer INVALID TOKEN"))
+          .header("Authorization", "Bearer INVALID TOKEN")
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
       .andExpect(status().isUnauthorized());
   }
 
