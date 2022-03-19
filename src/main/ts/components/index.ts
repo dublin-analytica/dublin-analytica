@@ -11,3 +11,4 @@ export { default as Stats } from './Stats';
 export { default as Sidebar } from './Sidebar';
 export { default as SmartForm } from './SmartForm';
 export { default as Divider } from './Divider';
+export { default as DatasetCard } from './DatasetCard';

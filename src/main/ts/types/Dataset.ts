@@ -1,6 +1,7 @@
 type Dataset = {
   id: string,
   name: string,
+  image: string,
   description: string,
   size: number,
   hidden: boolean,

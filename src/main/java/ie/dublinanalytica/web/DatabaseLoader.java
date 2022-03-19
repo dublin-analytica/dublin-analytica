@@ -60,7 +60,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
     Dataset set = new Dataset("Some dataset", "An amazing dataset", "datapoints", 1000, "www.com");
 
-    set.setImage("https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/XA6KIXE6FBFM5EWSA25JI5YAU4.jpg");
+    set.setImage("https://i.imgflip.com/db5xf.jpg");
 
     this.datasetRepository.save(set);
 
