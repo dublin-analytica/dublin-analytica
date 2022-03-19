@@ -1,16 +1,20 @@
 package ie.dublinanalytica.web.orders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ie.dublinanalytica.web.exceptions.*;
+import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import ie.dublinanalytica.web.exceptions.BadRequest;
-import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
-import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
@@ -89,5 +93,61 @@ public class OrderService {
    */
   public Iterable<Order> findAllOrders() {
     return orderRepository.findAll();
+  }
+
+  public void verifyCardPayment(CardDTO card) throws
+      InvalidCVVNumber, InvalidCardNumber, ParseException, InvalidCardExpiryDate {
+    validateCardNumberAndCVV(card.getCardNum(), card.getCvv());
+    validateCardDate(card.getExpiry());
+  }
+
+  private void validateCardDate(String cardExpiry) throws ParseException, InvalidCardExpiryDate {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
+    simpleDateFormat.setLenient(false);
+    Date expiry = simpleDateFormat.parse(cardExpiry);
+    if (expiry.before(new Date()))
+      throw new InvalidCardExpiryDate();
+  }
+
+  public void validateCardNumberAndCVV(String cardNum, String cvv) throws
+      InvalidCardNumber, InvalidCVVNumber {
+    if (cardNum.length() < 13 || cardNum.length() > 16)
+      throw new InvalidCardNumber();
+
+    String regex = "^(?:(4[0-9]{12}(?:[0-9]{3})?)|" +
+      "(5[1-5][0-9]{14})|" + "(3[47][0-9]{13}))$";
+
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(cardNum);
+
+    if(!matcher.matches())
+      throw new InvalidCardNumber();
+
+    if(cardNum.charAt(0) == '3')
+      regex = "^[0-9]{4}$";
+    else
+      regex = "^[0-9]{3}$";
+
+    Pattern cvvPattern = Pattern.compile(regex);
+    Matcher cvvMatcher = cvvPattern.matcher(cvv);
+    if(!cvvMatcher.matches())
+      throw new InvalidCVVNumber();
+
+    int sum = 0;
+    boolean alternate = false;
+    for (int i = cardNum.length() - 1; i >= 0; i--) {
+      int n = Integer.parseInt(cardNum.substring(i, i + 1));
+      if (alternate) {
+        n *= 2;
+        if (n > 9) {
+          n = (n % 10) + 1;
+        }
+      }
+      sum += n;
+      alternate = !alternate;
+    }
+
+    if (sum % 10 != 0)
+      throw new InvalidCardNumber();
   }
 }

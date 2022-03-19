@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import ie.dublinanalytica.web.api.response.AuthResponse;
+import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 import org.junit.jupiter.api.MethodOrderer;
@@ -61,7 +62,9 @@ public class ShoppingCartAPITests {
 
     this.mockMvc.perform(
         post("/api/cart/checkout")
-          .header("Authorization", "Bearer " + token))
+          .header("Authorization", "Bearer " + token)
+          .contentType("application/json")
+          .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
       .andExpect(status().isCreated());
   }
 
