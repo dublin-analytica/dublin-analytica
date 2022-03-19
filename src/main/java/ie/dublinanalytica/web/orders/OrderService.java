@@ -2,23 +2,16 @@ package ie.dublinanalytica.web.orders;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ie.dublinanalytica.web.dataset.DatasetService;
+import ie.dublinanalytica.web.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import ie.dublinanalytica.web.exceptions.BadRequest;
-import ie.dublinanalytica.web.exceptions.InvalidCardExpiryDate;
-import ie.dublinanalytica.web.exceptions.InvalidCardNumber;
-import ie.dublinanalytica.web.exceptions.InvalidCvvNumber;
-import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
-import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import ie.dublinanalytica.web.shoppingcart.ShoppingCart;
 import ie.dublinanalytica.web.user.User;
@@ -32,10 +25,16 @@ public class OrderService {
 
   private OrderRepository orderRepository;
   private UserService userService;
+  private DatasetService datasetService;
 
   @Autowired
-  public void setUserRepository(OrderRepository orderRepository) {
+  public void setOrderRepository(OrderRepository orderRepository) {
     this.orderRepository = orderRepository;
+  }
+
+  @Autowired
+  public void setDatasetService(DatasetService datasetService) {
+    this.datasetService = datasetService;
   }
 
   @Autowired
@@ -52,7 +51,8 @@ public class OrderService {
    *
    * @param user the customer user
    */
-  public void placeOrder(User user, String token) throws UserAuthenticationException, BadRequest {
+  public void placeOrder(User user, String token) throws UserAuthenticationException,
+      BadRequest, DatasetNotFoundException {
     userService.verifyAuthToken(user, token);
 
     ShoppingCart cart = user.getCart();
@@ -61,13 +61,23 @@ public class OrderService {
       throw new BadRequest("Cart is empty");
     }
 
-    Order newOrder = new Order(cart, user);
+    Order newOrder = new Order(cart, user, getCartPrice(cart));
 
     user.getCart().clear();
 
     userService.save(user);
 
     orderRepository.save(newOrder);
+  }
+
+  public double getCartPrice(ShoppingCart cart) throws DatasetNotFoundException {
+    double price = 0;
+    for (Map.Entry<UUID, Integer> entry : cart.getItems().entrySet()) {
+      UUID key = entry.getKey();
+      int value = entry.getValue();
+      price += datasetService.findById(key).getUnitPrice() * value;
+    }
+    return price;
   }
 
   /**

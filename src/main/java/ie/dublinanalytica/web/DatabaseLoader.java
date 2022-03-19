@@ -74,13 +74,13 @@ public class DatabaseLoader implements CommandLineRunner {
 
     HashMap<UUID, Integer> map = new HashMap<>();
     map.put(set.getId(), 10);
-    Order order = new Order(new ShoppingCart(map), admin);
+    Order order = new Order(new ShoppingCart(map), admin, 10);
     order.setStatus(Order.OrderStatus.PROCESSING);
 
     this.orderRepository.save(order);
 
     this.orderRepository.save(
-      new Order(new ShoppingCart(map), admin)
+      new Order(new ShoppingCart(map), admin, 10)
     );
   }
 }

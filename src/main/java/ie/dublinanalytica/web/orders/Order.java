@@ -61,11 +61,12 @@ public class Order {
    * @param cart The cart to use
    * @param user The user to create the order for
    */
-  public Order(ShoppingCart cart, User user) {
+  public Order(ShoppingCart cart, User user, double price) {
     this();
     this.items = new HashMap<>(cart.getItems());
     this.user = user;
     this.number = ORDER_COUNT++;
+    this.price = price;
   }
 
   public LocalDateTime getTimestamp() {
@@ -100,15 +101,19 @@ public class Order {
     return user;
   }
 
-  public double getPrice() {
-    return 0;
-  }
-
   public long getNumber() {
     return number;
   }
 
   public long setNumber(long orderNumber) {
     return this.number = orderNumber;
+  }
+
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
   }
 }
