@@ -82,10 +82,6 @@ public class OrderService {
 
   /**
    * Gets the price of a cart.
-   * 
-   * @param cart
-   * @return The price of the cart.
-   * @throws DatasetNotFoundException If the dataset is not found.
    */
   public double getCartPrice(ShoppingCart cart) throws DatasetNotFoundException {
     double price = 0;
@@ -101,6 +97,7 @@ public class OrderService {
    * Finds an order using the order's id.
    *
    * @param id The id of the order
+   * 
    * @return The order
    * @throws OrderNotFoundException If the order wasn't found
    */
