@@ -94,7 +94,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/22", "4444"))))
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -115,7 +115,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/19", "4444"))))
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -136,7 +136,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("23377", "12/19", "4444"))))
-      .andExpect(status().isBadRequest());
+      .andExpect(status().isInternalServerError());
   }
 
   @Test
