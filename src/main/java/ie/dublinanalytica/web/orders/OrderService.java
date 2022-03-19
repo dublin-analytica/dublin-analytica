@@ -80,6 +80,13 @@ public class OrderService {
     orderRepository.save(newOrder);
   }
 
+  /**
+   * Gets the price of a cart.
+   * 
+   * @param cart
+   * @return The price of the cart.
+   * @throws DatasetNotFoundException If the dataset is not found.
+   */
   public double getCartPrice(ShoppingCart cart) throws DatasetNotFoundException {
     double price = 0;
     for (Map.Entry<UUID, Integer> entry : cart.getItems().entrySet()) {
