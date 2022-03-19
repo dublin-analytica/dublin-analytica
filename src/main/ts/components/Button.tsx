@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-type ButtonProps = JSX.IntrinsicElements['button'] & { variant?: 'primary' | 'secondary' | 'transparent', unpadded?: boolean };
+type ButtonProps = JSX.IntrinsicElements['button'] & { variant?: 'primary' | 'secondary' | 'transparent', unpadded?: boolean, outline?: boolean };
 
 const S = {
   Button: styled.button<ButtonProps>`
     background-color: ${({ variant = 'primary', theme }) => theme.colors[variant]};
-    border: none;
+    border: ${({ outline, theme }) => (outline ? `1px solid ${theme.text.colors.dark}` : 'none')};
     border-radius: ${({ theme }) => theme.spacing.medium};
     height: 48px;
     color: ${({ variant, theme }) => {
@@ -30,9 +30,16 @@ const S = {
 };
 
 const Button = ({
-  children, type, variant = 'primary', unpadded = false, onClick,
+  children, outline = false, name, type, variant = 'primary', unpadded = false, onClick,
 }: ButtonProps) => (
-  <S.Button unpadded={unpadded} type={type} onClick={onClick} variant={variant}>
+  <S.Button
+    outline={outline}
+    name={name}
+    unpadded={unpadded}
+    type={type}
+    onClick={onClick}
+    variant={variant}
+  >
     {children}
   </S.Button>
 );

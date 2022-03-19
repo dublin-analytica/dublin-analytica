@@ -12,6 +12,7 @@ type Field = {
   type?: React.HTMLInputTypeAttribute,
   label: string
   placeholder?: string | undefined;
+  value?: string | undefined;
 };
 
 export type SubmitAction = (
@@ -30,7 +31,9 @@ const SmartForm = ({
   fields, children, onSubmit, action, validated = false,
 }: SmartFormProps) => {
   const createFieldObject = <T, >(init: T) => (
-    fields.reduce((acc, { name }) => ({ ...acc, [name]: init }), {} as Record<string, T>)
+    fields.reduce((acc, { name }) => (
+      { ...acc, [name]: init }
+    ), {} as Record<string, T>)
   );
 
   const createSetter = <T, >(setter: React.Dispatch<React.SetStateAction<{}>>) => (
@@ -39,6 +42,12 @@ const SmartForm = ({
 
   const [values, setValues] = useState(createFieldObject(''));
   const setValue = createSetter(setValues);
+
+  useEffect(() => {
+    fields.forEach(({ name, value }) => {
+      if (value) setValue(name, value);
+    });
+  }, []);
 
   const validators = fields.reduce((acc, { name, validator }) => {
     const validate = validator?.validate ?? (() => true);

@@ -10,9 +10,9 @@ const useOrderActions = () => {
     user ? get(`orders/user/${user}`) : get('orders')
   );
 
-  const getOrder = (id: number): Promise<Order> => get(`orders/${id}`);
+  const getOrder = (id: string): Promise<Order> => get(`orders/${id}`);
 
-  const updateOrderStatus = (id: number, status: Status) => (
+  const updateOrderStatus = (id: string, status: Status) => (
     post(`orders/${id}/status`, { status })
   );
 

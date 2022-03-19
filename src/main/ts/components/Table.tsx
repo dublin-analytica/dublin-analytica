@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-type TableProps = { headers: string[], rows: { id: string, values: string[] }[] };
+type TableProps = {
+  setSelected?: React.Dispatch<React.SetStateAction<Set<string>>> | undefined,
+  selected?: Set<string> | undefined,
+  headers: string[],
+  rows: { id: string, values: string[] }[]
+};
 
 const S = {
   Table: styled.table`
@@ -32,50 +37,64 @@ const S = {
   `,
 };
 
-const Table = ({ headers, rows }: TableProps) => {
-  const [selected, setSelected] = useState(new Set() as Set<string>);
-
+const Table = ({
+  setSelected, selected, headers, rows,
+}: TableProps) => {
   const toggleSelected = (id: string) => () => {
-    setSelected((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.has(id)) newSelected.delete(id);
-      else newSelected.add(id);
-      return newSelected;
-    });
+    if (setSelected) {
+      setSelected((prevSelected) => {
+        const newSelected = new Set(prevSelected);
+        if (newSelected.has(id)) newSelected.delete(id);
+        else newSelected.add(id);
+        return newSelected;
+      });
+    }
   };
 
   const toggleAll = () => {
-    setSelected((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.size === rows.length) newSelected.clear();
-      else rows.forEach(({ id }) => newSelected.add(id));
-      return newSelected;
-    });
+    if (setSelected) {
+      setSelected((prevSelected) => {
+        const newSelected = new Set(prevSelected);
+        if (newSelected.size === rows.length) newSelected.clear();
+        else rows.forEach(({ id }) => newSelected.add(id));
+        return newSelected;
+      });
+    }
   };
 
-  const allSelected = () => selected.size === rows.length;
+  useEffect(() => {
+    if (setSelected) {
+      setSelected(selected!);
+      return () => setSelected(new Set());
+    }
+    return () => {};
+  }, [selected]);
+
+  const allSelected = () => selected?.size === rows.length;
 
   return (
     <S.Table>
       <S.THead>
         <S.TR>
-          <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>
+          {selected && <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>}
           {headers.map((header) => <S.TH key={header}>{header}</S.TH>)}
         </S.TR>
       </S.THead>
       <tbody>
         {rows.map(({ id, values }) => (
-          <S.TR key={id} onClick={toggleSelected(id)} className={selected.has(id) ? 'selected' : ''}>
+          selected && (
+          <S.TR key={id} onClick={toggleSelected(id)} className={selected?.has(id) ? 'selected' : ''}>
             <td>
               <input
                 aria-label="Select"
                 type="checkbox"
-                checked={selected.has(id)}
+                checked={selected?.has(id)}
                 onChange={toggleSelected(id)}
               />
             </td>
             {values.map((value) => <td key={value}>{value}</td>)}
           </S.TR>
+          )
         ))}
       </tbody>
     </S.Table>
