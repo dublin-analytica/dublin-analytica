@@ -30,9 +30,10 @@ const S = {
 };
 
 const Button = ({
-  children, outline = false, name, type, variant = 'primary', unpadded = false, onClick,
+  children, outline = false, name, type, variant = 'primary', unpadded = false, onClick, className,
 }: ButtonProps) => (
   <S.Button
+    className={className}
     outline={outline}
     name={name}
     unpadded={unpadded}

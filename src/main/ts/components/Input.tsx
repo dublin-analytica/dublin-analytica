@@ -53,6 +53,7 @@ const S = {
 };
 
 const Input = ({
+  className,
   valid = false,
   active = false,
   error = false,
@@ -63,7 +64,7 @@ const Input = ({
   placeholder,
   name,
 }: InputProps) => (
-  <S.InputContainer>
+  <S.InputContainer className={className}>
     <S.Label htmlFor={name}>{label}</S.Label>
     <S.Input
       name={name}
