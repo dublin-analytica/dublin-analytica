@@ -149,7 +149,7 @@ public class DatasetAPITests {
     this.mockMvc.perform(
         get("/api/datasets/9af-e9468f4785f3"))
       .andDo(print())
-      .andExpect(status().isBadRequest())
+      .andExpect(status().isNotFound())
       .andReturn();
   }
 }
