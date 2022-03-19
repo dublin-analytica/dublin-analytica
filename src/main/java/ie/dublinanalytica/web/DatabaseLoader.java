@@ -40,7 +40,7 @@ public class DatabaseLoader implements CommandLineRunner {
    * Initilizes different instances of classes into repositorys for testing.
    */
   @Autowired
-  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository, 
+  public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository,
       OrderRepository orderRepository) {
     this.userRepository = repository;
     this.datasetRepository = datasetRepository;
@@ -65,6 +65,12 @@ public class DatabaseLoader implements CommandLineRunner {
     this.datasetRepository.save(
       new Dataset("Another dataset", "Another great dataset", "no", 500, "www.com")
     );
+
+    Dataset hiddenSet = new Dataset(
+        "Hidden dataset", "This dataset is hidden by default", "no", 500, "www.com");
+    hiddenSet.setHidden(true);
+
+    this.datasetRepository.save(hiddenSet);
 
     HashMap<UUID, Integer> map = new HashMap<>();
     map.put(set.getId(), 10);

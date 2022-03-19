@@ -24,6 +24,8 @@ public class Dataset {
   private double size;
   private String url;
 
+  private boolean hidden;
+
   public Dataset() {
   }
 
@@ -33,13 +35,13 @@ public class Dataset {
    * @param data The DatasetDTO
    */
   public Dataset(DatasetDTO data) {
-    this(data.getName(), data.getDescription(), data.getDatapoints(), 
+    this(data.getName(), data.getDescription(), data.getDatapoints(),
         data.getSize(), data.getUrl());
   }
 
   /**
    * Constructor for a Dataset.
-   * 
+   *
    */
   public Dataset(String name, String description, String datapoints, double size, String url) {
     this.name = name;
@@ -102,5 +104,13 @@ public class Dataset {
     return String.format(
         "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', url: '%s'}",
         id, name, description, datapoints, size, url);
+  }
+
+  public boolean isHidden() {
+    return hidden;
+  }
+
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
   }
 }
