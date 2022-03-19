@@ -56,7 +56,7 @@ public class DatasetAPIController {
    * @return Nothing on success, an error message on failure
    * @throws DatasetAlreadyExistsException if the dataset already exists
    */
-  @PostMapping("/create")
+  @PostMapping("")
   public Response create(@RequestHeader("Authorization") String authHeader,
                          @RequestBody @Valid DatasetDTO data)
       throws DatasetAlreadyExistsException, UserAuthenticationException, UserNotFoundException {

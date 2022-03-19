@@ -80,7 +80,7 @@ public class DatasetAPITests {
   public void createShouldReturnCreatedIfSuccessful() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
-      post("/api/datasets/create")
+      post("/api/datasets")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
@@ -93,7 +93,7 @@ public class DatasetAPITests {
   public void createShouldErrorIfDatasetExists() throws Exception {
     String token = getAuthToken();
     this.mockMvc.perform(
-        post("/api/datasets/create")
+        post("/api/datasets")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
@@ -105,7 +105,7 @@ public class DatasetAPITests {
   @Order(2)
   public void createShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
-        post("/api/datasets/create")
+        post("/api/datasets")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
