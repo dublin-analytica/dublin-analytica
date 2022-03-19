@@ -25,7 +25,7 @@ public class DatasetDTO {
 
   @NotNull
   @NotEmpty
-  private String url;
+  private String image;
 
   @NotNull
   private Boolean hidden;
@@ -39,12 +39,12 @@ public class DatasetDTO {
    * Constructor class for DatasetDTO.
    */
   public DatasetDTO(String name, String description, List<String> datapoints, int size,
-                    String url, double pricePerDatapoint) {
+                    String image, double pricePerDatapoint) {
     this.name = name;
     this.description = description;
     this.datapoints = datapoints;
     this.size = size;
-    this.url = url;
+    this.image = image;
     this.pricePerDatapoint = pricePerDatapoint;
   }
 
@@ -80,12 +80,12 @@ public class DatasetDTO {
     this.size = size;
   }
 
-  public String getUrl() {
-    return url;
+  public String getImage() {
+    return image;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public void setHidden(boolean hidden) {
@@ -107,8 +107,8 @@ public class DatasetDTO {
   @Override
   public String toString() {
     return String.format(
-        "DatasetDTO{name: '%s', description: '%s', datapoints: '%s', size: '%s', url: '%s'}",
-        name, description, datapoints, size, url);
+        "DatasetDTO{name: '%s', description: '%s', datapoints: '%s', size: '%s', image: '%s'}",
+        name, description, datapoints, size, image);
   }
 
 }

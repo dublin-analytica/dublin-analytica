@@ -45,7 +45,7 @@ public class DatabaseLoader implements CommandLineRunner {
   private final OrderRepository orderRepository;
 
   /**
-   * Initilizes different instances of classes into repositorys for testing.
+   * Initialises different instances of classes into repositories for testing.
    */
   @Autowired
   public DatabaseLoader(UserRepository repository, DatasetRepository datasetRepository,
@@ -97,8 +97,10 @@ public class DatabaseLoader implements CommandLineRunner {
           name,
           description,
           fields,
-          rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg"
+          rand.nextInt(100, 10000), ""
       );
+
+      set.setImage("https://i.imgflip.com/db5xf.jpg");
 
       set.setUnitPrice(rand.nextDouble(0.0001, 0.01));
 
@@ -112,15 +114,21 @@ public class DatabaseLoader implements CommandLineRunner {
     Iterable<Dataset> datasets = datasetRepository.findAll();
     List<Dataset> all = StreamSupport.stream(datasets.spliterator(), false).toList();
 
-    HashMap<UUID, Integer> map = new HashMap<>();
+    for (int i = 0; i < 30; i++) {
 
-    for (int i = 0; i < rand.nextInt(2, 10); i++) {
-      Dataset set = all.get(rand.nextInt(all.size()));
-      map.put(set.getId(), rand.nextInt(10, set.getSize()));
+      HashMap<UUID, Integer> map = new HashMap<>();
+
+      User owner = rand.nextBoolean() ? alice : bob;
+
+      for (int j = 0; j < rand.nextInt(2, 10); j++) {
+        Dataset set = all.get(rand.nextInt(all.size()));
+        map.put(set.getId(), rand.nextInt(10, set.getSize()));
+      }
+
+      Order order = new Order(new ShoppingCart(map), owner, rand.nextFloat(10, 500));
+
+      this.orderRepository.save(order);
     }
 
-    Order order = new Order(new ShoppingCart(map), bob, rand.nextFloat(10, 500));
-
-    this.orderRepository.save(order);
   }
 }

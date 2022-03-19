@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"url"})
+@JsonIgnoreProperties(value = {"image"})
 public class Dataset {
   @Id
   @GeneratedValue
@@ -27,8 +27,6 @@ public class Dataset {
   private List<String> fields;
 
   private int size;
-  private String url;
-
   private String image;
 
   private boolean hidden;
@@ -44,19 +42,19 @@ public class Dataset {
    */
   public Dataset(DatasetDTO data) {
     this(data.getName(), data.getDescription(), data.getDatapoints(),
-        data.getSize(), data.getUrl());
+        data.getSize(), data.getImage());
   }
 
   /**
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, List<String> fields, int size, String url) {
+  public Dataset(String name, String description, List<String> fields, int size, String image) {
     this.name = name;
     this.description = description;
     this.fields = fields;
     this.size = size;
-    this.url = url;
+    this.image = image;
   }
 
   public UUID getId() {
@@ -99,19 +97,11 @@ public class Dataset {
     this.size = size;
   }
 
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
   @Override
   public String toString() {
     return String.format(
-        "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', url: '%s'}",
-        id, name, description, fields, size, url);
+      "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', image: '%s'}",
+        id, name, description, fields, size, image);
   }
 
   public boolean isHidden() {

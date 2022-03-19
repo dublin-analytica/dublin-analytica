@@ -11,12 +11,19 @@ const S = {
   Container: styled(Container)`
     border: 1px solid ${({ theme }) => theme.colors.gray};
     width: 300px;
+    height: 800px;
     cursor: pointer;
+    margin-bottom: 2rem;
+  `,
+
+  Form: styled(Container)`
+    height: 100%;
   `,
 
   Body: styled(Container)`
     padding: 1rem;
     margin: 0;
+    height: 100%;
 
     & > * {
       width: 100%;
@@ -26,6 +33,9 @@ const S = {
   Img: styled.img`
     width: 300px;
     height: 300px;
+    min-height: 300px;
+    min-width: 300px;
+    object-fit: cover;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     margin-bottom: 0.3rem;
@@ -111,17 +121,19 @@ const DatasetCard = ({
           {' '}
           / datapoint)
         </S.Size>
-        <Container unpadded nomargin direction="row">
-          <S.Input placeholder="100" label="Datapoints" value={value} onChange={handleChange} />
-        </Container>
-        <S.Divider />
-        <Container unpadded nomargin direction="row" justify="space-between">
-          <S.Price>
-            €
-            {(unitPrice * datapoints).toFixed(2)}
-          </S.Price>
-          <S.Button>Add to Basket</S.Button>
-        </Container>
+        <S.Form unpadded nomargin align="flex-start" justify="flex-end">
+          <Container unpadded nomargin direction="row">
+            <S.Input placeholder="100" label="Datapoints" value={value} onChange={handleChange} />
+          </Container>
+          <S.Divider />
+          <Container unpadded nomargin direction="row" justify="space-between">
+            <S.Price>
+              €
+              {(unitPrice * datapoints).toFixed(2)}
+            </S.Price>
+            <S.Button>Add to Basket</S.Button>
+          </Container>
+        </S.Form>
       </S.Body>
     </S.Container>
   );

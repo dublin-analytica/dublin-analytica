@@ -1,4 +1,5 @@
-export { default as Dashboard } from './Dashboard';
+export { default as OrderDashboard } from './OrderDashboard';
+export { default as DataDashboard } from './DataDashboard';
 export { default as Dataset } from './Dataset';
 export { default as Landing } from './Landing';
 export { default as Login } from './Login';
