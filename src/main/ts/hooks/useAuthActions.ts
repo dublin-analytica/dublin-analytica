@@ -29,7 +29,19 @@ const useAuthActions = () => {
       .then(() => login(email, password))
   );
 
-  return { login, logout, register };
+  const update = async (name: string, email: string) => (
+    post('users/me', { name, email })
+      .then(({ token }) => setToken(token))
+  );
+
+  const changePassword = async (oldPassword: string, newPassword: string) => (
+    post('users/me/password', { oldPassword, newPassword })
+      .then(({ token }) => setToken(token))
+  );
+
+  return {
+    login, logout, register, update, changePassword,
+  };
 };
 
 export default useAuthActions;
