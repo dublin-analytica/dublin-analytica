@@ -64,7 +64,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
   @Override
   public void run(final String... args) throws Exception {
-    //populateDatabase();
+    populateDatabase();
   }
 
   /**
