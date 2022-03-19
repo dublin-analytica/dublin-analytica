@@ -9,3 +9,5 @@ export { default as SplitView } from './SplitView';
 export { default as Orders } from './Orders';
 export { default as Stats } from './Stats';
 export { default as Sidebar } from './Sidebar';
+export { default as SmartForm } from './SmartForm';
+export { default as Divider } from './Divider';

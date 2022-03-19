@@ -8,7 +8,7 @@ type Order = {
   user: User;
   timestamp: number;
   price: number;
-  items: { [key: string]: number };
+  items: Record<string, number>;
 }
 
 export default Order;

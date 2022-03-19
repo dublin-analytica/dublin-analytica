@@ -25,7 +25,7 @@ const Sidebar = () => {
       {user?.admin && <Link to="/dashboard" text="Dashboard" primary={pathname === '/dashboard'} />}
       <Link to="/account" text="My Account" primary={pathname === '/account'} />
       <Link to="/orders" text="My Orders" primary={pathname === '/orders'} />
-      <div style={{ justifySelf: 'flex-end' }}>
+      <div style={{ justifySelf: 'flex-end', marginTop: 'auto' }}>
         <Button onClick={logout} variant="transparent">
           Sign Out
         </Button>
