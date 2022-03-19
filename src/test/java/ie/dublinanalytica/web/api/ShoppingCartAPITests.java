@@ -77,7 +77,7 @@ public class ShoppingCartAPITests {
   public void confirmCheckoutShouldBeUnauthorizedIfInvalidToken() throws Exception {
     this.mockMvc.perform(
         post("/api/cart/checkout")
-          .header("Authorization", "Bearer INVALID TOKEN"))
+          .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
       .andExpect(status().isUnauthorized());
