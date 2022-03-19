@@ -122,12 +122,16 @@ public class DatasetAPIController {
       dataset.setDatapoints(dto.getDatapoints());
     }
 
-    if (dto.getSize() != 0) {
+    if (dto.getSize() > 0) {
       dataset.setSize(dto.getSize());
     }
 
     if (dto.isHidden() != null) {
       dataset.setHidden(dto.isHidden());
+    }
+
+    if(dto.getPricePerDatapoint() > 0) {
+      dataset.setPricePerDatapoint(dto.getPricePerDatapoint());
     }
 
     datasetService.save(dataset);

@@ -30,17 +30,21 @@ public class DatasetDTO {
   @NotNull
   private Boolean hidden;
 
+  @NotNull
+  private Double pricePerDatapoint;
+
   public DatasetDTO() {}
 
   /**
    * Constructor class for DatasetDTO.
    */
-  public DatasetDTO(String name, String description, String datapoints, double size, String url) {
+  public DatasetDTO(String name, String description, String datapoints, double size, String url, double pricePerDatapoint) {
     this.name = name;
     this.description = description;
     this.datapoints = datapoints;
     this.size = size;
     this.url = url;
+    this.pricePerDatapoint = pricePerDatapoint;
   }
 
   public String getName() {
@@ -89,6 +93,14 @@ public class DatasetDTO {
 
   public Boolean isHidden() {
     return hidden;
+  }
+
+  public Double getPricePerDatapoint() {
+    return pricePerDatapoint;
+  }
+
+  public void setPricePerDatapoint(Double pricePerDatapoint) {
+    this.pricePerDatapoint = pricePerDatapoint;
   }
 
   @Override
