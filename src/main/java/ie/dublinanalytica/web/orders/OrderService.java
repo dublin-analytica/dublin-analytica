@@ -97,7 +97,7 @@ public class OrderService {
    * Finds an order using the order's id.
    *
    * @param id The id of the order
-   * 
+   *
    * @return The order
    * @throws OrderNotFoundException If the order wasn't found
    */
@@ -126,7 +126,7 @@ public class OrderService {
 
   public void verifyCardPayment(CardDTO card) throws
       InvalidCvvNumber, InvalidCardNumber, ParseException, InvalidCardExpiryDate {
-    validateCardNumberAndCvv(card.getCardNum(), card.getCvv());
+    validateCardNumberAndCvv(card.getNumber(), card.getCvv());
     validateCardDate(card.getExpiry());
   }
 
@@ -140,7 +140,7 @@ public class OrderService {
   }
 
   /**
-   * Validates the card expiration and the card number. 
+   * Validates the card expiration and the card number.
    * VISA, MASTERCARD and AMEX are supported.
    */
   public void validateCardNumberAndCvv(String cardNum, String cvv) throws
@@ -149,7 +149,7 @@ public class OrderService {
       throw new InvalidCardNumber();
     }
 
-    String regex = "^(?:(4[0-9]{12}(?:[0-9]{3})?)|" 
+    String regex = "^(?:(4[0-9]{12}(?:[0-9]{3})?)|"
         + "(5[1-5][0-9]{14})|" + "(3[47][0-9]{13}))$";
 
     Pattern pattern = Pattern.compile(regex);
@@ -167,7 +167,7 @@ public class OrderService {
 
     Pattern cvvPattern = Pattern.compile(regex);
     Matcher cvvMatcher = cvvPattern.matcher(cvv);
-    
+
     if (!cvvMatcher.matches()) {
       throw new InvalidCvvNumber();
     }

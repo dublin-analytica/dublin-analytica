@@ -20,7 +20,7 @@ public class CardDTO {
 
   @NotNull
   @NotEmpty
-  private String cardNum;
+  private String number;
 
   public CardDTO() {}
 
@@ -30,7 +30,7 @@ public class CardDTO {
   public CardDTO(String cvv, String expiry, String cardNum) {
     this.cvv = cvv;
     this.expiry = expiry;
-    this.cardNum = cardNum;
+    this.number = cardNum;
   }
 
   public String getCvv() {
@@ -49,11 +49,11 @@ public class CardDTO {
     this.expiry = expiry;
   }
 
-  public String getCardNum() {
-    return cardNum;
+  public String getNumber() {
+    return number;
   }
 
-  public void setCardNum(String cardNum) {
-    this.cardNum = cardNum;
+  public void setNumber(String number) {
+    this.number = number;
   }
 }
