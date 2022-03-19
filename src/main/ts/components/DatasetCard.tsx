@@ -118,7 +118,7 @@ const DatasetCard = ({
         <Container unpadded nomargin direction="row" justify="space-between">
           <S.Price>
             €
-            {(1.63 * datapoints).toFixed(2)}
+            {(unitPrice * datapoints).toFixed(2)}
           </S.Price>
           <S.Button>Add to Basket</S.Button>
         </Container>
