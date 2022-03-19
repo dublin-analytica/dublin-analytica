@@ -37,7 +37,7 @@ public class DatasetService {
    *
    * @param data The DTO containing the dataset information
    * @throws DatasetAlreadyExistsException if a dataset already exists
-   * 
+   *
    */
   public void createDataset(DatasetDTO data) throws DatasetAlreadyExistsException {
     if (datasetExists(data.getName())) {
@@ -86,5 +86,9 @@ public class DatasetService {
    */
   public Iterable<Dataset> findAllDatasets() {
     return this.repository.findAll();
+  }
+
+  public void save(Dataset dataset) {
+    this.repository.save(dataset);
   }
 }

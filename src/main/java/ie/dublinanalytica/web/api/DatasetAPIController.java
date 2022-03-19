@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,6 +85,44 @@ public class DatasetAPIController {
 
     Dataset dataset = datasetService.findById(uuid);
     return new Response(dataset);
+  }
+
+  @PatchMapping("/{id}")
+  public Response editDataset(
+      @RequestHeader("Authorization") String authHeader,
+      @PathVariable String id,
+      @RequestBody DatasetDTO dto)
+      throws UserAuthenticationException, UserNotFoundException, DatasetNotFoundException {
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+    userService.verifyAdmin(user);
+
+    UUID uuid = UUID.fromString(id);
+    Dataset dataset = datasetService.findById(uuid);
+
+    if (dto.getName() != null) {
+      dataset.setName(dto.getName());
+    }
+
+    if (dto.getDescription() != null) {
+      dataset.setDescription(dto.getDescription());
+    }
+
+    if (dto.getDatapoints() != null) {
+      dataset.setDatapoints(dto.getDatapoints());
+    }
+
+    if (dto.getSize() != 0) {
+      dataset.setSize(dto.getSize());
+    }
+
+    if (dto.isHidden() != null) {
+      dataset.setHidden(dto.isHidden());
+    }
+
+    datasetService.save(dataset);
+
+    return new EmptyResponse(HttpStatus.OK);
   }
 
   /**

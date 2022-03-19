@@ -21,11 +21,14 @@ public class DatasetDTO {
   private String datapoints;
 
   @NotNull
-  private double size;
+  private Double size;
 
   @NotNull
   @NotEmpty
   private String url;
+
+  @NotNull
+  private Boolean hidden;
 
   public DatasetDTO() {}
 
@@ -64,7 +67,7 @@ public class DatasetDTO {
     this.datapoints = datapoints;
   }
 
-  public double getSize() {
+  public Double getSize() {
     return size;
   }
 
@@ -78,6 +81,14 @@ public class DatasetDTO {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  public Boolean isHidden() {
+    return hidden;
   }
 
   @Override
