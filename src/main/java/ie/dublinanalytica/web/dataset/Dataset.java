@@ -43,7 +43,8 @@ public class Dataset {
    * @param data The DatasetDTO
    */
   public Dataset(DatasetDTO data) {
-    this(data.getName(), data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
+    this(data.getName(),
+      data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
   }
 
   /**
