@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"url"})
+@JsonIgnoreProperties(value = {"url", "fields"})
 public class Dataset {
   @Id
   @GeneratedValue
