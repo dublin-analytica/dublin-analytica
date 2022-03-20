@@ -42,7 +42,7 @@ public class DatasetAPITests {
   private final int SIZE = 10;
   private final String URL = "https://helloworld.com";
   private final double PRICE = 1.0;
-  private final char[] PASSWORD = "alice".toCharArray();
+  private final char[] PASSWORD = "Alice&bob1".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;
