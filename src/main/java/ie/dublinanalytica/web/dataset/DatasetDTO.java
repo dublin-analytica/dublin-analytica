@@ -24,10 +24,7 @@ public class DatasetDTO {
   private String image;
 
   @NotNull
-  private Boolean hidden;
-
-  @NotNull
-  private Double pricePerDatapoint;
+  private Double unitPrice;
 
   public DatasetDTO() {}
 
@@ -40,7 +37,7 @@ public class DatasetDTO {
     this.description = description;
     this.size = size;
     this.image = image;
-    this.pricePerDatapoint = pricePerDatapoint;
+    this.unitPrice = pricePerDatapoint;
   }
 
   public String getName() {
@@ -75,20 +72,12 @@ public class DatasetDTO {
     this.image = image;
   }
 
-  public void setHidden(boolean hidden) {
-    this.hidden = hidden;
+  public Double getUnitPrice() {
+    return unitPrice;
   }
 
-  public Boolean isHidden() {
-    return hidden;
-  }
-
-  public Double getPricePerDatapoint() {
-    return pricePerDatapoint;
-  }
-
-  public void setPricePerDatapoint(Double pricePerDatapoint) {
-    this.pricePerDatapoint = pricePerDatapoint;
+  public void setUnitPrice(Double unitPrice) {
+    this.unitPrice = unitPrice;
   }
 
   @Override
