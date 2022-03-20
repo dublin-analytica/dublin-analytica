@@ -28,7 +28,8 @@ public class Utils {
           .uri(uri)
           .GET()
           .build();
-      HttpResponse<String> response = client.send(fileRequest, HttpResponse.BodyHandlers.ofString());
+      HttpResponse<String> response =
+          client.send(fileRequest, HttpResponse.BodyHandlers.ofString());
 
       return response.body();
     } catch (IOException | InterruptedException e) {

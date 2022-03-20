@@ -102,6 +102,17 @@ public class OrderAPIController {
     return new Response(orderService.findAllOrders());
   }
 
+  /**
+   * Creates a downloadable zip file for a given order.
+   *
+   * @param authHeader Authentication header
+   * @param orderid Order id
+   * @throws UserAuthenticationException If the user is not an admin
+   * @throws UserNotFoundException If the user is not found
+   * @throws OrderNotFoundException If the order is not found
+   * @throws DatasetNotFoundException If the dataset is not found
+   * @throws IOException If the zip file cannot be created
+   */
   @GetMapping("/{orderid:.{36}}/download")
   public byte[] downloadOrder(
       @RequestHeader(value = "Authorization", required = false) String authHeader,
@@ -116,7 +127,8 @@ public class OrderAPIController {
     Order order = orderService.findById(UUID.fromString(orderid));
 
     if (order.getUser().getId() != user.getId() && !user.isAdmin()) {
-      throw new UserAuthenticationException("You're not allowed to download this order", HttpStatus.FORBIDDEN);
+      throw new UserAuthenticationException("You're not allowed to download this order",
+          HttpStatus.FORBIDDEN);
     }
 
     ZipFileBuilder zip = new ZipFileBuilder();
