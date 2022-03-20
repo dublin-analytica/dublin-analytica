@@ -89,8 +89,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       Dataset set = new Dataset(
           name,
-          description,
-          rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg",
+          description, "https://i.imgflip.com/db5xf.jpg",
           "https://pastebin.com/raw/QQgqV98Z"
       );
 

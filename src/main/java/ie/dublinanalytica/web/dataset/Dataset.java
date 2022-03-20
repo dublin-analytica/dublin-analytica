@@ -43,18 +43,17 @@ public class Dataset {
    * @param data The DatasetDTO
    */
   public Dataset(DatasetDTO data) {
-    this(data.getName(),
-        data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
+    this(data.getName(), data.getDescription(), data.getImage(), data.getLink());
   }
 
   /**
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, int size, String image, String link) {
+  public Dataset(String name, String description, String image, String link) {
     this.name = name;
     this.description = description;
-    this.size = size;
+    this.size = Utils.getSize(link);
     this.image = image;
     this.link = link;
   }
