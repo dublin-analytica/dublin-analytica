@@ -1,4 +1,5 @@
 import { Container } from '@containers';
+import { useCartActions } from '@hooks';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import type Dataset from 'types/Dataset';
@@ -86,10 +87,12 @@ const S = {
 };
 
 const DatasetCard = ({
-  name, image, description, size, unitPrice,
+  id, name, image, description, size, unitPrice,
 }: DatasetCardProps) => {
   const [datapoints, setDatapoints] = useState(100);
   const [value, setValue] = useState('');
+
+  const { addToCart } = useCartActions();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -97,6 +100,10 @@ const DatasetCard = ({
     if (input === '' || (Number.isInteger(value) && value > 0 && value <= size)) {
       setValue(e.target.value.trim().replace(/\./g, ''));
     }
+  };
+
+  const handleClick = () => {
+    addToCart(id, datapoints);
   };
 
   useEffect(() => {
@@ -131,7 +138,7 @@ const DatasetCard = ({
               €
               {(unitPrice * datapoints).toFixed(2)}
             </S.Price>
-            <S.Button>Add to Basket</S.Button>
+            <S.Button onClick={handleClick}>Add to Basket</S.Button>
           </Container>
         </S.Form>
       </S.Body>

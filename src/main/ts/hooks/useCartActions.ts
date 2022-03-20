@@ -4,14 +4,14 @@ import useAPI from './useAPI';
 const useCartActions = () => {
   const { get, post } = useAPI();
 
-  const getCart = () => get('/cart');
+  const getCart = () => get('cart');
 
   const addToCart = (id: string, size: number) => (
-    post('/cart', { id, size })
+    post('cart', { id, size })
   );
 
   const updateCart = (id: string, size: number) => (
-    post('/cart/update', { id, size })
+    post('cart/update', { id, size })
   );
 
   const removeFromCart = (id: string) => (
@@ -24,7 +24,7 @@ const useCartActions = () => {
   };
 
   const checkout = async (cvv: string, number: string, expiry: string) => (
-    post('/cart/checkout', { cvv, number, expiry })
+    post('cart/checkout', { cvv, number, expiry })
   );
 
   return {
