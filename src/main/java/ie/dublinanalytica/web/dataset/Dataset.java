@@ -153,4 +153,8 @@ public class Dataset {
 
     return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
   }
+
+  public String fetchFile() {
+    return Utils.fetchFile(this.getLink());
+  }
 }

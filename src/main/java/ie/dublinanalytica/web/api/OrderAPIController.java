@@ -1,6 +1,10 @@
 package ie.dublinanalytica.web.api;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import ie.dublinanalytica.web.api.response.EmptyResponse;
 import ie.dublinanalytica.web.api.response.Response;
+import ie.dublinanalytica.web.dataset.Dataset;
+import ie.dublinanalytica.web.dataset.DatasetService;
+import ie.dublinanalytica.web.exceptions.DatasetNotFoundException;
 import ie.dublinanalytica.web.exceptions.OrderNotFoundException;
 import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
@@ -22,6 +30,7 @@ import ie.dublinanalytica.web.orders.Order;
 import ie.dublinanalytica.web.orders.OrderService;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
+import ie.dublinanalytica.web.util.ZipFileBuilder;
 
 /**
  * API Controller for /api/order endpoints.
@@ -32,6 +41,7 @@ public class OrderAPIController {
 
   private UserService userService;
   private OrderService orderService;
+  private DatasetService datasetService;
 
   @Autowired
   public void setUserService(UserService userService) {
@@ -41,6 +51,11 @@ public class OrderAPIController {
   @Autowired
   public void setOrderService(OrderService orderService) {
     this.orderService = orderService;
+  }
+
+  @Autowired
+  public void setDatasetService(DatasetService datasetService) {
+    this.datasetService = datasetService;
   }
 
 
@@ -85,6 +100,37 @@ public class OrderAPIController {
     }
 
     return new Response(orderService.findAllOrders());
+  }
+
+  @GetMapping("/{orderid:.{36}}/download")
+  public byte[] downloadOrder(
+      @RequestHeader(value = "Authorization", required = false) String authHeader,
+      @PathVariable("orderid") String orderid,
+      HttpServletResponse response)
+      throws UserAuthenticationException, UserNotFoundException, OrderNotFoundException,
+      DatasetNotFoundException, IOException {
+
+    JWTPayload payload = JWTPayload.fromHeader(authHeader);
+    User user = userService.findById(payload.getId());
+
+    Order order = orderService.findById(UUID.fromString(orderid));
+
+    if (order.getUser().getId() != user.getId() && !user.isAdmin()) {
+      throw new UserAuthenticationException("You're not allowed to download this order", HttpStatus.FORBIDDEN);
+    }
+
+    ZipFileBuilder zip = new ZipFileBuilder();
+
+    for (Map.Entry<UUID, Integer> entry : order.getItems().entrySet()) {
+      Dataset d = datasetService.findById(entry.getKey());
+      zip.addFile(d.getName() + ".csv", d.fetchFile().getBytes());
+    }
+
+    response.setContentType("application/zip");
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.addHeader("Content-Disposition", "attachment; filename=\"order.zip\"");
+
+    return zip.build();
   }
 
 

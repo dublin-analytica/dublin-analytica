@@ -19,17 +19,22 @@ public class Utils {
    * @throws IOException on I/O error
    * @throws InterruptedException If the thread is interrupted
    */
-  public static String fetchFile(String link) throws IOException, InterruptedException {
-    URI uri = URI.create(link);
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest fileRequest = HttpRequest
-        .newBuilder()
-        .uri(uri)
-        .GET()
-        .build();
-    HttpResponse<String> response = client.send(fileRequest, HttpResponse.BodyHandlers.ofString());
+  public static String fetchFile(String link) {
+    try {
+      URI uri = URI.create(link);
+      HttpClient client = HttpClient.newHttpClient();
+      HttpRequest fileRequest = HttpRequest
+          .newBuilder()
+          .uri(uri)
+          .GET()
+          .build();
+      HttpResponse<String> response = client.send(fileRequest, HttpResponse.BodyHandlers.ofString());
 
-    return response.body();
+      return response.body();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+      return "";
+    }
   }
 
   /**
@@ -41,12 +46,6 @@ public class Utils {
    * @throws InterruptedException if the thread is interrupted
    */
   public static int getSize(String link) {
-    String file = null;
-    try {
-      file = fetchFile(link);
-      return file.split("\n").length;
-    } catch (IOException | InterruptedException e) {
-      return 0;
-    }
+    return fetchFile(link).split("\n").length;
   }
 }
