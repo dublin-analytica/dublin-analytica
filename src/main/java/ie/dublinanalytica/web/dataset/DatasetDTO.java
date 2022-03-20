@@ -16,7 +16,6 @@ public class DatasetDTO {
   @NotEmpty
   private String description;
 
-  @NotNull
   private Integer size;
 
   @NotNull
