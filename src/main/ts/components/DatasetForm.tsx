@@ -14,14 +14,13 @@ import type { Theme } from '@styles/theme';
 
 type DatasetFormProps = {
   dataset?: Partial<Dataset>
+  update?: boolean;
 };
 
-const DatasetForm = ({ dataset = {} }: DatasetFormProps) => {
+const DatasetForm = ({ dataset = {}, update = false }: DatasetFormProps) => {
   const navigate = useNavigate();
   const theme = useTheme() as Theme;
   const { addDataset, updateDataset } = useDatasetActions();
-
-  const update = Object.keys(dataset).length !== 0;
 
   const {
     id, name, description, image, link, unitPrice,

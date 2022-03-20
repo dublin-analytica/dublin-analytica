@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-
 import ie.dublinanalytica.web.util.Utils;
 
 /**
@@ -62,6 +61,7 @@ public class Dataset {
     this.size = Utils.getSize(link);
     this.image = image;
     this.link = link;
+    this.hidden = true;
     Random rand = new Random();
     this.unitPrice = Math.round(rand.nextDouble(0.001, 0.1) * Math.pow(10, 5)) / Math.pow(10, 5);
   }
