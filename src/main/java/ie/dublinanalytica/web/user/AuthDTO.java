@@ -1,7 +1,5 @@
 package ie.dublinanalytica.web.user;
 
-import java.util.Arrays;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 

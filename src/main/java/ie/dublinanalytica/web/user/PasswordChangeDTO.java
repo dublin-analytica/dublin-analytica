@@ -1,7 +1,6 @@
 package ie.dublinanalytica.web.user;
 
 import java.nio.CharBuffer;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;

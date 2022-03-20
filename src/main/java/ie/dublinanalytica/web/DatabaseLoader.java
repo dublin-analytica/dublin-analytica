@@ -14,13 +14,9 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-import com.thedeanda.lorem.Lorem;
-import com.thedeanda.lorem.LoremIpsum;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
 
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
@@ -62,16 +58,10 @@ public class DatabaseLoader implements CommandLineRunner {
     this.orderRepository = orderRepository;
   }
 
-  private final Lorem lorem = LoremIpsum.getInstance();
 
   @Override
   public void run(final String... args) throws Exception {
     populateDatabase();
-  }
-
-  private static double randomPrice() {
-    Random rand = new Random();
-    return Math.round(rand.nextDouble(0.0001, 0.01) * Math.pow(10, 5)) / Math.pow(10, 5);
   }
 
   /**
