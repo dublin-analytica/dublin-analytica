@@ -104,6 +104,10 @@ public class UserService {
     UUID datasetId = item.getId();
     Dataset dataset = datasetService.findById(datasetId);
 
+    if (dataset.isHidden()) {
+      throw new BadRequest("Cannot add hidden datasets to cart");
+    }
+
     int count = item.getSize();
 
     if (count <= 0) {
@@ -136,6 +140,10 @@ public class UserService {
 
     UUID datasetId = item.getId();
     Dataset dataset = datasetService.findById(datasetId);
+
+    if (dataset.isHidden()) {
+      throw new BadRequest("Cannot add hidden datasets to cart");
+    }
 
     if (item.getSize() < 0) {
       throw new BadRequest("Can't have less than 0 datapoints");

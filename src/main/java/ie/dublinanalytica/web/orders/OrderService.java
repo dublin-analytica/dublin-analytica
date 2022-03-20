@@ -134,7 +134,7 @@ public class OrderService {
     simpleDateFormat.setLenient(false);
     Date expiry = simpleDateFormat.parse(cardExpiry);
     if (expiry.before(new Date())) {
-      throw new InvalidCardExpiryDate();
+      throw new InvalidCardExpiryDate("Expiry date must be in the future");
     }
   }
 

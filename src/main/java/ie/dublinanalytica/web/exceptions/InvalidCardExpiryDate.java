@@ -9,4 +9,8 @@ public class InvalidCardExpiryDate extends BaseException {
   public InvalidCardExpiryDate() {
     super(DEFAULT_MESSAGE);
   }
+
+  public InvalidCardExpiryDate(String message) {
+    super(message);
+  }
 }
