@@ -129,8 +129,8 @@ public class DatasetAPIController {
       dataset.setHidden(dto.isHidden());
     }
 
-    if (dto.getPricePerDatapoint() != null) {
-      dataset.setUnitPrice(dto.getPricePerDatapoint());
+    if (dto.getUnitPrice() != null) {
+      dataset.setUnitPrice(dto.getUnitPrice());
     }
 
     datasetService.save(dataset);
