@@ -84,17 +84,23 @@ public class DatasetAPIController {
    */
   @GetMapping("/{id:.{36}}")
   public Response getDataset(
-      @RequestHeader("Authorization") String authHeader,
+      @RequestHeader(value = "Authorization", required = false) String authHeader,
       @PathVariable String id) throws
       DatasetNotFoundException, UserAuthenticationException, UserNotFoundException,
       JsonProcessingException {
-    JWTPayload payload = JWTPayload.fromHeader(authHeader);
-    User user = userService.findById(payload.getId());
+
+    boolean isAdmin = false;
+
+    if (authHeader != null) {
+      JWTPayload payload = JWTPayload.fromHeader(authHeader);
+      User user = userService.findById(payload.getId());
+      isAdmin = user.isAdmin();
+    }
 
     UUID uuid = UUID.fromString(id);
     Dataset dataset = datasetService.findById(uuid);
 
-    if (user.isAdmin()) {
+    if (isAdmin) {
       return new Response(dataset.toJSONAdmin(), MediaType.APPLICATION_JSON);
     }
 
