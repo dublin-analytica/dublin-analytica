@@ -16,7 +16,7 @@ const Orders = () => {
 
   useEffect(() => {
     getOrders(user?.id).then(setOrders);
-  }, []);
+  }, [user]);
 
   return (
     <SplitView>

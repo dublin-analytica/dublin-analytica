@@ -47,7 +47,7 @@ const SmartForm = ({
     fields.forEach(({ name, value }) => {
       if (value) setValue(name, value);
     });
-  }, []);
+  }, [fields]);
 
   const validators = fields.reduce((acc, { name, validator }) => {
     const validate = validator?.validate ?? (() => true);
@@ -73,7 +73,7 @@ const SmartForm = ({
       setValidField(name, validators[name]!());
       setChangedField(name, values[name] !== '');
     });
-  }, [values]);
+  }, [values, fields]);
 
   const handleSubmit = () => {
     fields.forEach(({ name }) => setChangedField(name, true));

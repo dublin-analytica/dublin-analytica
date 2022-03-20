@@ -17,7 +17,7 @@ const DataDashboard = () => {
   return (
     <SplitView>
       <Sidebar />
-      <DataTable datasets={datasets} selected={selected} setSelected={setSelected} />
+      <DataTable datasets={datasets} selected={selected} setSelected={setSelected} showHidden />
     </SplitView>
   );
 };

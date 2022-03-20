@@ -7,7 +7,7 @@ const useOrderActions = () => {
   const { get, post } = useAPI();
 
   const getOrders = async (user?: string): Promise<Order[]> => {
-    const orders: Order[] = await (user ? get(`orders/user/${user}`) : get('orders'));
+    const orders: Order[] = await get(user ? `orders/user/${user}` : 'orders');
     return orders.sort((a, b) => {
       if (a.status === Status.DELIVERED && b.status !== Status.DELIVERED) return -1;
       return b.timestamp - a.timestamp;

@@ -7,7 +7,10 @@ import Table from './Table';
 type DataTableProps = {
   datasets: Dataset[],
   setSelected?: React.Dispatch<React.SetStateAction<Set<string>>>
-  selected?: Set<string>
+  selected?: Set<string>,
+  showHidden?: boolean,
+  truncate?: number,
+  showTotalPrice?: boolean,
 };
 
 const S = {
@@ -16,17 +19,22 @@ const S = {
   `,
 };
 
-const DataTable = ({ datasets, setSelected, selected }: DataTableProps) => {
-  const headers = ['Name', 'Unit Price', 'Description', 'Hidden', 'Datapoints'];
+const DataTable = ({
+  datasets, setSelected, selected, showHidden = false, showTotalPrice = false, truncate = 64,
+}: DataTableProps) => {
+  const headers = [
+    'Name', showTotalPrice ? 'Price' : 'Unit Price', 'Description', ...(showHidden ? ['Hidden'] : []), 'Datapoints',
+  ];
+
   const rows = datasets.map(({
     id, name, unitPrice, description, hidden, size,
   }) => ({
     id,
     values: [
       name,
-      `€${unitPrice.toFixed(5)}`,
-      `${description.substring(0, 64)}...`,
-      hidden ? 'Yes' : 'No',
+      `€${(unitPrice * (showTotalPrice ? size : 1)).toFixed(showTotalPrice ? 2 : 5)}`,
+      `${description.substring(0, truncate)}...`,
+      ...(showHidden ? [hidden ? 'Yes' : 'No'] : []),
       `${size}`,
     ],
   }));

@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [orders, setOrders] = useState([] as Order[]);
   const { getOrders, updateOrderStatus } = useOrderActions();
 
-  const updateOrders = () => getOrders().then((orders) => setOrders(orders));
+  const updateOrders = () => getOrders().then(setOrders);
 
   useEffect(() => {
     updateOrders();

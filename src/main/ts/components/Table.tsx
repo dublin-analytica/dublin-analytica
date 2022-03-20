@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 type TableProps = {
@@ -9,9 +9,13 @@ type TableProps = {
 };
 
 const S = {
-  Table: styled.table`
+  Table: styled.table<{ selectable?: boolean }>`
     width: 90%;
     border-collapse: collapse;
+
+    & tr {
+      cursor: ${({ selectable }) => (selectable ? 'pointer' : 'default')};
+    }
   `,
 
   THead: styled.thead`
@@ -32,7 +36,6 @@ const S = {
     tr:first-child td:last-child { border-top-right-radius: 10px; }
     tr:last-child td:first-child { border-bottom-left-radius: 10px; }
     tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-    cursor: pointer;
     
 
     &.selected {
@@ -69,7 +72,7 @@ const Table = ({
   const allSelected = () => selected?.size === rows.length;
 
   return (
-    <S.Table>
+    <S.Table selectable={Boolean(selected)}>
       <S.THead>
         <S.TR>
           {selected && <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>}
@@ -85,7 +88,7 @@ const Table = ({
                 aria-label="Select"
                 type="checkbox"
                 checked={selected?.has(id)}
-                onChange={toggleSelected(id)}
+                readOnly
               />
             </td>
             )}
