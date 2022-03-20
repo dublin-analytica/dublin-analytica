@@ -125,10 +125,6 @@ public class DatasetAPIController {
       dataset.setSize(dto.getSize());
     }
 
-    if (dto.isHidden() != null) {
-      dataset.setHidden(dto.isHidden());
-    }
-
     if (dto.getUnitPrice() != null) {
       dataset.setUnitPrice(dto.getUnitPrice());
     }
