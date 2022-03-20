@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class OrderAPITests {
 
-  private final char[] PASSWORD = "alice".toCharArray();
+  private final char[] PASSWORD = "Alice&bob1".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;

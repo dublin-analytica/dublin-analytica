@@ -59,11 +59,6 @@ public class DatabaseLoader implements CommandLineRunner {
 
   private final Lorem lorem = LoremIpsum.getInstance();
 
-  private final String[] words = {
-    "name", "email", "address", "likes", "dislikes", "other", "something", "location", "preference",
-    "sexuality", "something", "lorem", "data", "information"
-  };
-
   @Override
   public void run(final String... args) throws Exception {
     populateDatabase();
@@ -77,9 +72,9 @@ public class DatabaseLoader implements CommandLineRunner {
     datasetRepository.deleteAll();
     userRepository.deleteAll();
 
-    User alice = new User("Alice the admin", "alice@gmail.com", "alice".toCharArray(), true);
-    User bob = new User("Bob the businesman", "bob@gmail.com", "bob".toCharArray(), false);
-    User user = new User("User", "user@gmail.com", "user".toCharArray(), false);
+    User alice = new User("Alice the admin", "alice@gmail.com", "Alice&bob1".toCharArray(), true);
+    User bob = new User("Bob the businessman", "bob@gmail.com", "Alice&bob1".toCharArray(), false);
+    User user = new User("User", "user@gmail.com", "Alice&bob1".toCharArray(), false);
 
     userRepository.save(alice);
     userRepository.save(bob);
@@ -91,16 +86,9 @@ public class DatabaseLoader implements CommandLineRunner {
       String name = "Dataset " + i;
       String description = lorem.getWords(rand.nextInt(10, 25));
 
-      List<String> fields = new ArrayList<>();
-
-      for (int j = 0; j < rand.nextInt(2, 5); j++) {
-        fields.add(words[rand.nextInt(words.length)]);
-      }
-
       Dataset set = new Dataset(
           name,
           description,
-          fields,
           rand.nextInt(100, 10000), ""
       );
 

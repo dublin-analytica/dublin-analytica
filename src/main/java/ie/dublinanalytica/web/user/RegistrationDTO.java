@@ -1,9 +1,13 @@
 package ie.dublinanalytica.web.user;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
 /**
  * Data-Transfer-Object to store the necessary information for a user to register.
@@ -29,10 +33,29 @@ public class RegistrationDTO {
    * @param email The email
    * @param password The password
    */
-  public RegistrationDTO(String name, String email, char[] password) {
+  public RegistrationDTO(String name, String email, char[] password)
+      throws PasswordNotStrongException {
     this.name = name;
     this.email = email;
-    this.password = password;
+    this.password = verifyPasswordIsStrong(password);
+  }
+
+  /**
+   * If password is not strong, then an exception is thrown.
+   * If password is strong, then we return the password.
+   *
+   * @param password The password.
+   * @return The password.
+   * @throws PasswordNotStrongException if the password is not strong.
+   */
+  public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
+    if (Pattern.matches(
+        ("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).{8,}$"),
+        CharBuffer.wrap(password))) {
+      return password;
+    } else {
+      throw new PasswordNotStrongException();
+    }
   }
 
   public String getName() {

@@ -1,13 +1,17 @@
 package ie.dublinanalytica.web.api;
 
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -117,10 +121,6 @@ public class DatasetAPIController {
       dataset.setDescription(dto.getDescription());
     }
 
-    if (dto.getDatapoints() != null) {
-      dataset.setFields(dto.getDatapoints());
-    }
-
     if (dto.getSize() != null) {
       dataset.setSize(dto.getSize());
     }
@@ -167,6 +167,20 @@ public class DatasetAPIController {
     Stream<Dataset> filtered = StreamSupport.stream(
         datasets.spliterator(), false).filter(d -> isAdmin || !d.isHidden());
 
-    return new Response(filtered);
+    if (!isAdmin) {
+      return new Response(filtered);
+    }
+
+    StringJoiner joiner = new StringJoiner(",", "[", "]");
+
+    filtered.forEach(d -> {
+      try {
+        joiner.add(d.toJSONAdmin());
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+      }
+    });
+
+    return new Response(joiner.toString(), MediaType.APPLICATION_JSON);
   }
 }

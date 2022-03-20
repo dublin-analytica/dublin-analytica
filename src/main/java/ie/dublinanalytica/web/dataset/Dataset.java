@@ -1,20 +1,21 @@
 package ie.dublinanalytica.web.dataset;
 
-import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"url"})
+@JsonIgnoreProperties(value = {"url", "fields"})
 public class Dataset {
   @Id
   @GeneratedValue
@@ -22,9 +23,6 @@ public class Dataset {
 
   private String name;
   private String description;
-
-  @ElementCollection
-  private List<String> fields;
 
   private int size;
   private String image;
@@ -42,18 +40,16 @@ public class Dataset {
    * @param data The DatasetDTO
    */
   public Dataset(DatasetDTO data) {
-    this(data.getName(), data.getDescription(), data.getDatapoints(),
-        data.getSize(), data.getImage());
+    this(data.getName(), data.getDescription(), data.getSize(), data.getImage());
   }
 
   /**
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, List<String> fields, int size, String image) {
+  public Dataset(String name, String description, int size, String image) {
     this.name = name;
     this.description = description;
-    this.fields = fields;
     this.size = size;
     this.image = image;
   }
@@ -82,14 +78,6 @@ public class Dataset {
     this.description = description;
   }
 
-  public List<String> getFields() {
-    return fields;
-  }
-
-  public void setFields(List<String> datapoint) {
-    this.fields = datapoint;
-  }
-
   public int getSize() {
     return size;
   }
@@ -101,8 +89,8 @@ public class Dataset {
   @Override
   public String toString() {
     return String.format(
-      "Dataset{id: '%s', name: '%s', description: '%s', datapoints: '%s', size: '%s', image: '%s'}",
-        id, name, description, fields, size, image);
+      "Dataset{id: '%s', name: '%s', description: '%s' size: '%s', image: '%s'}",
+        id, name, description, size, image);
   }
 
   public boolean isHidden() {
@@ -135,5 +123,29 @@ public class Dataset {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+
+  /**
+   * Generates the json for admins. We need this to expose the link for admins only.
+   *
+   * @return The JSON String
+   * @throws JsonProcessingException Error jackson
+   */
+  public String toJSONAdmin() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    ObjectNode user = mapper.createObjectNode();
+
+    user.put("id", this.getId().toString());
+    user.put("name", this.getName());
+    user.put("description", this.getDescription());
+    user.put("size", this.getSize());
+    user.put("image", this.getImage());
+    user.put("hidden", this.isHidden());
+    user.put("link", this.getUrl());
+    user.put("unitPrice", this.getUnitPrice());
+
+    return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
   }
 }
