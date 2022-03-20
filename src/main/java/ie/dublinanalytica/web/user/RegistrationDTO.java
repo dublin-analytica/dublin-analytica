@@ -33,7 +33,8 @@ public class RegistrationDTO {
    * @param email The email
    * @param password The password
    */
-  public RegistrationDTO(String name, String email, char[] password) throws PasswordNotStrongException {
+  public RegistrationDTO(String name, String email, char[] password)
+      throws PasswordNotStrongException {
     this.name = name;
     this.email = email;
     this.password = verifyPasswordIsStrong(password);
@@ -48,7 +49,9 @@ public class RegistrationDTO {
    * @throws PasswordNotStrongException if the password is not strong.
    */
   public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
-    if (Pattern.matches(("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$"), CharBuffer.wrap(password))) {
+    if (Pattern.matches(
+        ("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$"),
+        CharBuffer.wrap(password))) {
       return password;
     } else {
       throw new PasswordNotStrongException();
