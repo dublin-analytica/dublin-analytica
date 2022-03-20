@@ -142,7 +142,8 @@ public class OrderAPIController {
 
     response.setContentType("application/zip");
     response.setStatus(HttpServletResponse.SC_OK);
-    response.addHeader("Content-Disposition",  String.format("attachment; filename=\"%s\"", filename));
+    response.addHeader("Content-Disposition",
+        String.format("attachment; filename=\"%s\"", filename));
 
     return zip.build();
   }
