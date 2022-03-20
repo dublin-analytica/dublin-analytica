@@ -18,7 +18,7 @@
   },
   "scripts": {
     "watch": "yarn webpack --watch",
-    "clean": "./mvnw clean && rm -rf src/main/resources/built",
+    "clean": "./mvnw clean && rm -rf src/main/resources/built && rm -f spring-boot-h2-db.*",
     "pretest": "yarn run clean",
     "test": "./mvnw test",
     "prebuild": "yarn run clean",

@@ -2,17 +2,16 @@ import Cart from 'types/Cart';
 import useAPI from './useAPI';
 
 const useCartActions = () => {
-  const { get, post, patch } = useAPI();
+  const { get, post } = useAPI();
 
   const getCart = () => get('cart');
 
-  const addToCart = (id: string, size: number) => {
-    console.log(size);
-    return post('cart', { id, size });
-  };
+  const addToCart = (id: string, size: number) => (
+    post('cart', { id, size })
+  );
 
   const updateInCart = (id: string, size: number) => (
-    patch('cart', { id, size })
+    post('cart/update', { id, size })
   );
 
   const removeFromCart = (id: string) => (
@@ -24,8 +23,8 @@ const useCartActions = () => {
     cart.forEach(({ id }) => removeFromCart(id));
   };
 
-  const checkout = async (cvv: string, number: string, expiry: string) => (
-    post('cart/checkout', { cvv, number, expiry })
+  const checkout = async (number: string, expiry: string, cvv: string) => (
+    post('cart/checkout', { number, expiry, cvv })
   );
 
   return {

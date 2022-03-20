@@ -30,7 +30,7 @@ const Marketplace = () => {
     <Container nav color={colors.primary}>
       <Container color={colors.white}>
         <S.Grid direction="row">
-          {datasets.map((dataset) => (
+          {datasets.filter(({ hidden }) => !hidden).map((dataset) => (
             <DatasetCard key={dataset.id} {...dataset} />
           ))}
         </S.Grid>

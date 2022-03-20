@@ -26,13 +26,34 @@ const S = {
   &:active {
     transform: translateY(2px);
   }
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.gray};
+    color: ${({ theme }) => theme.text.colors.light};
+    cursor: default;
+    border: none;
+  }
+
+  &:disabled:hover {
+    filter: brightness(1);
+  }
   `,
 };
 
 const Button = ({
-  children, outline = false, name, type, variant = 'primary', unpadded = false, onClick, className,
+  children,
+  style,
+  outline = false,
+  name,
+  type,
+  variant = 'primary',
+  unpadded = false,
+  onClick,
+  className,
+  disabled,
 }: ButtonProps) => (
   <S.Button
+    style={style}
     className={className}
     outline={outline}
     name={name}
@@ -40,6 +61,7 @@ const Button = ({
     type={type}
     onClick={onClick}
     variant={variant}
+    disabled={disabled}
   >
     {children}
   </S.Button>

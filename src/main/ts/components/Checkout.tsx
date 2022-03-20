@@ -1,8 +1,10 @@
 import { useCartActions } from '@hooks';
 import { cardCvvValidator, cardExpiryValidator, cardNumberValidator } from '@utils/validators';
+import { useNavigate } from 'react-router-dom';
 import Form, { SubmitAction } from './SmartForm';
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const { checkout } = useCartActions();
 
   const fields = [
@@ -19,7 +21,9 @@ const Checkout = () => {
 
   const handleSubmit: SubmitAction = ({ cardNumber, expiry, cvv }, setError) => {
     const number = cardNumber?.replace(/[\s-]/g, '');
-    checkout(number!, expiry!, cvv!).catch(setError);
+    checkout(number!, expiry!, cvv!)
+      .then(() => navigate('/orders'))
+      .catch(setError);
   };
 
   return (

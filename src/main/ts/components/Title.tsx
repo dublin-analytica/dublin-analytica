@@ -34,8 +34,8 @@ const Title = ({
   return (
     <S.Title color={color} size={size} onClick={handleClick}>
       <h1>
-        { children
-          || (
+        {children
+          ?? (
           <>
             Dublin
             <br />

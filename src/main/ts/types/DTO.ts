@@ -7,6 +7,9 @@ type UpdatePasswordDTO = { oldPassword: string, newPassword: string };
 type OrderDTO = { status: Status };
 type BasketDTO = { id: string, size: number };
 type CardDTO = { cvv: string, number: string, expiry: string };
+export type DatasetDTO = {
+  name: string, description: string, image: string, link: string, unitPrice: number
+}
 
 type DTO = AuthDTO
   | RegistrationDTO
@@ -14,6 +17,7 @@ type DTO = AuthDTO
   | UpdateDTO
   | UpdatePasswordDTO
   | BasketDTO
-  | CardDTO;
+  | CardDTO
+  | DatasetDTO;
 
 export default DTO;

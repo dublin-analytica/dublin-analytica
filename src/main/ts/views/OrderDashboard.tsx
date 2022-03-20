@@ -44,11 +44,12 @@ const Dashboard = () => {
       <Sidebar />
       <>
         <Stats stats={stats} />
-        <Container direction="column" align="flex-start" style={{ width: '80%' }}>
-          <h2>Change Order Status</h2>
+        <Container direction="column" align="flex-start" style={{ width: '90%' }}>
           <Container unpadded direction="row" style={{ marginTop: '1rem' }}>
+            <h2>Change Order Status: </h2>
             {Object.values(Status).map((status) => (
               <Button
+                disabled={selected.size === 0}
                 outline
                 key={status}
                 onClick={handleClick}
