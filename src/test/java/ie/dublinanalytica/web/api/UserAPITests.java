@@ -43,7 +43,7 @@ public class UserAPITests {
   private final String AUTH_PATTERN = "^\\{\"token\":\".*\"}$";
   private final String NAME = "Alice Bob";
   private final String EMAIL = "alice@bob.com";
-  private final char[] PASSWORD = "alice&bob".toCharArray();
+  private final char[] PASSWORD = "Alice&bob1".toCharArray();
 
   @Autowired
   private MockMvc mockMvc;
