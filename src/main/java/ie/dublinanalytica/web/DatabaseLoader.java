@@ -2,8 +2,9 @@ package ie.dublinanalytica.web;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +17,7 @@ import com.thedeanda.lorem.LoremIpsum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
@@ -119,13 +121,16 @@ public class DatabaseLoader implements CommandLineRunner {
         map.put(set.getId(), rand.nextInt(10, set.getSize()));
       }
 
+      Date date = new GregorianCalendar(2015, Calendar.JANUARY, 1).getTime();
+
       Order order = new Order(
           new ShoppingCart(map), owner,
           Math.round(rand.nextFloat(10, 500) * Math.pow(10, 2)) / Math.pow(10, 2));
 
       order.setTimestamp(
           LocalDateTime.ofEpochSecond(
-            rand.nextInt(0, (int) (new Date().toInstant().getEpochSecond())), 0, ZoneOffset.UTC));
+            rand.nextInt((int) date.toInstant().getEpochSecond(), (int) (new Date().toInstant().getEpochSecond())),
+            0, ZoneOffset.UTC));
 
       this.orderRepository.save(order);
     }
