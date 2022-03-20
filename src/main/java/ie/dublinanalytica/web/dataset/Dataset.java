@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Class for storing a dataset.
@@ -135,5 +138,28 @@ public class Dataset {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+
+  /**
+   * Generates the json for admins. We need this to expose the link for admins only.
+   *
+   * @return The JSON String
+   * @throws JsonProcessingException Error jackson
+   */
+  public String toJSONAdmin() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    ObjectNode user = mapper.createObjectNode();
+
+    user.put("id", this.getId().toString());
+    user.put("name", this.getName());
+    user.put("description", this.getDescription());
+    user.put("size", this.getSize());
+    user.put("image", this.getImage());
+    user.put("hidden", this.isHidden());
+    user.put("link", this.getUrl());
+
+    return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
   }
 }
