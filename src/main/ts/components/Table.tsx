@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 
 type TableProps = {
   setSelected?: React.Dispatch<React.SetStateAction<Set<string>>> | undefined,
   selected?: Set<string> | undefined,
+  action?: ((id: string) => void) | undefined,
+  actionName?: string | undefined,
   headers: string[],
   rows: { id: string, values: string[] }[]
 };
@@ -45,7 +48,7 @@ const S = {
 };
 
 const Table = ({
-  setSelected, selected, headers, rows,
+  setSelected, selected, headers, rows, action, actionName,
 }: TableProps) => {
   const toggleSelected = (id: string) => () => {
     if (setSelected) {
@@ -77,6 +80,7 @@ const Table = ({
         <S.TR>
           {selected && <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>}
           {headers.map((header) => <S.TH key={header}>{header}</S.TH>)}
+          {action && <td />}
         </S.TR>
       </S.THead>
       <tbody>
@@ -93,6 +97,11 @@ const Table = ({
             </td>
             )}
             {values.map((value) => <td key={value}>{value}</td>)}
+            {action && (
+            <td>
+              <Button aria-label={actionName} onClick={() => action(id)}>{actionName}</Button>
+            </td>
+            )}
           </S.TR>
         ))}
       </tbody>
