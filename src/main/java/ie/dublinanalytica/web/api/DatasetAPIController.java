@@ -121,10 +121,6 @@ public class DatasetAPIController {
       dataset.setDescription(dto.getDescription());
     }
 
-    if (dto.getDatapoints() != null) {
-      dataset.setFields(dto.getDatapoints());
-    }
-
     if (dto.getSize() != null) {
       dataset.setSize(dto.getSize());
     }

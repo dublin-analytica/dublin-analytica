@@ -1,7 +1,5 @@
 package ie.dublinanalytica.web.api;
 
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -17,6 +15,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.dataset.DatasetDTO;
@@ -38,7 +37,6 @@ public class DatasetAPITests {
 
   private final String NAME = "Dataset1";
   private final String DESCRIPTION = "A dataset";
-  private final List<String> DATAPOINTS = List.of("some point", "some other point");
   private final int SIZE = 10;
   private final String URL = "https://helloworld.com";
   private final double PRICE = 1.0;
@@ -88,7 +86,7 @@ public class DatasetAPITests {
       post("/api/datasets")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
-        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
+        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
     ).andDo(print())
       .andExpect(status().isCreated());
   }
@@ -102,7 +100,7 @@ public class DatasetAPITests {
         post("/api/datasets")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
       ).andDo(print())
       .andExpect(status().isConflict());
   }
@@ -115,7 +113,7 @@ public class DatasetAPITests {
         post("/api/datasets")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, DATAPOINTS, SIZE, URL, PRICE)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
       ).andDo(print())
       .andExpect(status().isUnauthorized());
   }
