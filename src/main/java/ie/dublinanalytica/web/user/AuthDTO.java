@@ -35,7 +35,7 @@ public class AuthDTO {
    */
   public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
     if (Arrays.toString(password)
-      .matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
+        .matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
       return password;
     } else {
       throw new PasswordNotStrongException();

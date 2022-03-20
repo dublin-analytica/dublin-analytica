@@ -15,8 +15,17 @@ public class PasswordChangeDTO {
   public PasswordChangeDTO() {
   }
 
+  /**
+   * If password is not strong, then an exception is thrown. 
+   * If password is strong, then we return the password.
+   *
+   * @param password The password.
+   * @return The password.
+   * @throws PasswordNotStrongException if the password is not strong.
+   */
   public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
-    if (Arrays.toString(password).matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
+    if (Arrays.toString(password)
+        .matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
       return password;
     } else {
       throw new PasswordNotStrongException();
