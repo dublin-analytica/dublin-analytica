@@ -37,7 +37,6 @@ const Basket = () => {
       Array.from(selected).map((id) => {
         const item = cart.find((item) => item.id === id);
         const { size } = item!;
-        console.log(n, size);
         if (n > 0 || size > -n) return updateInCart(id, size + n);
         return new Promise(() => {});
       }),
