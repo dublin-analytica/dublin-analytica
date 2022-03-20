@@ -126,7 +126,7 @@ public class DatasetAPITests {
     this.mockMvc.perform(
       get("/api/datasets/"))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value(startsWith("Dataset")))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value(startsWith("World Happiness Report 2022")))
       .andExpect(status().isOk())
         .andReturn();
   }
@@ -146,7 +146,7 @@ public class DatasetAPITests {
     this.mockMvc.perform(
       get(url))
       .andDo(print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(startsWith("Dataset")))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(startsWith("World Happiness Report 2022")))
       .andExpect(status().isOk())
         .andReturn();
   }
