@@ -24,9 +24,6 @@ public class DatasetDTO {
   private String image;
 
   @NotNull
-  private Boolean hidden;
-
-  @NotNull
   private Double unitPrice;
 
   public DatasetDTO() {}
@@ -73,14 +70,6 @@ public class DatasetDTO {
 
   public void setImage(String image) {
     this.image = image;
-  }
-
-  public void setHidden(boolean hidden) {
-    this.hidden = hidden;
-  }
-
-  public Boolean isHidden() {
-    return hidden;
   }
 
   public Double getUnitPrice() {
