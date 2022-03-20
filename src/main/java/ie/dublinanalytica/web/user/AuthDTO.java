@@ -1,7 +1,10 @@
 package ie.dublinanalytica.web.user;
 
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 /**
  * DTO for sending authentication request.
@@ -21,11 +24,11 @@ public class AuthDTO {
     this.password = verifyPasswordIsStrong(password);
   }
 
-  public String verifyPasswordIsStrong(String password) {
-    if (password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})")) {
+  public char[] verifyPasswordIsStrong(char[] password) {
+    if (Arrays.toString(password).matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
       return password;
     } else {
-      throw new IllegalArgumentException();
+      throw new PasswordNotStrongException();
     }
   }
 
