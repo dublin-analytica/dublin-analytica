@@ -134,6 +134,10 @@ public class DatasetAPIController {
       dataset.setImage(dto.getImage());
     }
 
+    if (dto.isHidden() != null) {
+      dataset.setHidden(dto.isHidden());
+    }
+
     if (dto.getLink() != null) {
       dataset.setLink(dto.getLink());
       dataset.setSize(Utils.getSize(dto.getLink()));

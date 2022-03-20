@@ -1,10 +1,13 @@
 package ie.dublinanalytica.web.dataset;
 
+import java.util.Random;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +21,7 @@ import ie.dublinanalytica.web.util.Utils;
  * Class for storing a dataset.
  */
 @Entity
+@Table(name = "datasets")
 @JsonIgnoreProperties(value = {"link"})
 public class Dataset {
   @Id
@@ -25,9 +29,11 @@ public class Dataset {
   private UUID id;
 
   private String name;
+
+  @Column(length = 1024)
   private String description;
 
-  private int size;
+  private Integer size;
   private String image;
   private String link;
 
@@ -56,6 +62,8 @@ public class Dataset {
     this.size = Utils.getSize(link);
     this.image = image;
     this.link = link;
+    Random rand = new Random();
+    this.unitPrice = Math.round(rand.nextDouble(0.001, 0.1) * Math.pow(10, 5)) / Math.pow(10, 5);
   }
 
   public UUID getId() {
@@ -83,6 +91,10 @@ public class Dataset {
   }
 
   public int getSize() {
+    if (size == null) {
+      size = Utils.getSize(this.getLink());
+    }
+
     return size;
   }
 

@@ -1,5 +1,8 @@
 package ie.dublinanalytica.web;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
@@ -17,6 +20,7 @@ import com.thedeanda.lorem.LoremIpsum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
@@ -65,6 +69,11 @@ public class DatabaseLoader implements CommandLineRunner {
     populateDatabase();
   }
 
+  private static double randomPrice() {
+    Random rand = new Random();
+    return Math.round(rand.nextDouble(0.0001, 0.01) * Math.pow(10, 5)) / Math.pow(10, 5);
+  }
+
   /**
    * Populates the database with dummy data.
    */
@@ -81,36 +90,30 @@ public class DatabaseLoader implements CommandLineRunner {
     userRepository.save(bob);
     userRepository.save(user);
 
-    Random rand = new Random();
 
-    for (int i = 0; i < 50; i++) {
-      String name = "Dataset " + i;
-      String description = lorem.getWords(rand.nextInt(10, 25));
+    List<String> lst;
 
-      Dataset set = new Dataset(
-          name,
-          description, "https://i.imgflip.com/db5xf.jpg",
-          "https://pastebin.com/raw/QQgqV98Z"
-      );
+    try {
+      lst = Files.readAllLines(Paths.get("datasets.psv"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Failed to read datasets.psv");
+    }
 
-      double price = Math.round(rand.nextDouble(0.0001, 0.01) * Math.pow(10, 5)) / Math.pow(10, 5);
-
-      set.setUnitPrice(price);
-
-      if (rand.nextFloat() < 0.15) {
-        set.setHidden(true);
-      }
-
-      datasetRepository.save(set);
+    for (String line : lst) {
+      String[] parts = line.split("\\|");
+      Dataset dataset = new Dataset(parts[0], parts[1], parts[2], parts[3]);
+      datasetRepository.save(dataset);
     }
 
     Iterable<Dataset> datasets = datasetRepository.findAll();
     List<Dataset> all = StreamSupport.stream(datasets.spliterator(), false).toList();
 
+
+    Random rand = new Random();
+
     for (int i = 0; i < 30; i++) {
-
       HashMap<UUID, Integer> map = new HashMap<>();
-
       User owner = rand.nextBoolean() ? alice : bob;
 
       for (int j = 0; j < rand.nextInt(2, 10); j++) {
@@ -133,6 +136,5 @@ public class DatabaseLoader implements CommandLineRunner {
 
       this.orderRepository.save(order);
     }
-
   }
 }

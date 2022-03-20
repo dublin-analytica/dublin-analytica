@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,6 +18,7 @@ import ie.dublinanalytica.web.util.AuthUtils;
  * Represents a User (customer) of the website.
  */
 @Entity
+@Table(name = "users")
 @JsonIgnoreProperties(value = {"authHash", "salt", "authTokens", "cart", "orders"})
 public class User extends BaseUser {
 

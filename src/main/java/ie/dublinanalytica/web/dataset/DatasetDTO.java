@@ -26,6 +26,8 @@ public class DatasetDTO {
   @NotEmpty
   private String link;
 
+  private Boolean hidden;
+
   @NotNull
   private Double unitPrice;
 
@@ -99,4 +101,11 @@ public class DatasetDTO {
         name, description, size, image);
   }
 
+  public Boolean isHidden() {
+    return hidden;
+  }
+
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
+  }
 }
