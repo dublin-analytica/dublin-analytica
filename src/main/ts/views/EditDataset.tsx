@@ -11,7 +11,8 @@ const EditDataset = () => {
 
   const { getDataset } = useDatasetActions();
 
-  const updateDataset = () => getDataset(id!).then(setDataset);
+  console.log(id);
+  const updateDataset = () => getDataset(id!).then(setDataset).catch(console.log);
 
   useEffect(() => {
     updateDataset();

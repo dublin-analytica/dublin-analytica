@@ -2,14 +2,15 @@ import { useTheme } from 'styled-components';
 
 import { SmartForm as Form } from '@components';
 import { Container } from '@containers';
-import type { Theme } from '@styles/theme';
 import { useNavigate } from 'react-router-dom';
 import { SubmitAction } from '@components/SmartForm';
 import {
   nameValidator, priceValidator, imageUrlValidator, linkUrlValidator,
 } from '@utils/validators';
 import { useDatasetActions } from '@hooks';
-import Dataset from 'types/Dataset';
+import type Dataset from 'types/Dataset';
+
+import type { Theme } from '@styles/theme';
 
 type DatasetFormProps = {
   dataset?: Partial<Dataset>
@@ -19,6 +20,8 @@ const DatasetForm = ({ dataset = {} }: DatasetFormProps) => {
   const navigate = useNavigate();
   const theme = useTheme() as Theme;
   const { addDataset, updateDataset } = useDatasetActions();
+
+  const update = Object.keys(dataset).length !== 0;
 
   const {
     id, name, description, image, link, unitPrice,
@@ -63,16 +66,17 @@ const DatasetForm = ({ dataset = {} }: DatasetFormProps) => {
   ];
 
   const handleSubmit: SubmitAction = ({
-    name, description, image, link,
+    name, description, image, link, unitPrice,
   }, setError) => {
     const args = {
       name: name!,
       description: description!,
       image: image!,
       link: link!,
+      unitPrice: parseFloat(unitPrice!),
     };
 
-    const action = dataset ? () => updateDataset(id!, args) : () => addDataset(args);
+    const action = update ? () => updateDataset(id!, args) : () => addDataset(args);
 
     action()
       .then(() => navigate('/datadashboard'))
@@ -81,7 +85,7 @@ const DatasetForm = ({ dataset = {} }: DatasetFormProps) => {
 
   return (
     <Container nav color={theme.colors.primary} justify="center" fullscreen>
-      <Form onSubmit={handleSubmit} fields={fields} action="Sign In">
+      <Form onSubmit={handleSubmit} fields={fields} action={update ? 'Update Dataset' : 'Create Dataset'}>
         <div>
           <h2>Add a Dataset</h2>
         </div>

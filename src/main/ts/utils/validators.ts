@@ -56,7 +56,7 @@ export const cardCvvValidator = new Validator(
 
 export const priceValidator = new Validator(
   () => 'Enter a valid unit price.',
-  ({ price }) => !Number.isNaN(Number(price!)),
+  ({ unitPrice }) => !Number.isNaN(Number(unitPrice!)),
 );
 
 export const imageUrlValidator = new Validator(

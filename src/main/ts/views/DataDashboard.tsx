@@ -50,7 +50,7 @@ const DataDashboard = () => {
   const show = () => update(false);
   const hide = () => update(true);
 
-  const edit = (id: string) => navigate(`/datasets/edit?${id}`);
+  const edit = (id: string) => navigate(`/editdataset?id=${id}`);
 
   return (
     <SplitView>
@@ -87,7 +87,7 @@ const DataDashboard = () => {
         </Container>
         <DataTable
           action={edit}
-          actionName="Edit Dataset"
+          actionName="Edit"
           datasets={datasets}
           selected={selected}
           setSelected={setSelected}

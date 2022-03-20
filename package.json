@@ -23,6 +23,7 @@
     "test": "./mvnw test",
     "prebuild": "yarn run clean",
     "build": "./mvnw package",
+    "prestart": "yarn run clean",
     "start": "(trap 'kill 0' SIGINT; ./mvnw spring-boot:run & yarn run watch)",
     "prepare": "yarn husky install",
     "js": "yarn tsc && yarn eslint --fix src/main/js/**"
