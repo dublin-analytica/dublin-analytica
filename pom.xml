@@ -74,6 +74,13 @@
       <version>2.2.3</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.20</version>
+    </dependency>
+
 <!--    TODO: Remove for production-->
     <dependency>
       <groupId>com.thedeanda</groupId>

@@ -11,11 +11,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+
+import ie.dublinanalytica.web.util.Utils;
+
 /**
  * Class for storing a dataset.
  */
 @Entity
-@JsonIgnoreProperties(value = {"url", "fields"})
+@JsonIgnoreProperties(value = {"link"})
 public class Dataset {
   @Id
   @GeneratedValue
@@ -26,7 +29,7 @@ public class Dataset {
 
   private int size;
   private String image;
-  private String url;
+  private String link;
 
   private boolean hidden;
   private double unitPrice;
@@ -40,18 +43,19 @@ public class Dataset {
    * @param data The DatasetDTO
    */
   public Dataset(DatasetDTO data) {
-    this(data.getName(), data.getDescription(), data.getSize(), data.getImage());
+    this(data.getName(), data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
   }
 
   /**
    * Constructor for a Dataset.
    *
    */
-  public Dataset(String name, String description, int size, String image) {
+  public Dataset(String name, String description, int size, String image, String link) {
     this.name = name;
     this.description = description;
     this.size = size;
     this.image = image;
+    this.link = link;
   }
 
   public UUID getId() {
@@ -117,12 +121,12 @@ public class Dataset {
     return image;
   }
 
-  public String getUrl() {
-    return this.url;
+  public String getLink() {
+    return this.link;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setLink(String url) {
+    this.link = url;
   }
 
 
@@ -143,7 +147,7 @@ public class Dataset {
     user.put("size", this.getSize());
     user.put("image", this.getImage());
     user.put("hidden", this.isHidden());
-    user.put("link", this.getUrl());
+    user.put("link", this.getLink());
     user.put("unitPrice", this.getUnitPrice());
 
     return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);

@@ -38,9 +38,10 @@ public class DatasetAPITests {
   private final String NAME = "Dataset1";
   private final String DESCRIPTION = "A dataset";
   private final int SIZE = 10;
-  private final String URL = "https://helloworld.com";
+  private final String IMAGE = "https://helloworld.com";
   private final double PRICE = 1.0;
   private final char[] PASSWORD = "Alice&bob1".toCharArray();
+  private final String LINK = "https://pastebin.com/raw/QQgqV98Z";
 
   @Autowired
   private MockMvc mockMvc;
@@ -86,7 +87,7 @@ public class DatasetAPITests {
       post("/api/datasets")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
-        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
+        .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, IMAGE, PRICE, LINK)))
     ).andDo(print())
       .andExpect(status().isCreated());
   }
@@ -100,7 +101,7 @@ public class DatasetAPITests {
         post("/api/datasets")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, IMAGE, PRICE, LINK)))
       ).andDo(print())
       .andExpect(status().isConflict());
   }
@@ -113,7 +114,7 @@ public class DatasetAPITests {
         post("/api/datasets")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
-          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, URL, PRICE)))
+          .content(toJSON(new DatasetDTO(NAME, DESCRIPTION, SIZE, IMAGE, PRICE, LINK)))
       ).andDo(print())
       .andExpect(status().isUnauthorized());
   }
