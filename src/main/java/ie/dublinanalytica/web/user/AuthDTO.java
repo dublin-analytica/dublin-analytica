@@ -19,12 +19,12 @@ public class AuthDTO {
   @NotEmpty
   private char[] password;
 
-  public AuthDTO(String email, char[] password) {
+  public AuthDTO(String email, char[] password) throws PasswordNotStrongException {
     this.email = email;
     this.password = verifyPasswordIsStrong(password);
   }
 
-  public char[] verifyPasswordIsStrong(char[] password) {
+  public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
     if (Arrays.toString(password).matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
       return password;
     } else {
