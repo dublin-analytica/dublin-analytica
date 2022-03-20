@@ -1,7 +1,11 @@
 package ie.dublinanalytica.web.user;
 
+import java.util.Arrays;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
 /**
  * DTO for sending authentication request.
@@ -16,7 +20,7 @@ public class AuthDTO {
   @NotEmpty
   private char[] password;
 
-  public AuthDTO(String email, char[] password) {
+  public AuthDTO(String email, char[] password) throws PasswordNotStrongException {
     this.email = email;
     this.password = password;
   }
@@ -36,4 +40,6 @@ public class AuthDTO {
   public void setPassword(char[] password) {
     this.password = password;
   }
+
+
 }

@@ -41,7 +41,7 @@ public class ShoppingCartAPITests {
   @Autowired
   private MockMvc mockMvc;
 
-  private final char[] PASSWORD = "alice".toCharArray();
+  private final char[] PASSWORD = "Alice&bob1".toCharArray();
 
   @Test
   @Order(1)
