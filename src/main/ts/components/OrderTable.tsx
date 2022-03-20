@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Order from 'types/Order';
 import { toTitleCase, formatDate } from '@utils/utils';
+import { useAPI } from '@hooks';
 import Table from './Table';
 
 type OrderTableProps = {
@@ -18,6 +19,8 @@ const S = {
 };
 
 const OrderTable = ({ orders, setSelected, selected }: OrderTableProps) => {
+  const { get } = useAPI();
+
   const formatStatus = toTitleCase;
 
   const headers = ['User', 'Status', 'Order Number', 'Price', 'Date'];
@@ -34,11 +37,23 @@ const OrderTable = ({ orders, setSelected, selected }: OrderTableProps) => {
     ],
   }));
 
+  const download = (id: string) => {
+    get(`orders/${id}/download`);
+  };
+
   return (
     <Container style={{ marginTop: '1rem' }}>
       {orders.length === 0 && <S.H1>You haven&apos;t made any orders yet!</S.H1>}
-      {orders.length > 0
-        && <Table setSelected={setSelected} selected={selected} headers={headers} rows={rows} />}
+      {orders.length > 0 && (
+        <Table
+          setSelected={setSelected}
+          selected={selected}
+          headers={headers}
+          rows={rows}
+          action={download}
+          actionName="Download"
+        />
+      )}
     </Container>
   );
 };

@@ -5,6 +5,7 @@ import { Container } from '@containers';
 import type { Theme } from '@styles/theme';
 
 import { useAuth } from '@context/AuthProvider';
+import { useCart } from '@context/CartProvider';
 import Logo from './Logo';
 import Title from './Title';
 import Link from './Link';
@@ -30,6 +31,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
   const navigate = useNavigate();
   const { text, colors } = useTheme() as Theme;
   const { user } = useAuth();
+  const [cart] = useCart();
 
   return (
     <S.Navbar scrolled={scrolled}>
@@ -40,7 +42,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         </Container>
         <Container direction="row" justify="flex-end">
           <Link text="Marketplace" to="/marketplace" unpadded />
-          {user && <Link text="Basket" to="/basket" unpadded />}
+          {user && <Link text={`Basket${cart ? ` (${cart.length})` : ''}`} to="/basket" unpadded />}
           {!user && <Link text="Login" to="/login" unpadded />}
           {user && !user?.admin && <Link text="My Account" to="/account" primary />}
           {user?.admin && <Link text="Dashboard" to="/dashboard/orders" primary />}
