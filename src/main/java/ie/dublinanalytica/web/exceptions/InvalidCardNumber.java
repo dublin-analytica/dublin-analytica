@@ -9,4 +9,8 @@ public class InvalidCardNumber extends BaseException {
   public InvalidCardNumber() {
     super(DEFAULT_MESSAGE);
   }
+
+  public InvalidCardNumber(String message) {
+    super(message);
+  }
 }

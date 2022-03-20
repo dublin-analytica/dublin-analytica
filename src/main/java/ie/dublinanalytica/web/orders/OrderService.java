@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
 
 import ie.dublinanalytica.web.dataset.DatasetService;
 import ie.dublinanalytica.web.exceptions.BadRequest;
@@ -149,29 +148,25 @@ public class OrderService {
       throw new InvalidCardNumber();
     }
 
-    String regex = "^(?:(4[0-9]{12}(?:[0-9]{3})?)|"
-        + "(5[1-5][0-9]{14})|" + "(3[47][0-9]{13}))$";
+    String amexRegex = "^3[47][0-9]{13}$";
+    String visaRegex = "^4[0-9]{12}(?:[0-9]{3})?$";
+    String mastercardRegex = "^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$";
 
-    Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(cardNum);
+    String cvvRegex;
 
-    if (!matcher.matches()) {
-      throw new InvalidCardNumber();
-    }
-
-    if (cardNum.charAt(0) == '3') {
-      regex = "^[0-9]{4}$";
+    if (cardNum.matches(amexRegex)) {
+      cvvRegex = "^[0-9]{4}$";
+    } else if (cardNum.matches(mastercardRegex) || cardNum.matches(visaRegex)) {
+      cvvRegex = "^[0-9]{3}$";
     } else {
-      regex = "^[0-9]{3}$";
+      throw new InvalidCardNumber("Sorry but unfortunately we don't support this card");
     }
 
-    Pattern cvvPattern = Pattern.compile(regex);
-    Matcher cvvMatcher = cvvPattern.matcher(cvv);
-
-    if (!cvvMatcher.matches()) {
+    if (!cvv.matches(cvvRegex)) {
       throw new InvalidCvvNumber();
     }
 
+    // Luhn's Algorithm checksum
     int sum = 0;
     boolean alternate = false;
     for (int i = cardNum.length() - 1; i >= 0; i--) {
