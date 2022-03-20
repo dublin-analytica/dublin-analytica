@@ -1,48 +1,28 @@
-import { Container } from '@containers';
-import { useCartActions } from '@hooks';
+import { PurchaseForm } from '@components';
+import { useDatasetActions } from '@hooks';
 import { useEffect, useState } from 'react';
-import { useTheme } from 'styled-components';
-// import styled from 'styled-components';
-import type Dataset from 'types/Dataset';
-import type { Theme } from '@styles/theme'
+import { useNavigate, useParams } from 'react-router-dom';
 
-type DatasetCardProps = Dataset
+import type DatasetType from 'types/Dataset';
 
-const S = {
-};
+const Dataset = () => {
+  const [dataset, setDataset] = useState({} as DatasetType);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-const DatasetCard = ({
-  id, name, image, description, size, unitPrice,
-}: DatasetCardProps) => {
-  const [datapoints, setDatapoints] = useState(100);
-  const [value, setValue] = useState('');
+  const { getDataset } = useDatasetActions();
 
-  const { colors } = useTheme() as Theme;
-
-  const { addToCart } = useCartActions();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    const value = Number(input);
-    if (input === '' || (Number.isInteger(value) && value > 0 && value <= size)) {
-      setValue(e.target.value.trim().replace(/\./g, ''));
-    }
-  };
-
-  const handleClick = () => {
-    addToCart(id, datapoints);
-  };
+  const updateDataset = () => (
+    getDataset(id!).then(setDataset).catch(() => navigate('/404'))
+  );
 
   useEffect(() => {
-    if (value === '') setDatapoints(100);
-    else setDatapoints(parseInt(value, 10));
-  }, [value]);
+    updateDataset();
+  }, []);
 
-  return (
-    <Container nav fullscreen color={colors.primary}>
-      
-    </Container>
-  );
+  const { unitPrice, size } = dataset;
+
+  return <PurchaseForm id={id!} unitPrice={unitPrice} size={size} />;
 };
 
-export default DatasetCard;
+export default Dataset;

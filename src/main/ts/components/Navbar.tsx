@@ -35,7 +35,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
     <S.Navbar scrolled={scrolled}>
       <Container unpadded direction="row" color={colors.white} justify="space-between">
         <Container direction="row">
-          <Logo onClick={() => navigate('/')} fill={text.colors.dark} width={120} height={120} />
+          <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} fill={text.colors.dark} width={120} height={120} />
           <Title onClick={() => navigate('/')} color={text.colors.dark} size="2rem" />
         </Container>
         <Container direction="row" justify="flex-end">
@@ -43,7 +43,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           {user && <Link text="Basket" to="/basket" unpadded />}
           {!user && <Link text="Login" to="/login" unpadded />}
           {user && !user?.admin && <Link text="My Account" to="/account" primary />}
-          {user?.admin && <Link text="Dashboard" to="/orderdashboard" primary />}
+          {user?.admin && <Link text="Dashboard" to="/dashboard/orders" primary />}
           {!user && <Link text="Sign Up" to="/register" primary />}
         </Container>
       </Container>

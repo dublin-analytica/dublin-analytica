@@ -1,6 +1,8 @@
 import { Container } from '@containers';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import type Dataset from 'types/Dataset';
+import Button from './Button';
 
 import PurchaseForm from './PurchaseForm';
 
@@ -36,7 +38,7 @@ const S = {
     margin-bottom: 0.3rem;
   `,
 
-  Title: styled.h3`
+  Title: styled(Button)`
     font-size: 1.5rem !important;
     color: ${({ theme }) => theme.text.colors.dark};
     margin-bottom: 0.5rem;
@@ -58,26 +60,34 @@ const S = {
 
 const DatasetCard = ({
   id, name, image, description, size, unitPrice,
-}: DatasetCardProps) => (
-  <S.Container nomargin unpadded>
-    <S.Img src={image} alt={name} />
-    <S.Body align="flex-start">
-      <S.Title>{name}</S.Title>
-      <S.Description>{description}</S.Description>
-      <S.Size>
-        {size}
-        {' '}
-        Datapoints Available
-        {' '}
-        <br />
-        (€
-        {unitPrice}
-        {' '}
-        / datapoint)
-      </S.Size>
-      <PurchaseForm id={id} unitPrice={unitPrice} size={size} />
-    </S.Body>
-  </S.Container>
-);
+}: DatasetCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/dataset/${id}`);
+  };
+
+  return (
+    <S.Container nomargin unpadded>
+      <S.Img onClick={handleClick} src={image} alt={name} />
+      <S.Body align="flex-start">
+        <S.Title onClick={handleClick} unpadded variant="transparent">{name}</S.Title>
+        <S.Description>{description}</S.Description>
+        <S.Size>
+          {size}
+          {' '}
+          Datapoints Available
+          {' '}
+          <br />
+          (€
+          {unitPrice}
+          {' '}
+          / datapoint)
+        </S.Size>
+        <PurchaseForm id={id} unitPrice={unitPrice} size={size} />
+      </S.Body>
+    </S.Container>
+  );
+};
 
 export default DatasetCard;

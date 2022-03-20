@@ -10,3 +10,4 @@ export { default as Page404 } from './404';
 export { default as Basket } from './Basket';
 export { default as AddDataset } from './AddDataset';
 export { default as EditDataset } from './EditDataset';
+export { default as Dataset } from './Dataset';

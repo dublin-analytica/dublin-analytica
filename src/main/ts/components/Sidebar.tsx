@@ -22,8 +22,8 @@ const Sidebar = () => {
 
   return (
     <S.Container align="flex-start">
-      {user?.admin && <Link to="/orderdashboard" text="Orders Dashboard" primary={pathname === '/orderdashboard'} />}
-      {user?.admin && <Link to="/datadashboard" text="Data Dashboard" primary={pathname === '/datadashboard'} />}
+      {user?.admin && <Link to="/dashboard/orders" text="Orders Dashboard" primary={pathname === '/dashboard/orders'} />}
+      {user?.admin && <Link to="/dashboard/data" text="Data Dashboard" primary={pathname === '/dashboard/data'} />}
       <Link to="/account" text="My Account" primary={pathname === '/account'} />
       <Link to="/orders" text="My Orders" primary={pathname === '/orders'} />
       <div style={{ justifySelf: 'flex-end', marginTop: 'auto' }}>
