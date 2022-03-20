@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.dataset.DatasetDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
@@ -66,8 +65,8 @@ public class DatasetAPITests {
    * Gets the Auth token associated with a given user.
    */
   public String getAuthToken() throws Exception {
-    String USERNAME = "Bob the Admin";
-    String EMAIL = "alice@gmail.com";
+    final String USERNAME = "Bob the Admin";
+    final String EMAIL = "alice@gmail.com";
     MvcResult result = this.mockMvc.perform(
         post("/api/users/login")
         .contentType("application/json")
@@ -161,6 +160,6 @@ public class DatasetAPITests {
         get("/api/datasets/9af-e9468f4785f3"))
       .andDo(print())
       .andExpect(status().isNotFound())
-      .andReturn();
+        .andReturn();
   }
 }

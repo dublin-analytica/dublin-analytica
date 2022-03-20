@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-
 import ie.dublinanalytica.web.dataset.Dataset;
 import ie.dublinanalytica.web.dataset.DatasetRepository;
 import ie.dublinanalytica.web.orders.Order;
@@ -80,9 +79,11 @@ public class DatabaseLoader implements CommandLineRunner {
 
     User alice = new User("Alice the admin", "alice@gmail.com", "alice".toCharArray(), true);
     User bob = new User("Bob the businesman", "bob@gmail.com", "bob".toCharArray(), false);
+    User user = new User("User", "user@gmail.com", "user".toCharArray(), false);
 
     userRepository.save(alice);
     userRepository.save(bob);
+    userRepository.save(user);
 
     Random rand = new Random();
 

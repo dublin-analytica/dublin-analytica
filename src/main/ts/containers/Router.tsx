@@ -1,6 +1,15 @@
 import { useRoutes } from 'react-router-dom';
 import {
-  OrderDashboard, DataDashboard, Dataset, Landing, Login, Marketplace, Register, Account, Orders,
+  OrderDashboard,
+  DataDashboard,
+  Dataset,
+  Landing,
+  Login,
+  Marketplace,
+  Register,
+  Account,
+  Orders,
+  Basket,
   Page404,
 } from '@views';
 // import { useAuth } from '@context/AuthProvider';
@@ -19,6 +28,7 @@ const Router = () => {
     { path: '/marketplace', element: <Marketplace /> },
     { path: '/orders', element: <Orders /> },
     { path: '/404', element: <Page404 /> },
+    { path: '/basket', element: <Basket /> },
   ]);
 
   return routes;

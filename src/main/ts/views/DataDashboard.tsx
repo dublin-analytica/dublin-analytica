@@ -1,5 +1,4 @@
-import { Sidebar, SplitView } from '@components';
-import Table from '@components/Table';
+import { DataTable, Sidebar, SplitView } from '@components';
 import { useDatasetActions } from '@hooks';
 import Dataset from 'types/Dataset';
 import { useEffect, useState } from 'react';
@@ -15,24 +14,10 @@ const DataDashboard = () => {
     updateDatasets();
   }, []);
 
-  const headers = ['Name', 'Unit Price', 'Description', 'Hidden', 'Datapoints'];
-  const rows = datasets.map(({
-    id, name, unitPrice, description, hidden, size,
-  }) => ({
-    id,
-    values: [
-      name,
-      `€${unitPrice.toFixed(5)}`,
-      `${description.substring(0, 64)}...`,
-      hidden ? 'Yes' : 'No',
-      `${size}`,
-    ],
-  }));
-
   return (
     <SplitView>
       <Sidebar />
-      <Table headers={headers} rows={rows} selected={selected} setSelected={setSelected} />
+      <DataTable datasets={datasets} selected={selected} setSelected={setSelected} showHidden />
     </SplitView>
   );
 };

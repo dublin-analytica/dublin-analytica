@@ -25,3 +25,21 @@ export const confirmationValidator = new Validator(
     passwordValidator.validate({ password: password! }) && password === confirmation
   ),
 );
+
+export const cardNumberValidator = new Validator(
+  () => 'Enter a valid card number.',
+  ({ cardNumber }) => /^\d{16}$/.test(cardNumber?.replace(/[\s-]/g, '')!),
+);
+
+export const cardExpiryValidator = new Validator(
+  () => 'Enter a valid card expiry date.',
+  ({ expiry }) => (
+    /^\d{2}\/\d{2}$/.test(expiry!)
+    && Number(expiry?.substring(0, 2)) > 0
+    && Number(expiry?.substring(0, 2)) <= 12),
+);
+
+export const cardCvvValidator = new Validator(
+  () => 'Enter a valid card CVV.',
+  ({ cvv }) => /^\d{3}$/.test(cvv!),
+);

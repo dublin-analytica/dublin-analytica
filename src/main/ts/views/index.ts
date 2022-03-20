@@ -8,3 +8,4 @@ export { default as Register } from './Register';
 export { default as Account } from './Account';
 export { default as Orders } from './Orders';
 export { default as Page404 } from './404';
+export { default as Basket } from './Basket';

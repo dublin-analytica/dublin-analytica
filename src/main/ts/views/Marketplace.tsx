@@ -20,8 +20,10 @@ const Marketplace = () => {
   const [datasets, setDatasets] = useState([] as Dataset[]);
   const { getDatasets } = useDatasetActions();
 
+  const updateDatasets = () => getDatasets().then(setDatasets);
+
   useEffect(() => {
-    getDatasets().then(setDatasets);
+    updateDatasets();
   }, []);
 
   return (

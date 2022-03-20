@@ -9,6 +9,7 @@ const useAPI = () => {
   const { getToken, removeToken } = useAuth();
 
   const handleResponse = async (response: Response) => {
+    console.log(response);
     const data = await response.json();
 
     if (response.ok) return data;

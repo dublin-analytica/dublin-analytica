@@ -5,7 +5,7 @@ import Order from 'types/Order';
 import { toTitleCase, formatDate } from '@utils/utils';
 import Table from './Table';
 
-type OrdersProps = {
+type OrderTableProps = {
   orders: Order[],
   setSelected?: React.Dispatch<React.SetStateAction<Set<string>>>
   selected?: Set<string>
@@ -17,7 +17,7 @@ const S = {
   `,
 };
 
-const Orders = ({ orders, setSelected, selected }: OrdersProps) => {
+const OrderTable = ({ orders, setSelected, selected }: OrderTableProps) => {
   const formatStatus = toTitleCase;
 
   const headers = ['User', 'Status', 'Order Number', 'Price', 'Date'];
@@ -43,4 +43,4 @@ const Orders = ({ orders, setSelected, selected }: OrdersProps) => {
   );
 };
 
-export default Orders;
+export default OrderTable;

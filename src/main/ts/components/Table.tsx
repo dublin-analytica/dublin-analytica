@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 type TableProps = {
@@ -9,13 +9,21 @@ type TableProps = {
 };
 
 const S = {
-  Table: styled.table`
+  Table: styled.table<{ selectable?: boolean }>`
     width: 90%;
     border-collapse: collapse;
+
+    & tr {
+      cursor: ${({ selectable }) => (selectable ? 'pointer' : 'default')};
+    }
   `,
 
   THead: styled.thead`
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+
+    & tr {
+      cursor: default;
+    }
   `,
 
   TH: styled.th`
@@ -28,7 +36,6 @@ const S = {
     tr:first-child td:last-child { border-top-right-radius: 10px; }
     tr:last-child td:first-child { border-bottom-left-radius: 10px; }
     tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-    cursor: pointer;
     
 
     &.selected {
@@ -62,18 +69,10 @@ const Table = ({
     }
   };
 
-  useEffect(() => {
-    if (setSelected) {
-      setSelected(selected!);
-      return () => setSelected(new Set());
-    }
-    return () => {};
-  }, [selected]);
-
   const allSelected = () => selected?.size === rows.length;
 
   return (
-    <S.Table>
+    <S.Table selectable={Boolean(selected)}>
       <S.THead>
         <S.TR>
           {selected && <S.TH><input aria-label="Select All" type="checkbox" checked={allSelected()} onChange={toggleAll} /></S.TH>}
@@ -82,19 +81,19 @@ const Table = ({
       </S.THead>
       <tbody>
         {rows.map(({ id, values }) => (
-          selected && (
           <S.TR key={id} onClick={toggleSelected(id)} className={selected?.has(id) ? 'selected' : ''}>
+            {selected && (
             <td>
               <input
                 aria-label="Select"
                 type="checkbox"
                 checked={selected?.has(id)}
-                onChange={toggleSelected(id)}
+                readOnly
               />
             </td>
+            )}
             {values.map((value) => <td key={value}>{value}</td>)}
           </S.TR>
-          )
         ))}
       </tbody>
     </S.Table>
