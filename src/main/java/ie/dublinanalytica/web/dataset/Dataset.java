@@ -90,6 +90,9 @@ public class Dataset {
     this.description = description;
   }
 
+  /**
+   * Returns the size of the dataset in count.
+   */
   public int getSize() {
     if (size == null) {
       size = Utils.getSize(this.getLink());
