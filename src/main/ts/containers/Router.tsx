@@ -37,7 +37,7 @@ const Router = () => {
     { path: '/dataset/:id/edit', element: <EditDataset /> },
     { path: '/dataset/:id', element: <Dataset /> },
 
-    { path: '*', element: <Page404 /> },
+    // { path: '*', element: <Page404 /> },
   ]);
 
   return routes;

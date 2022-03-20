@@ -6,11 +6,12 @@ import { Container } from '@containers';
 
 import Input from './Input';
 import Button from './Button';
+import Form from './Form';
 
-type PurchaseFormProps = { id: string, size: number, unitPrice: number };
+type PurchaseFormProps = JSX.IntrinsicElements['form'] & { id: string, size: number, unitPrice: number };
 
 const S = {
-  Form: styled(Container)`
+  Form: styled(Form)`
     height: 100%;
   `,
 
@@ -39,7 +40,9 @@ const S = {
   `,
 };
 
-const PurchaseForm = ({ id, size, unitPrice }: PurchaseFormProps) => {
+const PurchaseForm = ({
+  id, size, unitPrice, className,
+}: PurchaseFormProps) => {
   const [datapoints, setDatapoints] = useState(100);
   const [value, setValue] = useState('');
 
@@ -63,7 +66,7 @@ const PurchaseForm = ({ id, size, unitPrice }: PurchaseFormProps) => {
   }, [value]);
 
   return (
-    <S.Form unpadded nomargin align="flex-start" justify="flex-end">
+    <S.Form className={className}>
       <Container unpadded nomargin direction="row">
         <S.Input placeholder="100" label="Datapoints" value={value} onChange={handleChange} />
       </Container>
