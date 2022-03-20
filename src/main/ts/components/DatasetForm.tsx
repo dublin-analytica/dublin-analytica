@@ -79,20 +79,20 @@ const DatasetForm = ({ dataset = {} }: DatasetFormProps) => {
     const action = update ? () => updateDataset(id!, args) : () => addDataset(args);
 
     action()
-      .then(() => navigate('/datadashboard'))
+      .then(() => navigate('/dashboard/data'))
       .catch(setError);
   };
 
   return (
     <Container nav color={theme.colors.primary} justify="center" fullscreen>
-      <Form onSubmit={handleSubmit} fields={fields} action={update ? 'Update Dataset' : 'Create Dataset'}>
+      <Form onSubmit={handleSubmit} fields={fields} action={update ? 'Update Dataset' : 'Create Dataset'} validated>
         <div>
           <h2>Add a Dataset</h2>
         </div>
         <p>
           Return to
           {' '}
-          <a href="/datadashboard">Dashboard</a>
+          <a href="/dashboard/data">Dashboard</a>
         </p>
       </Form>
     </Container>

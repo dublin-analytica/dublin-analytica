@@ -1,30 +1,31 @@
-import Cart from 'types/Cart';
+import { useCart } from '@context/CartProvider';
 import useAPI from './useAPI';
 
 const useCartActions = () => {
-  const { get, post } = useAPI();
+  const { get, post, patch } = useAPI();
+  const [cart, setCart] = useCart();
 
-  const getCart = () => get('cart');
+  const getCart = () => get('cart').then(setCart);
 
   const addToCart = (id: string, size: number) => (
-    post('cart', { id, size })
+    post('cart', { id, size }).then(getCart)
   );
 
   const updateInCart = (id: string, size: number) => (
-    post('cart/update', { id, size })
+    patch('cart', { id, size }).then(getCart)
   );
 
   const removeFromCart = (id: string) => (
-    updateInCart(id, 0)
+    updateInCart(id, 0).then(getCart)
   );
 
   const clearCart = async () => {
-    const cart: Cart = await getCart();
-    cart.forEach(({ id }) => removeFromCart(id));
+    if (!cart) return;
+    Promise.all(cart.map(({ id }) => removeFromCart(id))).then(getCart);
   };
 
   const checkout = async (number: string, expiry: string, cvv: string) => (
-    post('cart/checkout', { number, expiry, cvv })
+    post('cart/checkout', { number, expiry, cvv }).then(getCart)
   );
 
   return {

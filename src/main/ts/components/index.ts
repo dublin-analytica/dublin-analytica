@@ -15,3 +15,4 @@ export { default as DatasetCard } from './DatasetCard';
 export { default as DataTable } from './DataTable';
 export { default as Checkout } from './Checkout';
 export { default as DatasetForm } from './DatasetForm';
+export { default as PurchaseForm } from './PurchaseForm';

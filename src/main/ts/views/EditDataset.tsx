@@ -1,18 +1,20 @@
 import { DatasetForm } from '@components';
 import { useDatasetActions } from '@hooks';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Dataset from 'types/Dataset';
 
 const EditDataset = () => {
   const [dataset, setDataset] = useState({} as Dataset);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { getDataset } = useDatasetActions();
 
-  console.log(id);
-  const updateDataset = () => getDataset(id!).then(setDataset).catch(console.log);
+  const updateDataset = () => (
+    getDataset(id!).then(setDataset).catch(() => navigate('/404'))
+  );
 
   useEffect(() => {
     updateDataset();

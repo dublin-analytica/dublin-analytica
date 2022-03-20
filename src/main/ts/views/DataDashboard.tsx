@@ -50,7 +50,7 @@ const DataDashboard = () => {
   const show = () => update(false);
   const hide = () => update(true);
 
-  const edit = (id: string) => navigate(`/editdataset?id=${id}`);
+  const edit = (id: string) => navigate(`/dataset/${id}/edit`);
 
   return (
     <SplitView>
@@ -80,7 +80,7 @@ const DataDashboard = () => {
             >
               Hide
             </Button>
-            <Button style={{ marginLeft: 'auto' }} onClick={() => navigate('/adddataset')}>
+            <Button style={{ marginLeft: 'auto' }} onClick={() => navigate('/dataset/add')}>
               Add Dataset
             </Button>
           </Container>
@@ -91,6 +91,7 @@ const DataDashboard = () => {
           datasets={datasets}
           selected={selected}
           setSelected={setSelected}
+          truncate={32}
           showHidden
         />
       </Container>

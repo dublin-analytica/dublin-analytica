@@ -3,7 +3,6 @@ package ie.dublinanalytica.web;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Controller to direct all requests to frontend routes to index.html so that they
@@ -16,9 +15,12 @@ public class ReactAppController implements ErrorController {
     "/login",
     "/register",
     "/account",
-    "/orderdashboard",
-    "/datadashboard",
-    "/dataset",
+    "/dashboard",
+    "/dashboard/orders",
+    "/dashboard/datasets",
+    "/dataset/{id:.{36}}",
+    "/dataset/add",
+    "/dataset/edit/{id:.{36}}",
     "/marketplace",
     "/404",
     "/orders",
@@ -28,9 +30,9 @@ public class ReactAppController implements ErrorController {
     return "/index.html";
   }
 
-  @RequestMapping("/error")
-  public String handleError() {
-    return "redirect:/404";
-  }
+  // @RequestMapping("/error")
+  // public String handleError() {
+  //   // return "redirect:/404";
+  // }
 
 }

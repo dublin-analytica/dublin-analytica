@@ -47,7 +47,7 @@ const Account = () => {
       <Container direction="row" justify="space-around">
         <Form onSubmit={updateDetails} fields={updateDetailsFields} action="Update Details" />
         <Divider />
-        <Form onSubmit={updatePassword} fields={updatePasswordFields} action="Update Password" />
+        <Form onSubmit={updatePassword} fields={updatePasswordFields} action="Update Password" validated />
       </Container>
     </SplitView>
   );

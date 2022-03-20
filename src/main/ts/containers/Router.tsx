@@ -12,6 +12,7 @@ import {
   Page404,
   AddDataset,
   EditDataset,
+  Dataset,
 } from '@views';
 // import { useAuth } from '@context/AuthProvider';
 
@@ -23,15 +24,20 @@ const Router = () => {
     { path: '/login', element: <Login /> },
     { path: '/register', element: <Register /> },
     { path: '/account', element: <Account /> },
-    { path: '/orderdashboard', element: <OrderDashboard /> },
-    { path: '/datadashboard', element: <DataDashboard /> },
+
+    { path: '/dashboard/orders', element: <OrderDashboard /> },
+    { path: '/dashboard/data', element: <DataDashboard /> },
+
     { path: '/marketplace', element: <Marketplace /> },
     { path: '/orders', element: <Orders /> },
     { path: '/404', element: <Page404 /> },
     { path: '/basket', element: <Basket /> },
-    { path: '/adddataset', element: <AddDataset /> },
-    { path: '/editdataset', element: <EditDataset /> },
-    { path: '*', element: <Page404 /> },
+
+    { path: '/dataset/add', element: <AddDataset /> },
+    { path: '/dataset/:id/edit', element: <EditDataset /> },
+    { path: '/dataset/:id', element: <Dataset /> },
+
+    // { path: '*', element: <Page404 /> },
   ]);
 
   return routes;

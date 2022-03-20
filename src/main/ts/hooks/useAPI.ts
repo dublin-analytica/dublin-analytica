@@ -9,18 +9,42 @@ const useAPI = () => {
   const { getToken, removeToken } = useAuth();
 
   const handleResponse = async (response: Response) => {
-    console.log(response);
-    const data = await response.json();
-    console.log(data);
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+      const data = await response.json();
 
-    if (response.ok) return data;
+      if (response.ok) return data;
 
-    if (response.status === 401) {
-      removeToken();
-      navigate('/login');
+      if (response.status === 401) {
+        removeToken();
+        navigate('/login');
+      }
+
+      return Promise.reject(data.message ?? response.statusText);
     }
 
-    return Promise.reject(data.message ?? response.statusText);
+    if (response.headers.get('Content-Type')?.includes('application/octet-stream')) {
+      const blob = await response.blob();
+
+      if (response.ok) {
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+
+        console.log(response.headers.get('Content-Disposition'));
+        a.download = response.headers.get('Content-Disposition')?.split(';')[1]?.split('=')[1]!.replace(/"/g, '')!;
+
+        a.click();
+        window.URL.revokeObjectURL(url);
+        return Promise.resolve();
+      }
+
+      return Promise.reject(response.statusText);
+    }
+
+    return Promise.reject(Error('Unsupported content type.'));
   };
 
   const request = (method: string) => (
