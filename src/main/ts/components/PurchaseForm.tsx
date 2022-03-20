@@ -7,12 +7,11 @@ import { Container } from '@containers';
 import Dataset from 'types/Dataset';
 import Input from './Input';
 import Button from './Button';
-import Form from './Form';
 
 type PurchaseFormProps = JSX.IntrinsicElements['form'] & Partial<Dataset> & { variant: 'large' | 'small' };
 
 const S = {
-  Form: styled(Form)`
+  Form: styled(Container)`
     height: 100%;
   `,
 
@@ -118,7 +117,7 @@ const PurchaseForm = ({
       </Container>
     </Container>
   ) : (
-    <S.Form className={className}>
+    <S.Form unpadded nomargin align="flex-start" justify="flex-end" className={className}>
       <Container unpadded nomargin direction="row">
         <S.Input placeholder="100" label="Datapoints" value={value} onChange={handleChange} />
       </Container>
