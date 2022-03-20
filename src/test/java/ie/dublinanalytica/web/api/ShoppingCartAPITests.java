@@ -17,7 +17,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-
 import ie.dublinanalytica.web.api.response.AuthResponse;
 import ie.dublinanalytica.web.shoppingcart.CardDTO;
 import ie.dublinanalytica.web.shoppingcart.ItemDTO;
@@ -53,7 +52,7 @@ public class ShoppingCartAPITests {
     this.mockMvc.perform(
         post("/api/cart/checkout")
           .header("Authorization", "Bearer " + token))
-      .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -64,7 +63,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-      patch("/api/cart/")
+        patch("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
@@ -74,7 +73,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
-      .andExpect(status().isCreated());
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -85,7 +84,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-      put("/api/cart/")
+        put("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
@@ -95,7 +94,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/22", "4444"))))
-      .andExpect(status().isInternalServerError());
+        .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -106,7 +105,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-      put("/api/cart/")
+        put("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
@@ -116,7 +115,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/19", "4444"))))
-      .andExpect(status().isInternalServerError());
+        .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -127,7 +126,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-      put("/api/cart/")
+        put("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
@@ -137,7 +136,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new CardDTO("23377", "12/19", "4444"))))
-      .andExpect(status().isInternalServerError());
+        .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -149,7 +148,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new CardDTO("233", "12/22", "4829912773565293"))))
-      .andExpect(status().isUnauthorized());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -173,7 +172,7 @@ public class ShoppingCartAPITests {
         get("/api/cart/")
           .header("Authorization", "Bearer INVALID TOKEN"))
       .andDo(print())
-      .andExpect(status().isUnauthorized());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -188,7 +187,7 @@ public class ShoppingCartAPITests {
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
-      .andExpect(status().isCreated());
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -217,7 +216,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
-      .andExpect(status().isCreated());
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -231,7 +230,7 @@ public class ShoppingCartAPITests {
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
-      .andExpect(status().isUnauthorized());
+        .andExpect(status().isUnauthorized());
   }
 
   /**
@@ -252,27 +251,27 @@ public class ShoppingCartAPITests {
    * Gets the Auth token associated with a given user.
    */
   public String getAuthToken() throws Exception {
-    String USERNAME = "Bob the Admin";
-    String EMAIL = "alice@gmail.com";
+    final String USERNAME = "Bob the Admin";
+    final String EMAIL = "alice@gmail.com";
     MvcResult result = this.mockMvc.perform(
-      post("/api/users/login")
+        post("/api/users/login")
         .contentType("application/json")
         .content(toJSON(new RegistrationDTO(USERNAME, EMAIL, PASSWORD)))
     ).andReturn();
 
     AuthResponse.AuthObject response = (new ObjectMapper())
-      .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
+        .readValue(result.getResponse().getContentAsByteArray(), AuthResponse.AuthObject.class);
 
     return response.token();
   }
 
   /**
-   * Gets the id of a dataset
+   * Gets the id of a dataset.
    */
   public String getId() throws Exception {
     MvcResult result = this.mockMvc.perform(
         get("/api/datasets/"))
-      .andReturn();
+        .andReturn();
 
     String response = result.getResponse().getContentAsString();
     return JsonPath.parse(response).read("$.[0].id");
