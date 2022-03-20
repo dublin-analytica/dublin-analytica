@@ -13,3 +13,4 @@ export { default as SmartForm } from './SmartForm';
 export { default as Divider } from './Divider';
 export { default as DatasetCard } from './DatasetCard';
 export { default as DataTable } from './DataTable';
+export { default as Checkout } from './Checkout';

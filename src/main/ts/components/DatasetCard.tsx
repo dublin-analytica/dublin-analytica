@@ -103,7 +103,6 @@ const DatasetCard = ({
   };
 
   const handleClick = () => {
-    console.log(datapoints);
     addToCart(id, datapoints);
   };
 

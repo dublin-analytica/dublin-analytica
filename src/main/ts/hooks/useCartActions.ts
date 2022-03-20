@@ -2,20 +2,21 @@ import Cart from 'types/Cart';
 import useAPI from './useAPI';
 
 const useCartActions = () => {
-  const { get, post } = useAPI();
+  const { get, post, patch } = useAPI();
 
   const getCart = () => get('cart');
 
-  const addToCart = (id: string, size: number) => (
-    post('cart', { id, size })
-  );
+  const addToCart = (id: string, size: number) => {
+    console.log(size);
+    return post('cart', { id, size });
+  };
 
-  const updateCart = (id: string, size: number) => (
-    post('cart/update', { id, size })
+  const updateInCart = (id: string, size: number) => (
+    patch('cart', { id, size })
   );
 
   const removeFromCart = (id: string) => (
-    updateCart(id, 0)
+    updateInCart(id, 0)
   );
 
   const clearCart = async () => {
@@ -28,7 +29,7 @@ const useCartActions = () => {
   );
 
   return {
-    getCart, addToCart, updateCart, removeFromCart, clearCart, checkout,
+    getCart, addToCart, updateInCart, removeFromCart, clearCart, checkout,
   };
 };
 
