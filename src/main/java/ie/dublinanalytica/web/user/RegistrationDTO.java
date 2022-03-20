@@ -2,7 +2,9 @@ package ie.dublinanalytica.web.user;
 
 import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -46,8 +48,7 @@ public class RegistrationDTO {
    * @throws PasswordNotStrongException if the password is not strong.
    */
   public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
-    if (Arrays.toString(password)
-      .matches(("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"))) {
+    if (Pattern.matches(("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$"), CharBuffer.wrap(password))) {
       return password;
     } else {
       throw new PasswordNotStrongException();
