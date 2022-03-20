@@ -144,6 +144,9 @@ public class OrderService {
    */
   public void validateCardNumberAndCvv(String cardNum, String cvv) throws
       InvalidCardNumber, InvalidCvvNumber {
+
+    cardNum = cardNum.replaceAll("\\s+", "");
+
     if (cardNum.length() < 13 || cardNum.length() > 16) {
       throw new InvalidCardNumber();
     }
