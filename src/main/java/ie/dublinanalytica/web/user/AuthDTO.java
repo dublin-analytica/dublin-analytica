@@ -18,7 +18,15 @@ public class AuthDTO {
 
   public AuthDTO(String email, char[] password) {
     this.email = email;
-    this.password = password;
+    this.password = verifyPasswordIsStrong(password);
+  }
+
+  public String verifyPasswordIsStrong(String password) {
+    if (password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})")) {
+      return password;
+    } else {
+      throw new IllegalArgumentException();
+    }
   }
 
   public String getEmail() {
@@ -36,4 +44,6 @@ public class AuthDTO {
   public void setPassword(char[] password) {
     this.password = password;
   }
+
+
 }
