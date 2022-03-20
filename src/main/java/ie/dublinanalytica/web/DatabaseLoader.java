@@ -78,7 +78,7 @@ public class DatabaseLoader implements CommandLineRunner {
     userRepository.deleteAll();
 
     User alice = new User("Alice the admin", "alice@gmail.com", "Alice&bob1".toCharArray(), true);
-    User bob = new User("Bob the businesman", "bob@gmail.com", "Alice&bob1".toCharArray(), false);
+    User bob = new User("Bob the businessman", "bob@gmail.com", "Alice&bob1".toCharArray(), false);
     User user = new User("User", "user@gmail.com", "Alice&bob1".toCharArray(), false);
 
     userRepository.save(alice);
