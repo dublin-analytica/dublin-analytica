@@ -1,10 +1,11 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
+import java.util.Arrays;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
+
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
 /**
  * DTO for sending authentication request.
