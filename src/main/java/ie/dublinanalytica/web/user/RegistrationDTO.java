@@ -1,13 +1,13 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
-
 import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
 /**
  * Data-Transfer-Object to store the necessary information for a user to register.
