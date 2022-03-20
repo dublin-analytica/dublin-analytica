@@ -102,7 +102,7 @@ public class ShoppingCartAPIController {
       @RequestHeader("Authorization") String authHeader,
       @RequestBody @Valid ItemDTO item)
       throws UserAuthenticationException, UserNotFoundException,
-               DatasetNotFoundException {
+      DatasetNotFoundException, BadRequest {
     JWTPayload payload = JWTPayload.fromHeader(authHeader);
     User user = userService.findById(payload.getId());
     userService.addToCart(user, payload.getAuthToken(), item);

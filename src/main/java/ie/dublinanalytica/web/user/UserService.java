@@ -99,7 +99,7 @@ public class UserService {
    * @throws UserAuthenticationException if the user isn't authenticated
    */
   public void addToCart(User user, String token, ItemDTO item)
-      throws UserAuthenticationException, DatasetNotFoundException {
+      throws UserAuthenticationException, DatasetNotFoundException, BadRequest {
     verifyAuthToken(user, token);
 
     UUID datasetId = item.getId();
@@ -107,12 +107,16 @@ public class UserService {
 
     int count = item.getSize();
 
+    if (count <= 0) {
+      throw new BadRequest("Can't add less than 1 item to cart");
+    }
+
     Map<UUID, Integer> items = user.getCart().getItems();
 
     int current = items.getOrDefault(datasetId, 0);
     int updated = current + count;
 
-    user.getCart().put(datasetId, (int) Math.max(updated, dataset.getSize()));
+    user.getCart().put(datasetId, Math.min(updated, dataset.getSize()));
 
     userRepository.save(user);
   }
