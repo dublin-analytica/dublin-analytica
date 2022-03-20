@@ -129,7 +129,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
       order.setTimestamp(
           LocalDateTime.ofEpochSecond(
-            rand.nextInt((int) date.toInstant().getEpochSecond(), (int) (new Date().toInstant().getEpochSecond())),
+            rand.nextInt(
+              (int) date.toInstant().getEpochSecond(),
+              (int) (new Date().toInstant().getEpochSecond())),
             0, ZoneOffset.UTC));
 
       this.orderRepository.save(order);
