@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-rm spring-boot-h2-db.* && npx eslint ./src/main/ts/**/*.tsx && ./mvnw checkstyle:check && npm test
+rm -f spring-boot-h2-db.* && npx eslint ./src/main/ts/**/*.tsx && ./mvnw checkstyle:check && npm test
