@@ -27,7 +27,7 @@ public class PasswordChangeDTO {
    */
   public char[] verifyPasswordIsStrong(char[] password) throws PasswordNotStrongException {
     if (Pattern.matches(
-        ("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).{8,}$"),
+        ("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).{8,}$"),
         CharBuffer.wrap(password))) {
       return password;
     } else {
