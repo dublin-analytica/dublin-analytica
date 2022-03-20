@@ -32,6 +32,7 @@ import ie.dublinanalytica.web.exceptions.UserAuthenticationException;
 import ie.dublinanalytica.web.exceptions.UserNotFoundException;
 import ie.dublinanalytica.web.user.User;
 import ie.dublinanalytica.web.user.UserService;
+import ie.dublinanalytica.web.util.Utils;
 
 /**
  * API Controller for /api/dataset endpoints.
@@ -127,6 +128,15 @@ public class DatasetAPIController {
 
     if (dto.getUnitPrice() != null) {
       dataset.setUnitPrice(dto.getUnitPrice());
+    }
+
+    if (dto.getImage() != null) {
+      dataset.setImage(dto.getImage());
+    }
+
+    if (dto.getLink() != null) {
+      dataset.setLink(dto.getLink());
+      dataset.setSize(Utils.getSize(dto.getLink()));
     }
 
     datasetService.save(dataset);
