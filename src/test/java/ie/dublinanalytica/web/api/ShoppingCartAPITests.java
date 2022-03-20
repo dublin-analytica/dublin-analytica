@@ -24,6 +24,7 @@ import ie.dublinanalytica.web.shoppingcart.ItemDTO;
 import ie.dublinanalytica.web.user.RegistrationDTO;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,7 +64,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-      put("/api/cart/")
+      patch("/api/cart/")
         .header("Authorization", "Bearer " + token)
         .contentType("application/json")
         .content(toJSON(new ItemDTO(UUID.fromString(id), 5))));
@@ -212,7 +213,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-        put("/api/cart/")
+        patch("/api/cart/")
           .header("Authorization", "Bearer " + token)
           .contentType("application/json")
           .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
@@ -226,7 +227,7 @@ public class ShoppingCartAPITests {
     String id = getId();
 
     this.mockMvc.perform(
-        put("/api/cart/")
+        patch("/api/cart/")
           .header("Authorization", "Bearer INVALID TOKEN")
           .contentType("application/json")
           .content(toJSON(new ItemDTO(UUID.fromString(id), 5))))
