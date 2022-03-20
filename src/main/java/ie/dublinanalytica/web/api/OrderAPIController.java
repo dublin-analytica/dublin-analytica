@@ -1,6 +1,7 @@
 package ie.dublinanalytica.web.api;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -135,7 +136,13 @@ public class OrderAPIController {
 
     for (Map.Entry<UUID, Integer> entry : order.getItems().entrySet()) {
       Dataset d = datasetService.findById(entry.getKey());
-      zip.addFile(d.getName() + ".csv", d.fetchFile().getBytes());
+      String file = d.fetchFile();
+
+      List<String> lines = List.of(file.split("\n"));
+      List<String> truncated = lines.subList(0, entry.getValue());
+      String output = String.join("\n", truncated);
+
+      zip.addFile(d.getName() + ".csv", output.getBytes());
     }
 
     String filename = String.format("order_%s.zip", order.getId());
