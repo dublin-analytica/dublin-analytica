@@ -44,7 +44,7 @@ public class Dataset {
    */
   public Dataset(DatasetDTO data) {
     this(data.getName(),
-      data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
+        data.getDescription(), Utils.getSize(data.getLink()), data.getImage(), data.getImage());
   }
 
   /**
