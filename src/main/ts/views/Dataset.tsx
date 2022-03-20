@@ -35,14 +35,14 @@ const Dataset = () => {
   }, []);
 
   const {
-    name, unitPrice, size, image,
+    name, unitPrice, size, image, description,
   } = dataset;
 
   return (
-    <Container nav fullscreen color={colors.primary}>
-      <Container fullscreen color={colors.white} direction="row">
+    <Container nav color={colors.primary}>
+      <Container style={{ alignItems: 'stretch' }} color={colors.white} direction="row">
         <S.Image src={image} alt={name} />
-        <PurchaseForm style={{ transform: 'scale(2)' }} id={id!} unitPrice={unitPrice} size={size} />
+        <PurchaseForm variant="large" id={id!} unitPrice={unitPrice} size={size} name={name} description={description} />
       </Container>
     </Container>
   );

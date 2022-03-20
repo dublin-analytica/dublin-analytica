@@ -57,9 +57,9 @@ const Basket = () => {
         <Container>
           <h1>My Basket</h1>
           <Container direction="row" justify="space-around">
-            <Button disabled={selected.size === 0} variant="transparent" outline onClick={subtract(100)}>- 100</Button>
+            <Button disabled={selected.size === 0} variant="transparent" outline onClick={subtract(1)}>-1</Button>
             <Button disabled={selected.size === 0} variant="transparent" outline onClick={remove}>Remove from Cart</Button>
-            <Button disabled={selected.size === 0} variant="transparent" outline onClick={add(100)}>+ 100</Button>
+            <Button disabled={selected.size === 0} variant="transparent" outline onClick={add(1)}>+1</Button>
           </Container>
           <DataTable
             datasets={cart ?? []}

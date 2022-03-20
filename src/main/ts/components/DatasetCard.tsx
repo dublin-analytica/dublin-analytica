@@ -84,7 +84,7 @@ const DatasetCard = ({
           {' '}
           / datapoint)
         </S.Size>
-        <PurchaseForm id={id} unitPrice={unitPrice} size={size} />
+        <PurchaseForm variant="small" id={id} unitPrice={unitPrice} size={size} />
       </S.Body>
     </S.Container>
   );
