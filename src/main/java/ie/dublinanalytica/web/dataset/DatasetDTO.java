@@ -23,6 +23,10 @@ public class DatasetDTO {
   private String image;
 
   @NotNull
+  @NotEmpty
+  private String link;
+
+  @NotNull
   private Double unitPrice;
 
   public DatasetDTO() {}
@@ -31,12 +35,13 @@ public class DatasetDTO {
    * Constructor class for DatasetDTO.
    */
   public DatasetDTO(String name, String description, int size,
-                    String image, double pricePerDatapoint) {
+                    String image, double pricePerDatapoint, String link) {
     this.name = name;
     this.description = description;
     this.size = size;
     this.image = image;
     this.unitPrice = pricePerDatapoint;
+    this.link = link;
   }
 
   public String getName() {
@@ -77,6 +82,14 @@ public class DatasetDTO {
 
   public void setUnitPrice(Double unitPrice) {
     this.unitPrice = unitPrice;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
   }
 
   @Override

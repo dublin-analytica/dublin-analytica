@@ -90,10 +90,9 @@ public class DatabaseLoader implements CommandLineRunner {
       Dataset set = new Dataset(
           name,
           description,
-          rand.nextInt(100, 10000), ""
+          rand.nextInt(100, 10000), "https://i.imgflip.com/db5xf.jpg",
+          "https://pastebin.com/raw/QQgqV98Z"
       );
-
-      set.setImage("https://i.imgflip.com/db5xf.jpg");
 
       double price = Math.round(rand.nextDouble(0.0001, 0.01) * Math.pow(10, 5)) / Math.pow(10, 5);
 
