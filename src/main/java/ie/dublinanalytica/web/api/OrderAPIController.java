@@ -138,9 +138,11 @@ public class OrderAPIController {
       zip.addFile(d.getName() + ".csv", d.fetchFile().getBytes());
     }
 
+    String filename = String.format("order_%s.zip", order.getId());
+
     response.setContentType("application/zip");
     response.setStatus(HttpServletResponse.SC_OK);
-    response.addHeader("Content-Disposition", "attachment; filename=\"order.zip\"");
+    response.addHeader("Content-Disposition",  String.format("attachment; filename=\"%s\"", filename));
 
     return zip.build();
   }
