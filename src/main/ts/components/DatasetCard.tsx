@@ -41,7 +41,7 @@ const S = {
   Title: styled(Button)`
     font-size: 1.5rem !important;
     color: ${({ theme }) => theme.text.colors.dark};
-    margin-bottom: 0.5rem;
+    margin-bottom: 2rem;
     text-align: left;
   `,
 
@@ -72,7 +72,7 @@ const DatasetCard = ({
       <S.Img onClick={handleClick} src={image} alt={name} />
       <S.Body align="flex-start">
         <S.Title onClick={handleClick} unpadded variant="transparent">{name}</S.Title>
-        <S.Description>{description}</S.Description>
+        <S.Description>{description.substring(0, 196) + (description.length > 196 ? '...' : '')}</S.Description>
         <S.Size>
           {size}
           {' '}

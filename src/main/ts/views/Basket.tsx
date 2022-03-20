@@ -73,7 +73,7 @@ const Basket = () => {
           </Container>
           <DataTable
             datasets={cart}
-            truncate={32}
+            truncate={24}
             selected={selected}
             setSelected={setSelected}
             showTotalPrice

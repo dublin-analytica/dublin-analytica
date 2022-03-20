@@ -91,6 +91,7 @@ const DataDashboard = () => {
           datasets={datasets}
           selected={selected}
           setSelected={setSelected}
+          truncate={32}
           showHidden
         />
       </Container>
