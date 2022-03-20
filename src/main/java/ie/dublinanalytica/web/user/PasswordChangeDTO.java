@@ -1,8 +1,8 @@
 package ie.dublinanalytica.web.user;
 
-import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
-
 import java.util.Arrays;
+
+import ie.dublinanalytica.web.exceptions.PasswordNotStrongException;
 
 /**
  * DTO for password change.
