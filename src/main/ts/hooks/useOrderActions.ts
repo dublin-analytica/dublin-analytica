@@ -8,10 +8,11 @@ const useOrderActions = () => {
 
   const getOrders = async (user?: string): Promise<Order[]> => {
     const orders: Order[] = await get(user ? `orders/user/${user}` : 'orders');
-    return orders.sort((a, b) => {
-      if (a.status === Status.DELIVERED && b.status !== Status.DELIVERED) return -1;
-      return b.timestamp - a.timestamp;
-    });
+    return orders.map((order) => ({ ...order, timestamp: order.timestamp * 1000 }))
+      .sort((a, b) => {
+        if (a.status === Status.DELIVERED && b.status !== Status.DELIVERED) return -1;
+        return b.timestamp - a.timestamp;
+      });
   };
 
   const getOrder = (id: string): Promise<Order> => get(`orders/${id}`);

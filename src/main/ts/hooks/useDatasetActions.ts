@@ -1,4 +1,5 @@
 import Dataset from 'types/Dataset';
+import DatasetDTO from 'types/DTO';
 import useAPI from './useAPI';
 
 const useDatasetActions = () => {
@@ -8,12 +9,12 @@ const useDatasetActions = () => {
 
   const getDataset = (id: string) => get(`datasets/${id}`);
 
-  const createDataset = (dataset: Dataset) => post('datasets', dataset);
+  const addDataset = (dataset: DatasetDTO) => post('datasets', dataset);
 
   const updateDataset = (id: string, dataset: Partial<Dataset>) => post(`datasets/${id}`, dataset);
 
   return {
-    getDatasets, getDataset, createDataset, updateDataset,
+    getDatasets, getDataset, addDataset, updateDataset,
   };
 };
 

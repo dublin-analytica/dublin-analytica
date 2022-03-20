@@ -15,7 +15,17 @@ export const emailValidator = new Validator(
 );
 
 export const passwordValidator = new Validator(
-  () => 'Use 8 characters or more for your password.',
+  ({ password }) => {
+    if (empty(password!)) return 'Enter a password';
+    if (password!.length < 8) return 'Password must be at least 8 characters';
+    if (!/[A-Z]/.test(password!)) return 'Password must contain at least one uppercase letter';
+    if (!/[a-z]/.test(password!)) return 'Password must contain at least one lowercase letter';
+    if (!/[0-9]/.test(password!)) return 'Password must contain at least one number';
+    if (!/[^a-zA-Z0-9]/.test(password!)) {
+      return 'Password must contain at least one special character, such as (!@#$%^&*)';
+    }
+    return '';
+  },
   ({ password }) => password!.length >= 8,
 );
 
@@ -42,4 +52,19 @@ export const cardExpiryValidator = new Validator(
 export const cardCvvValidator = new Validator(
   () => 'Enter a valid card CVV.',
   ({ cvv }) => /^\d{3}$/.test(cvv!),
+);
+
+export const priceValidator = new Validator(
+  () => 'Enter a valid unit price.',
+  ({ unitPrice }) => !Number.isNaN(Number(unitPrice!)),
+);
+
+export const imageUrlValidator = new Validator(
+  () => 'Enter a valid image URL.',
+  ({ image }) => /^https?:\/\/.+$/.test(image!),
+);
+
+export const linkUrlValidator = new Validator(
+  () => 'Enter a valid dataset URL.',
+  ({ link }) => /^https?:\/\/.+$/.test(link!),
 );

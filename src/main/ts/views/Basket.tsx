@@ -1,6 +1,6 @@
 import { Button, Checkout, DataTable } from '@components';
 import { Container } from '@containers';
-import { useCartActions } from '@hooks';
+import { useCartActions, useDatasetActions } from '@hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useTheme } from 'styled-components';
 import Cart from 'types/Cart';
@@ -9,10 +9,12 @@ import type { Theme } from '@styles/theme';
 const Basket = () => {
   const { colors } = useTheme() as Theme;
 
+  const [pending, setPending] = useState(false);
   const [cart, setCart] = useState([] as Cart);
   const [selected, setSelected] = useState(new Set<string>());
 
   const { getCart, removeFromCart, updateInCart } = useCartActions();
+  const { getDataset } = useDatasetActions();
 
   const updateCart = () => getCart().then(setCart);
 
@@ -32,17 +34,29 @@ const Basket = () => {
       });
   };
 
-  const add = (n: number) => () => {
-    Promise.all(
-      Array.from(selected).map((id) => {
-        const item = cart.find((item) => item.id === id);
-        const { size } = item!;
-        if (n > 0 || size > -n) return updateInCart(id, size + n);
-        return new Promise(() => {});
-      }),
-    ).then(() => {
+  const add = (n: number) => async () => {
+    if (!pending) {
+      setPending(true);
+
+      await Promise.all(
+        Array.from(selected).map(async (id) => {
+          const item = cart.find((item) => item.id === id);
+          const { size } = item!;
+          const available: number = (await getDataset(id)).size;
+
+          if ((n > 0 && size + n <= available) || (n < 0 && size > -n)) {
+            return updateInCart(id, size + n);
+          }
+
+          return new Promise<void>((resolve) => {
+            resolve();
+          });
+        }),
+      );
+
       updateCart();
-    });
+      setPending(false);
+    }
   };
 
   const subtract = (n: number) => add(-n);
@@ -53,9 +67,9 @@ const Basket = () => {
         <Container>
           <h1>My Basket</h1>
           <Container direction="row" justify="space-around">
-            <Button variant="transparent" outline onClick={subtract(100)}>- 100</Button>
-            <Button variant="transparent" outline onClick={remove}>Remove from Cart</Button>
-            <Button variant="transparent" outline onClick={add(100)}>+ 100</Button>
+            <Button disabled={selected.size === 0} variant="transparent" outline onClick={subtract(100)}>- 100</Button>
+            <Button disabled={selected.size === 0} variant="transparent" outline onClick={remove}>Remove from Cart</Button>
+            <Button disabled={selected.size === 0} variant="transparent" outline onClick={add(100)}>+ 100</Button>
           </Container>
           <DataTable
             datasets={cart}

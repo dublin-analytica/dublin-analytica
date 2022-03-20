@@ -14,3 +14,4 @@ export { default as Divider } from './Divider';
 export { default as DatasetCard } from './DatasetCard';
 export { default as DataTable } from './DataTable';
 export { default as Checkout } from './Checkout';
+export { default as DatasetForm } from './DatasetForm';

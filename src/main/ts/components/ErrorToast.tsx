@@ -25,7 +25,7 @@ const ErrorToast = ({ message }: ErrorProps) => {
     <div>
       {message.length ? (
         <S.ErrorToast>
-          <ExclamationCircleIcon width={16} height={16} fill={theme.text.colors.light} />
+          <ExclamationCircleIcon width={16} height={16} fill={theme.text.colors.light} style={{ marginTop: '4px' }} />
           {message}
         </S.ErrorToast>
       ) : null}

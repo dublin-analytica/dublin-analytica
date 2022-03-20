@@ -3,9 +3,9 @@ type Dataset = {
   name: string,
   image: string,
   description: string,
+  link?: string,
   size: number,
   hidden: boolean,
-  fields: string[],
   unitPrice: number,
 }
 

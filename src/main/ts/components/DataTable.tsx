@@ -11,6 +11,8 @@ type DataTableProps = {
   showHidden?: boolean,
   truncate?: number,
   showTotalPrice?: boolean,
+  action?: (id: string) => void,
+  actionName?: string,
 };
 
 const S = {
@@ -20,7 +22,14 @@ const S = {
 };
 
 const DataTable = ({
-  datasets, setSelected, selected, showHidden = false, showTotalPrice = false, truncate = 64,
+  datasets,
+  setSelected,
+  selected,
+  showHidden = false,
+  showTotalPrice = false,
+  truncate = 64,
+  action,
+  actionName,
 }: DataTableProps) => {
   const headers = [
     'Name', showTotalPrice ? 'Price' : 'Unit Price', 'Description', ...(showHidden ? ['Hidden'] : []), 'Datapoints',
@@ -42,8 +51,16 @@ const DataTable = ({
   return (
     <Container style={{ marginTop: '1rem' }}>
       {datasets.length === 0 && <S.H1>You haven&apos;t added anything to your basket!</S.H1>}
-      {datasets.length > 0
-        && <Table setSelected={setSelected} selected={selected} headers={headers} rows={rows} />}
+      {datasets.length > 0 && (
+      <Table
+        action={action}
+        actionName={actionName}
+        setSelected={setSelected}
+        selected={selected}
+        headers={headers}
+        rows={rows}
+      />
+      )}
     </Container>
   );
 };

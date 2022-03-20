@@ -18,11 +18,12 @@
   },
   "scripts": {
     "watch": "yarn webpack --watch",
-    "clean": "./mvnw clean && rm -rf src/main/resources/built",
+    "clean": "./mvnw clean && rm -rf src/main/resources/built && rm -f spring-boot-h2-db.*",
     "pretest": "yarn run clean",
     "test": "./mvnw test",
     "prebuild": "yarn run clean",
     "build": "./mvnw package",
+    "prestart": "yarn run clean",
     "start": "(trap 'kill 0' SIGINT; ./mvnw spring-boot:run & yarn run watch)",
     "prepare": "yarn husky install",
     "js": "yarn tsc && yarn eslint --fix src/main/js/**"

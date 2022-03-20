@@ -1,6 +1,5 @@
 export { default as OrderDashboard } from './OrderDashboard';
 export { default as DataDashboard } from './DataDashboard';
-export { default as Dataset } from './Dataset';
 export { default as Landing } from './Landing';
 export { default as Login } from './Login';
 export { default as Marketplace } from './Marketplace';
@@ -9,3 +8,5 @@ export { default as Account } from './Account';
 export { default as Orders } from './Orders';
 export { default as Page404 } from './404';
 export { default as Basket } from './Basket';
+export { default as AddDataset } from './AddDataset';
+export { default as EditDataset } from './EditDataset';
