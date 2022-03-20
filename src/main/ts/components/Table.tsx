@@ -16,6 +16,10 @@ const S = {
 
   THead: styled.thead`
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+
+    & tr {
+      cursor: default;
+    }
   `,
 
   TH: styled.th`
@@ -62,14 +66,6 @@ const Table = ({
     }
   };
 
-  useEffect(() => {
-    if (setSelected) {
-      setSelected(selected!);
-      return () => setSelected(new Set());
-    }
-    return () => {};
-  }, [selected]);
-
   const allSelected = () => selected?.size === rows.length;
 
   return (
@@ -82,8 +78,8 @@ const Table = ({
       </S.THead>
       <tbody>
         {rows.map(({ id, values }) => (
-          selected && (
           <S.TR key={id} onClick={toggleSelected(id)} className={selected?.has(id) ? 'selected' : ''}>
+            {selected && (
             <td>
               <input
                 aria-label="Select"
@@ -92,9 +88,9 @@ const Table = ({
                 onChange={toggleSelected(id)}
               />
             </td>
+            )}
             {values.map((value) => <td key={value}>{value}</td>)}
           </S.TR>
-          )
         ))}
       </tbody>
     </S.Table>

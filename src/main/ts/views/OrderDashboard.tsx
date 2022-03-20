@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 
 import {
-  Button,
-  Orders, Sidebar, SplitView, Stats,
+  Button, OrderTable, Sidebar, SplitView, Stats,
 } from '@components';
 import { useOrderActions } from '@hooks';
 // import { useAuth } from '@context/AuthProvider';
@@ -62,7 +61,7 @@ const Dashboard = () => {
           </Container>
           <hr />
         </Container>
-        <Orders orders={orders} setSelected={setSelected} selected={selected} />
+        <OrderTable orders={orders} setSelected={setSelected} selected={selected} />
       </>
     </SplitView>
   );
